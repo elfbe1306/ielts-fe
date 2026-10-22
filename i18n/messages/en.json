@@ -1,11 +1,22 @@
 {
     "nav": {
-        "intro": "About",
-        "experience": "Experience",
-        "roadmap": "Roadmap",
-        "schedule": "Schedule",
-        "method": "Method",
-        "register": "Book a consultation",
-        "signIn": "Sign in"
+        "public": {
+            "intro": "About",
+            "experience": "Experience",
+            "roadmap": "Roadmap",
+            "schedule": "Schedule",
+            "method": "Method",
+            "register": "Book a consultation",
+            "signIn": "Sign in"
+        },
+        "admin": {
+            "dashboard": "Dashboard"
+        },
+        "teacher": {
+            "dashboard": "Dashboard"
+        },
+        "student": {
+            "dashboard": "Dashboard"
+        }
     }
 }

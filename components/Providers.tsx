@@ -143,7 +143,7 @@ export default function Providers({ children }: ProviderProps) {
                         }
                     }}
                 >
-                        {children}
+                    {children}
                 </ConfigProvider>
             </AntdRegistry>
             <ReactQueryDevtools initialIsOpen={false} />

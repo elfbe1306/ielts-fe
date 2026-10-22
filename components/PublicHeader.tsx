@@ -5,7 +5,7 @@ import { ROUTES } from "@/lib/route";
 import LocaleSwitcher from "./LocaleSwitcher";
 
 export default function PublicHeader() {
-    const t = useTranslations("nav");
+    const t = useTranslations("nav.public");
 
     const items: MenuProps["items"] = [
         { key: "intro", label: <a href="#intro">{t("intro")}</a> },

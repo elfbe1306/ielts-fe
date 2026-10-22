@@ -1,11 +1,22 @@
 {
     "nav": {
-        "intro": "Giới thiệu",
-        "experience": "Kinh nghiệm",
-        "roadmap": "Lộ trình",
-        "schedule": "Lịch khai giảng",
-        "method": "Phương pháp",
-        "register": "Đăng ký tư vấn",
-        "signIn": "Đăng nhập"
+        "public": {
+            "intro": "Giới thiệu",
+            "experience": "Kinh nghiệm",
+            "roadmap": "Lộ trình",
+            "schedule": "Lịch khai giảng",
+            "method": "Phương pháp",
+            "register": "Đăng ký tư vấn",
+            "signIn": "Đăng nhập"
+        },
+        "admin": {
+            "dashboard": "Tổng quan"
+        },
+        "teacher": {
+            "dashboard": "Tổng quan"
+        },
+        "student": {
+            "dashboard": "Tổng quan"
+        }
     }
 }
