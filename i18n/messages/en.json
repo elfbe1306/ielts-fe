@@ -1,0 +1,11 @@
+{
+    "nav": {
+        "intro": "About",
+        "experience": "Experience",
+        "roadmap": "Roadmap",
+        "schedule": "Schedule",
+        "method": "Method",
+        "register": "Book a consultation",
+        "signIn": "Sign in"
+    }
+}

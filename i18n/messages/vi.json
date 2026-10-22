@@ -1,0 +1,11 @@
+{
+    "nav": {
+        "intro": "Giới thiệu",
+        "experience": "Kinh nghiệm",
+        "roadmap": "Lộ trình",
+        "schedule": "Lịch khai giảng",
+        "method": "Phương pháp",
+        "register": "Đăng ký tư vấn",
+        "signIn": "Đăng nhập"
+    }
+}

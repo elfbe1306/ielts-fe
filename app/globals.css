@@ -1,26 +1,53 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@import "tailwindcss";
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+	--font-serif: var(--font-be-vietnam-pro);
+	--font-sans: var(--font-roboto);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
+	/* Background — page canvas */
+	--color-bg: #ffffff;
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	/* Surface — cards and panels, slightly off-white with a navy tint */
+	--color-surface: #f6f8fc;
+
+	/* Foreground — body text and headings (brand dark navy) */
+	--color-fg: #030351;
+
+	/* Muted — secondary text and metadata */
+	--color-muted: #5b6478;
+
+	/* Border — rules and dividers */
+	--color-border: #d9deeb;
+
+	/* Accent — primary actions and emphasis (brand navy) */
+	--color-accent: #1b387f;
+	--color-accent-bg: #e9eef8;      /* light accent background, e.g. badges */
+	--color-accent-hover: #2a4fa8;   /* hover state */
+	--color-accent-active: #030351;  /* pressed/active state */
+
+	/* Highlight — brand yellow, for standout elements (use dark text on it) */
+	--color-highlight: #ffc200;
+	--color-highlight-hover: #ffd500;
+	--color-highlight-bg: #fff8db;
+	--color-highlight-fg: #8a6500; 
+
+	/* Status colors */
+	--color-error: #ff4d4f;
+	--color-error-bg: #fff1f0;
+	--color-warning: #d97706;
+	--color-warning-bg: #fff4e5;
+	--color-success: #237804;
+	--color-success-bg: #f6ffed;
+
+	/* Writing Criterion */
+	--color-tr: #5b3fc4;
+    --color-tr-bg: #ede8fb;
+    --color-cc: #1f6f5c;
+    --color-cc-bg: #dcf1ec;
+    --color-lr: #a14d12;
+    --color-lr-bg: #fbe9d6;
+    --color-gra: #2f45a8;
+    --color-gra-bg: #e2e8f8;
 }
