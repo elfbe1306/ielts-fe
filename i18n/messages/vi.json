@@ -18,5 +18,22 @@
         "student": {
             "dashboard": "Tổng quan"
         }
+    },
+    "auth": {
+        "headingLine1": "Học IELTS có lộ trình,",
+        "headingLine2": "tiến bộ đo được từng tuần.",
+        "description": "Một tài khoản duy nhất cho cả giáo viên và học viên — quản lý lớp, giao bài, luyện đề và theo dõi tiến độ ở cùng một nơi.",
+        "features": [
+            "Lộ trình cá nhân hoá theo mục tiêu học tập",
+            "Chấm Writing & Speaking chi tiết từ giáo viên",
+            "Theo dõi tiến độ từng kỹ năng theo từng tuần"
+        ],
+        "signIn": {
+            "title": "Đăng nhập",
+            "subtitle": "Truy cập vào tài khoản của bạn để tiếp tục.",
+            "googleConnecting": "Đang kết nối...",
+            "noAccount": "Chưa có tài khoản?",
+            "contactUs": "Liên hệ IELTS WIT"
+        }
     }
 }

@@ -1,6 +1,6 @@
 export const ROUTES = {
     landing: "/",
-    signIn: "/auth/sign-in",
+    signIn: "/sign-in",
 
     admin: {
 

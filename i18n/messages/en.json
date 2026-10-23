@@ -18,5 +18,22 @@
         "student": {
             "dashboard": "Dashboard"
         }
+    },
+    "auth": {
+        "headingLine1": "Structured IELTS prep,",
+        "headingLine2": "progress you can measure, week by week.",
+        "description": "One account for both teachers and students — manage classes, assign homework, practice tests, and track progress in one place.",
+        "features": [
+            "A personalized roadmap based on your study goals",
+            "Detailed Writing & Speaking feedback from teachers",
+            "Weekly progress tracking for every skill"
+        ],
+        "signIn": {
+            "title": "Sign In",
+            "subtitle": "Access your account to continue.",
+            "googleConnecting": "Connecting...",
+            "noAccount": "Don't have an account?",
+            "contactUs": "Contact IELTS WIT"
+        }
     }
 }
