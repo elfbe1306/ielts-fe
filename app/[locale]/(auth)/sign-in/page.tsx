@@ -2,21 +2,36 @@
 
 import Button from "@/components/Button";
 import GoogleIcon from "@/components/Icons/GoogleIcon";
-import { Link } from "@/i18n/navigation";
-import { ROUTES } from "@/lib/route";
+import { useAuth } from "@/contexts/auth-context";
+import { useAppMessage } from "@/contexts/message-context";
+import { Link, useRouter } from "@/i18n/navigation";
+import { AuthApi } from "@/lib/api/authApi";
+import { ROLE_HOME, ROUTES } from "@/lib/route";
+import { useGoogleLogin } from "@react-oauth/google";
 import { useMutation } from "@tanstack/react-query";
 import { useTranslations } from "next-intl"
 
 export default function SignInPage() {
     const t = useTranslations("auth.signIn");
+    const message = useAppMessage();
+    const router = useRouter();
+    const { setUser } = useAuth();
 
     const { mutate, isPending } = useMutation({
-
+        mutationFn: AuthApi.signIn,
+        onSuccess: (user) => {
+            setUser(user);
+            router.replace(ROLE_HOME[user.role]);
+        },
+        onError: (error) => {
+            message.error(error.message);
+        } 
     });
 
-    const handleGoogleSignIn = () => {
-        
-    };
+    const handleGoogleSignIn = useGoogleLogin({
+        flow: "auth-code",
+        onSuccess: ({ code }) => mutate(code)
+    });
 
     return (
         <>
