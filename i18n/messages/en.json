@@ -10,13 +10,29 @@
             "signIn": "Sign in"
         },
         "admin": {
-            "dashboard": "Dashboard"
+            "dashboard": "Dashboard",
+            "users": "Users"
         },
         "teacher": {
-            "dashboard": "Dashboard"
+            "dashboard": "Dashboard",
+            "courses": "Courses",
+            "questionBank": "Question bank",
+            "questionBankItems": {
+              "listening": "Listening",
+              "reading": "Reading",
+              "writing": "Writing",
+              "speaking": "Speaking"
+            },
+            "students": "Students"
         },
         "student": {
-            "dashboard": "Dashboard"
+            "dashboard": "Dashboard",
+            "courses": "My courses"
+        },
+        "account": {
+            "account": "Account",
+            "language": "Language",
+            "signOut": "Sign out"
         }
     },
     "auth": {

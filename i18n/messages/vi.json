@@ -10,13 +10,29 @@
             "signIn": "Đăng nhập"
         },
         "admin": {
-            "dashboard": "Tổng quan"
+            "dashboard": "Tổng quan",
+            "users": "Người dùng"        
         },
         "teacher": {
-            "dashboard": "Tổng quan"
+            "dashboard": "Tổng quan",
+            "courses": "Khoá học",
+            "questionBank": "Ngân hàng câu hỏi",
+            "questionBankItems": {
+              "listening": "Listening",
+              "reading": "Reading",
+              "writing": "Writing",
+              "speaking": "Speaking"
+            },
+            "students": "Học viên"
         },
         "student": {
-            "dashboard": "Tổng quan"
+            "dashboard": "Tổng quan",
+            "courses": "Khoá học của tôi"
+        },
+        "account": {
+            "account": "Tài khoản",
+            "language": "Ngôn ngữ",
+            "signOut": "Đăng xuất"          
         }
     },
     "auth": {

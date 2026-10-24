@@ -1,11 +1,11 @@
 "use client";
 
 import Button from "@/components/Button";
-import GoogleIcon from "@/components/Icons/GoogleIcon";
+import GoogleIcon from "@/components/icons/GoogleIcon";
 import { useAuth } from "@/contexts/auth-context";
 import { useAppMessage } from "@/contexts/message-context";
 import { Link, useRouter } from "@/i18n/navigation";
-import { AuthApi } from "@/lib/api/authApi";
+import { authApi } from "@/lib/api/authApi";
 import { ROLE_HOME, ROUTES } from "@/lib/route";
 import { useGoogleLogin } from "@react-oauth/google";
 import { useMutation } from "@tanstack/react-query";
@@ -18,7 +18,7 @@ export default function SignInPage() {
     const { setUser } = useAuth();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: AuthApi.signIn,
+        mutationFn: authApi.signIn,
         onSuccess: (user) => {
             setUser(user);
             router.replace(ROLE_HOME[user.role]);

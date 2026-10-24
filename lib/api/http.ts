@@ -35,7 +35,7 @@ async function request<T>(url: string, init: RequestInit = {}) : Promise<T> {
 
 export const http = {
     get: <T>(url: string) => request<T>(url, { method: "GET" }),
-    post: <T>(url: string, data: unknown) => request<T>(url, { method: "POST", body: toBody(data) }),
+    post: <T>(url: string, data?: unknown) => request<T>(url, { method: "POST", body: toBody(data) }),
     patch: <T>(url: string, data: unknown) => request<T>(url, { method: "PATCH", body: toBody(data) }),
     delete: <T>(url: string) => request<T>(url, { method: "DELETE" })
 };

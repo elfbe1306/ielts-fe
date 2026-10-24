@@ -3,6 +3,7 @@ import { AuthResponse } from "@/types/auth-type";
 import { cookies } from "next/headers";
 import { NextRequest } from "next/server";
 
+// POST - /api/auth/google
 export async function POST(request: NextRequest) {
     let body: unknown;
 

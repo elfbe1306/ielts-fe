@@ -2,7 +2,7 @@ import { Image } from "antd";
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/route";
 import LocaleSwitcher from "@/components/LocaleSwitcher";
-import CheckCircleIcon from "@/components/Icons/CheckCircleIcon";
+import CheckCircleIcon from "@/components/icons/CheckCircleIcon";
 import { useTranslations } from "next-intl";
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {

@@ -4,9 +4,9 @@ import { useTransition } from "react";
 import { useLocale, type Locale } from "next-intl";
 import { Dropdown, type MenuProps } from "antd";
 import { usePathname, useRouter } from "@/i18n/navigation";
-import VietnamIcon from "./Icons/flags/VietnamIcon";
-import UsaIcon from "./Icons/flags/UsaIcon";
-import ArrowDownIcon from "./Icons/ArrowDownIcon";
+import VietnamIcon from "./icons/flags/VietnamIcon";
+import UsaIcon from "./icons/flags/UsaIcon";
+import ArrowDownIcon from "./icons/ArrowDownIcon";
 
 const LOCALES: { code: Locale; label: string; icon: React.ReactNode }[] = [
     { code: "vi", label: "Tiếng Việt", icon: <VietnamIcon /> },
