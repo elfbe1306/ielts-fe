@@ -51,5 +51,197 @@
             "noAccount": "Chưa có tài khoản?",
             "contactUs": "Liên hệ IELTS WIT"
         }
+    },
+    "teacherCoursesPage": {
+        "title": "Khoá học",
+        "subtitle": "Danh sách khoá học bạn đang phụ trách.",
+        "createButton": "Tạo khoá học mới",
+        "emptyTitle": "Chưa có lớp học nào",
+        "emptySubtitle": "Tạo lớp học đầu tiên để bắt đầu quản lý học viên và buổi học.",
+        "filters": {
+            "ALL": "Tất cả",
+            "UPCOMING": "Sắp bắt đầu",
+            "ACTIVE": "Đang hoạt động",
+            "ENDED": "Kết thúc"
+        },
+        "noMatchTitle": "Không có khoá học nào",
+        "noMatchSubTitle": "Không có khoá học nào phù hợp với trạng thái bạn đã chọn.",
+        "courseCard": {
+            "status": {
+                "UPCOMING": "Sắp bắt đầu",
+                "ACTIVE": "Đang hoạt động",
+                "ENDED": "Kết thúc"
+            },
+            "teacherLabel": "Giáo viên:",
+            "startDateLabel": "Khai giảng:",
+            "capacityLabel": "Sĩ số:",
+            "capacityValue": "{min}–{max} học viên",
+            "progressLabel": "Tiến độ khóa học",
+            "progressValue": "{completed} / {total} buổi"
+        },
+        "createCourseModal": {
+            "title": "Tạo khoá học mới",
+            "subtitle": "Điền thông tin khoá học bên dưới.",
+            "createSuccess": "Tạo khoá học thành công",
+            "nameLabel": "Tên khoá học",
+            "namePlaceholder": "VD: IELTS Foundation - Lớp A1",
+            "sessionLabel": "Tổng số buổi học",
+            "sessionPlaceholder": "VD: 24",
+            "rangeLabel": "Số lượng học viên (khoảng)",
+            "minPlaceholder": "Từ",
+            "maxPlaceholder": "Đến",
+            "rangeSuffix": "học viên",
+            "dateLabel": "Ngày khai giảng",
+            "submit": "Tạo mới",
+            "errors": {
+                "nameRequired": "Vui lòng nhập tên khoá học",
+                "sessionRequired": "Nhập số buổi học lớn hơn 0",
+                "minStudentsRequired": "Nhập số tối thiểu từ 0 trở lên",
+                "maxStudentsRequired": "Nhập số tối đa lớn hơn 0",
+                "startDateRequired": "Vui lòng chọn ngày khai giảng",
+                "rangeInvalid": "Số tối thiểu không được lớn hơn số tối đa"
+            }
+        }
+    },
+    "teacherCourseDetailPage": {
+        "breadcrumbs": {
+            "courses": "Khoá học",
+            "detail": "Chi tiết khoá học",
+            "writingAssignment": "Bài tập viết"
+        },
+        "courseHeader": {
+            "status": {
+                "UPCOMING": "Sắp bắt đầu",
+                "ACTIVE": "Đang hoạt động",
+                "ENDED": "Kết thúc"
+            },
+            "deletePopconfirm": {
+                "title": "Xoá khoá học",
+                "subtitle": "Bạn có chắc chắn muốn xoá khoá học này?",
+                "okText": "Xoá",
+                "cancelText": "Hủy"
+            },
+            "deleteSuccess": "Xoá khoá học thành công",
+            "teacherLabel": "Giáo viên",
+            "startDateLabel": "Khai giảng",
+            "scheduledWeeksLabel": "Số tuần đã lên lịch",
+            "capacityLabel": "Sĩ số",
+            "capacityValue": "{min}–{max} học viên",
+            "progressLabel": "Tiến độ khóa học",
+            "progressValue": "{completed} / {total} buổi"
+        },
+        "weekSection": {
+            "title": "Tuần học",
+            "gradeButton": "Chấm bài",
+            "createButton": "Tạo tuần học",
+            "empty": "Chưa có tuần học nào"
+        },        
+        "weekSectionCard" : {
+            "sessionCount": "Buổi {count}",
+            "deletePopconfirm": {
+                "title": "Xoá tuần học",
+                "subtitle": "Bạn có chắc chắn muốn xoá tuần học này?",
+                "okText": "Xoá",
+                "cancelText": "Hủy"
+            },
+            "assignments": {
+                "title": "Bài tập Writing",
+                "addButton": "Thêm bài tập",
+                "empty": "Chưa có bài tập nào trong tuần này",
+                "taskType": {
+                    "TASK_1": "Task 1",
+                    "TASK_2": "Task 2"
+                },
+                "difficulty": {
+                    "EASY": "Dễ",
+                    "MEDIUM": "Trung bình",
+                    "HARD": "Khó"
+                },
+                "showMore": "Xem thêm",
+                "showLess": "Thu gọn",
+                "noteLabel": "Ghi chú",
+                "noNote": "Không",
+                "dueLabel": "Hạn nộp",
+                "overdue": "Quá hạn",
+                "deletePopconfirm": {
+                    "title": "Xoá bài tập này?",
+                    "subtitle": "Bài tập sẽ bị xoá khỏi tuần học.",
+                    "okText": "Xoá",
+                    "cancelText": "Huỷ"
+                },
+                "deleteSuccess": "Xoá bài tập thành công"
+            },
+            "deleteSuccess": "Xoá tuần học thành công"
+        },
+        "updateCourseModal" : {
+            "title": "Cập nhật khoá học",
+            "subtitle": "Điều chỉnh thông tin khoá học bên dưới.",
+            "updateSuccess": "Cập nhật khoá học thành công",
+            "nameLabel": "Tên khoá học",
+            "namePlaceholder": "VD: IELTS Foundation - Khoá học A1",
+            "sessionLabel": "Tổng số buổi học",
+            "sessionPlaceholder": "VD: 24",
+            "rangeLabel": "Số lượng học viên (khoảng)",
+            "minPlaceholder": "Từ",
+            "maxPlaceholder": "Đến",
+            "rangeSuffix": "học viên",
+            "dateLabel": "Ngày khai giảng",
+            "save": "Cập nhật",
+            "errors": {
+                "nameRequired": "Vui lòng nhập tên khoá học",
+                "sessionRequired": "Nhập số buổi học lớn hơn 0",
+                "minStudentsRequired": "Nhập số tối thiểu từ 0 trở lên",
+                "maxStudentsRequired": "Nhập số tối đa lớn hơn 0",
+                "startDateRequired": "Vui lòng chọn ngày khai giảng",
+                "maxStudentsBelowEnrolled": "Sĩ số tối đa không được nhỏ hơn số học viên đã đăng ký ({count})",
+                "rangeInvalid": "Số tối thiểu không được lớn hơn số tối đa"
+            }
+        },
+        "createWeekSectionModal": {
+            "title": "Tạo tuần học",
+            "subtitle": "Chọn số buổi học trong tuần, sau đó điền hoặc lấy đề xuất ngày giờ từ tuần trước.",
+            "weekNameLabel": "Tên tuần",
+            "defaultWeekName": "Tuần {number}",
+            "sessionCountLabel": "Số buổi học",
+            "copyFromPreviousLabel": "Lấy lịch từ tuần trước",
+            "previousWeekChip": "{name} (tuần trước)",
+            "sessionTimes": "Thời gian từng buổi",
+            "weekCard": {
+                "sessionLabel": "Buổi {number}",
+                "dateLabel": "Ngày học",
+                "startTimeLabel": "Giờ bắt đầu",
+                "endTimeLabel": "Giờ kết thúc"
+            },
+            "submit":"Tạo mới",
+            "errors": {
+                "weekNameRequired": "Vui lòng nhập tên tuần",
+                "dateRequired": "Vui lòng chọn ngày học",
+                "startTimeRequired": "Vui lòng chọn giờ bắt đầu",
+                "endTimeRequired": "Vui lòng chọn giờ kết thúc"
+            },
+            "createSuccess": "Tạo tuần học thành công"
+        },       
+        "updateWeekSectionModal": {
+            "title": "Cập nhật tuần học",
+            "subtitle": "Điều chỉnh tên tuần, thêm/giảm số buổi hoặc cập nhật ngày giờ từng buổi.",
+            "weekNameLabel": "Tên tuần",
+            "defaultWeekName": "Tuần {number}",
+            "sessionCountLabel": "Số buổi học",
+            "sessionTimes": "Thời gian từng buổi",
+            "weekCard": {
+                "sessionLabel": "Buổi {number}",
+                "dateLabel": "Ngày học",
+                "startTimeLabel": "Giờ bắt đầu",
+                "endTimeLabel": "Giờ kết thúc"
+            },
+            "submit":"Cập nhật",
+            "errors": {
+                "weekNameRequired": "Vui lòng nhập tên tuần",
+                "dateRequired": "Vui lòng chọn ngày học",
+                "startTimeRequired": "Vui lòng chọn giờ bắt đầu",
+                "endTimeRequired": "Vui lòng chọn giờ kết thúc"
+            },
+            "updateSuccess": "Cập nhật tuần học thành công"
+        }
     }
 }

@@ -51,5 +51,197 @@
             "noAccount": "Don't have an account?",
             "contactUs": "Contact IELTS WIT"
         }
+    },
+    "teacherCoursesPage": {
+        "title": "Courses",
+        "subtitle": "The list of courses you're teaching.",
+        "createButton": "New course",
+        "emptyTitle": "No courses yet",
+        "emptySubtitle": "Create your first course to start managing students and sessions.",
+        "filters": {
+            "ALL": "All",
+            "UPCOMING": "Upcoming",
+            "ACTIVE": "Active",
+            "ENDED": "Ended"
+        },
+        "noMatchTitle": "No courses found",
+        "noMatchSubTitle": "There are no courses in this status.",
+        "courseCard": {
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "teacherLabel": "Teacher:",
+            "startDateLabel": "Starts:",
+            "capacityLabel": "Capacity:",
+            "capacityValue": "{min}–{max} students",
+            "progressLabel": "Course progress",
+            "progressValue": "{completed} / {total} sessions"
+        },
+        "createCourseModal": {
+            "title": "Create a new course",
+            "subtitle": "Fill in the course details below.",
+            "createSuccess": "Course created successfully",
+            "nameLabel": "Course name",
+            "namePlaceholder": "e.g. IELTS Foundation - Course A1",
+            "sessionLabel": "Total sessions",
+            "sessionPlaceholder": "e.g. 24",
+            "rangeLabel": "Student count (range)",
+            "minPlaceholder": "Min",
+            "maxPlaceholder": "Max",
+            "rangeSuffix": "students",
+            "dateLabel": "Start date",
+            "submit": "Create",
+            "errors": {
+                "nameRequired": "Please enter a course name",
+                "sessionRequired": "Enter a number of sessions greater than 0",
+                "minStudentsRequired": "Enter a minimum of 0 or more",
+                "maxStudentsRequired": "Enter a maximum greater than 0",
+                "startDateRequired": "Please pick a start date",
+                "rangeInvalid": "Minimum cannot be greater than maximum"
+            }
+        }
+    },
+    "teacherCourseDetailPage": {
+        "breadcrumbs": {
+            "courses": "Courses",
+            "detail": "Course Detail",
+            "writingAssignment": "Writing assignment"
+        },
+        "courseHeader": {
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "deletePopconfirm": {
+                "title": "Delete course",
+                "subtitle": "Are you sure you want to delete this course?",
+                "okText": "Delete",
+                "cancelText": "Cancel"
+            },
+            "deleteSuccess": "Course deleted successfully",
+            "teacherLabel": "Teacher",
+            "startDateLabel": "Start date",
+            "scheduledWeeksLabel": "Weeks scheduled",
+            "capacityLabel": "Capacity",
+            "capacityValue": "{min}–{max} students",
+            "progressLabel": "Course progress",
+            "progressValue": "{completed} / {total} sessions"
+        },
+        "weekSection": {
+            "title": "Weeks",
+            "gradeButton": "Grade",
+            "createButton": "Create week",
+            "empty": "No weeks yet"
+        },
+        "weekSectionCard" : {
+            "sessionCount": "Session {count}",
+            "deletePopconfirm": {
+                "title": "Delete week",
+                "subtitle": "Are you sure you want to delete this week?",
+                "okText": "Delete",
+                "cancelText": "Cancel"
+            },
+            "assignments": {
+                "title": "Writing assignments",
+                "addButton": "Add assignment",
+                "empty": "No assignments this week yet",
+                "taskType": {
+                    "TASK_1": "Task 1",
+                    "TASK_2": "Task 2"
+                },
+                "difficulty": {
+                    "EASY": "Easy",
+                    "MEDIUM": "Medium",
+                    "HARD": "Hard"
+                },
+                "showMore": "Show more", 
+                "showLess": "Show less",
+                "noteLabel": "Note",
+                "noNote": "None",
+                "dueLabel": "Due",
+                "overdue": "Overdue",
+                "deletePopconfirm": {
+                    "title": "Delete this assignment?",
+                    "subtitle": "The assignment will be removed from this week.",
+                    "okText": "Delete",
+                    "cancelText": "Cancel"
+                },
+                "deleteSuccess": "Assignment deleted successfully"
+            },
+            "deleteSuccess": "Week deleted successfully"
+        },
+        "updateCourseModal": {
+            "title": "Update course",
+            "subtitle": "Edit the course details below.",
+            "updateSuccess": "Course updated successfully",
+            "nameLabel": "Course name",
+            "namePlaceholder": "e.g. IELTS Foundation - Course A1",
+            "sessionLabel": "Total sessions",
+            "sessionPlaceholder": "e.g. 24",
+            "rangeLabel": "Student count (range)",
+            "minPlaceholder": "Min",
+            "maxPlaceholder": "Max",
+            "rangeSuffix": "students",
+            "dateLabel": "Start date",
+            "save": "Update",
+            "errors": {
+                "nameRequired": "Please enter a course name",
+                "sessionRequired": "Enter a number of sessions greater than 0",
+                "minStudentsRequired": "Enter a minimum of 0 or more",
+                "maxStudentsRequired": "Enter a maximum greater than 0",
+                "startDateRequired": "Please pick a start date",
+                "maxStudentsBelowEnrolled": "Maximum students cannot be less than the current enrolled count ({count})",
+                "rangeInvalid": "Minimum cannot be greater than maximum"
+            }
+        },
+        "createWeekSectionModal": {
+            "title": "Create Week",
+            "subtitle": "Choose the number of sessions for the week, then fill in the dates and times or use suggestions from the previous week.",
+            "weekNameLabel": "Week name",
+            "defaultWeekName": "Week {number}",
+            "sessionCountLabel": "Number of sessions",
+            "copyFromPreviousLabel": "Copy schedule from previous week",
+            "previousWeekChip": "{name} (previous week)",
+            "sessionTimes": "Session Times",
+            "weekCard": {
+                "sessionLabel": "Session {number}",
+                "dateLabel": "Date",
+                "startTimeLabel": "Start time",
+                "endTimeLabel": "End time"
+            },
+            "submit": "Create",
+            "errors": {
+                "weekNameRequired": "Please enter a week name",
+                "dateRequired": "Please select a date",
+                "startTimeRequired": "Please select a start time",
+                "endTimeRequired": "Please select an end time"
+            },
+            "createSuccess": "Week created successfully"
+        },
+        "updateWeekSectionModal": {
+            "title": "Update week",
+            "subtitle": "Adjust the week name, add or remove sessions, or update each session's date and time.",
+            "weekNameLabel": "Week name",
+            "defaultWeekName": "Week {number}",
+            "sessionCountLabel": "Number of sessions",
+            "sessionTimes": "Session Times",
+            "weekCard": {
+                "sessionLabel": "Session {number}",
+                "dateLabel": "Date",
+                "startTimeLabel": "Start time",
+                "endTimeLabel": "End time"
+            },
+            "submit": "Update",
+            "errors": {
+                "weekNameRequired": "Please enter a week name",
+                "dateRequired": "Please select a date",
+                "startTimeRequired": "Please select a start time",
+                "endTimeRequired": "Please select an end time"
+            },
+            "updateSuccess": "Week updated successfully"
+        }
     }
 }
