@@ -21,13 +21,14 @@ export type Course = {
 	maxStudents: number;
 	status: CourseStatus;
 	createdAt: string;
+	enrolledCount: number;
     completedSessions: number;
 	weekSections: WeekSection[];
 };
 
-export type CreateCourseRequest = Omit<Course, "id" | "status" | "createdAt" | "completedSessions" | "weekSections">;
+export type CreateCourseRequest = Omit<Course, "id" | "status" | "createdAt" | "enrolledCount" | "completedSessions" | "weekSections">;
 
-export type UpdateCourseRequest = Partial<Omit<Course, "id" | "status" | "createdAt" | "completedSessions" | "weekSections">>;
+export type UpdateCourseRequest = Partial<Omit<Course, "id" | "status" | "createdAt" | "enrolledCount" | "completedSessions" | "weekSections">>;
 
 export type CourseListResponse = {
 	content: Course[];

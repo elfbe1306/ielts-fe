@@ -76,19 +76,19 @@ export default function UpdateCourseModal({ course, isOpen, onClose } : UpdateCo
         if (minStudents === "" || minStudents < 0) newErrors.minStudents = t("errors.minStudentsRequired");
         if (maxStudents === "" || maxStudents <= 0) newErrors.maxStudents = t("errors.maxStudentsRequired");
 
-        // if (
-        //     maxStudents !== "" &&
-        //     !newErrors.maxStudents &&
-        //     maxStudents < course.enrolledCount
-        // ) {
-        //     newErrors.range = t("errors.maxStudentsBelowEnrolled", { count: course.enrolledCount });
-        // } else if (
-        //     minStudents !== "" && maxStudents !== "" &&
-        //     !newErrors.minStudents && !newErrors.maxStudents &&
-        //     minStudents > maxStudents
-        // ) {
-        //     newErrors.range = t("errors.rangeInvalid");
-        // }
+        if (
+            maxStudents !== "" &&
+            !newErrors.maxStudents &&
+            maxStudents < course.enrolledCount
+        ) {
+            newErrors.range = t("errors.maxStudentsBelowEnrolled", { count: course.enrolledCount });
+        } else if (
+            minStudents !== "" && maxStudents !== "" &&
+            !newErrors.minStudents && !newErrors.maxStudents &&
+            minStudents > maxStudents
+        ) {
+            newErrors.range = t("errors.rangeInvalid");
+        }
         
         if (!startDate) newErrors.startDate = t("errors.startDateRequired");
 

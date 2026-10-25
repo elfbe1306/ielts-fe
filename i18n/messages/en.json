@@ -243,5 +243,86 @@
             },
             "updateSuccess": "Week updated successfully"
         }
+    },
+    "teacherStudentsPage": {
+        "title": "Student List",
+        "subtitle": "Manage student accounts in the system.",
+        "createButton": "Add New Student",
+        "searchPlaceholder": "Search by name or email",
+        "columns": {
+            "fullName": "Full name",
+            "email": "Email",
+            "phoneNumber": "Phone number",
+            "courses": "Courses",
+            "createdAt": "Created Date",
+            "action": "Action"
+        },
+        "noCourses": "No courses yet",
+        "loadError": "Failed to load students",
+        "deletePopconfirm": {
+            "title": "Delete Student",
+            "subtitle": "Are you sure you want to delete this student?",
+            "okText": "Delete",
+            "cancelText": "Cancel"
+        },
+        "deleteSuccess": "Account deleted successfully",
+        "createStudentModal": {
+            "title": "Add New Student",
+            "subtitle": "Fill in the information to create a new student account.",
+            "fullNameLabel": "Full Name",
+            "fullNamePlaceholder": "e.g. John Smith",
+            "emailLabel": "Email",
+            "emailPlaceholder": "student@gmail.com",
+            "phoneLabel": "Phone Number (Optional)",
+            "phonePlaceholder": "09xxxxxxxx",
+            "courseLoadError": "Failed to load courses",
+            "courseLabel": "Courses (Optional — you can select multiple courses)",
+            "columns": {
+                "name": "Course Name",
+                "enrollment": "Enrollment",
+                "status": "Status"
+            },
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "full": "Full",
+            "errors": {
+                "fullNameRequired": "Please enter a full name",
+                "emailRequired": "Please enter an email"
+            },
+            "createSuccess": "Student account created successfully",
+            "submit": "Create"
+        },
+        "updateStudentModal": {
+            "title": "Update Student",
+            "subtitle": "Edit the student's information.",
+            "fullNameLabel": "Full Name",
+            "fullNamePlaceholder": "e.g. John Smith",
+            "emailLabel": "Email",
+            "emailPlaceholder": "student@gmail.com",
+            "phoneLabel": "Phone Number (Optional)",
+            "phonePlaceholder": "09xxxxxxxx",
+            "courseLoadError": "Failed to load courses",
+            "courseLabel": "Courses (Optional — you can select multiple courses)",
+            "columns": {
+                "name": "Course Name",
+                "enrollment": "Enrollment",
+                "status": "Status"
+            },
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "full": "Full",
+            "errors": {
+                "fullNameRequired": "Please enter a full name",
+                "emailRequired": "Please enter an email"
+            },
+            "createSuccess": "Student account updated successfully",
+            "submit": "Update"
+        }
     }
 }

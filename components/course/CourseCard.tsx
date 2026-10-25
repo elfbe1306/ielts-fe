@@ -56,7 +56,7 @@ export default function CourseCard({ course } : CourseCardProps) {
                     <>
                         <p className="text-muted text-sm">{t("capacityLabel")}</p>
                         <div className="flex items-center gap-1 text-sm">
-                            <p>{0}</p>
+                            <p>{course.enrolledCount}</p>
                             <p> / </p>
                             <p>{t("capacityValue", { min: course.minStudents, max: course.maxStudents })}</p>
                         </div>

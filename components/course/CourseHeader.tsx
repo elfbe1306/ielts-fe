@@ -90,7 +90,7 @@ export default function CourseHeader({ course }: CourseHeaderProps) {
                 <div className="min-w-30">
                     <p className="text-muted text-sm">{t("capacityLabel")}</p>
                     <div className="flex items-center gap-1 text-sm font-semibold">
-                        <p>{0}</p>
+                        <p>{course.enrolledCount}</p>
                         <p> / </p>
                         <p>{t("capacityValue", { min: course.minStudents, max: course.maxStudents })}</p>
                     </div>
