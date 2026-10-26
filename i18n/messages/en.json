@@ -324,5 +324,99 @@
             "createSuccess": "Student account updated successfully",
             "submit": "Update"
         }
+    },
+    "teacherQuestionBankWritingPage": {
+        "title": "Writing Question Bank",
+        "subtitle": "List of Writing test questions used for courses.",
+        "createButton": "Create Writing Question",
+        "columns": {
+            "question": "Question",
+            "taskType": "Task type",
+            "difficulty": "Difficulty",
+            "image": "Image",
+            "action": "Action"
+        },
+        "taskType": {
+            "TASK_1": "Task 1",
+            "TASK_2": "Task 2"
+        },
+        "difficulty": {
+            "EASY": "Easy",
+            "MEDIUM": "Medium",
+            "HARD": "Hard"
+        },
+        "filters": {
+            "ALL": "All",
+            "TASK_1": "Task 1",
+            "TASK_2": "Task 2"
+        },
+        "loadError": "Failed to load writing questions.",
+        "deletePopconfirm": {
+            "title": "Delete question",
+            "subtitle": "Are you sure you want to delete this question?",
+            "okText": "Delete",
+            "cancelText": "Cancel"
+        },
+        "deleteSuccess": "Question deleted successfully",
+        "createWritingQuestionModal": {
+            "title": "Create Writing Question",
+            "subtitle": "Fill in the Writing question details.",
+            "titleLabel": "Title",
+            "titlePlaceholder": "e.g. Urban and rural population chart",
+            "promptLabel": "Prompt",
+            "promptPlaceholder": "Enter the writing prompt...",
+            "typeLabel": "Task type",
+            "difficultyLabel": "Difficulty",
+            "difficultyEasy": "Easy",
+            "difficultyMedium": "Medium",
+            "difficultyHard": "Hard",
+            "uploadLabel": "Attached image",
+            "uploadText": "Click or drag an image to this area",
+            "uploadHint": "PNG, JPG or WEBP, up to {size}MB",
+            "crops": {
+                "title": "Crop image",
+                "ok": "Confirm",
+                "cancel": "Cancel",
+                "reset": "Reset"
+            },
+            "errorImageType": "Only PNG, JPG or WEBP images are allowed",
+            "errorImageSize": "Image must be smaller than {size}MB",
+            "submit": "Create",
+            "errors": {
+                "titleRequired": "Please enter a title",
+                "promptRequired": "Please enter a prompt"
+            },
+            "createSuccess": "Question created successfully"
+        },
+        "updateWritingQuestionModal": {
+            "title": "Update writing question",
+            "subtitle": "Edit the writing question details.",
+            "titleLabel": "Title",
+            "titlePlaceholder": "e.g. Urban and rural population chart",
+            "promptLabel": "Prompt",
+            "promptPlaceholder": "Enter the writing prompt...",
+            "typeLabel": "Task type",
+            "difficultyLabel": "Difficulty",
+            "difficultyEasy": "Easy",
+            "difficultyMedium": "Medium",
+            "difficultyHard": "Hard",
+            "uploadLabel": "Attached image",
+            "uploadText": "Click or drag an image to this area",
+            "uploadHint": "PNG, JPG or WEBP, up to {size}MB",
+            "crops": {
+                "title": "Crop image",
+                "ok": "Confirm",
+                "cancel": "Cancel",
+                "reset": "Reset"
+            },
+            "errorImageType": "Only PNG, JPG or WEBP images are allowed",
+            "errorImageSize": "Image must be smaller than {size}MB",
+            "submit": "Update",
+            "errors": {
+                "titleRequired": "Please enter a title",
+                "promptRequired": "Please enter a prompt"
+            },
+            "updateSuccess":"Question updated successfully"
+        }
     }
 }
