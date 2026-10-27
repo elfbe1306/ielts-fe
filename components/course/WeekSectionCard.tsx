@@ -11,6 +11,8 @@ import PencilIcon from "../icons/PencilIcon";
 import PlusIcon from "../icons/PlusIcon";
 import { weekSectionApi } from "@/lib/api/weekSectionApi";
 import UpdateWeekSectionModal from "../modals/UpdateWeekSectionModal";
+import CreateWritingAssignmentModal from "../modals/CreateWritingAssignmentModal";
+import AssignmentList from "./AssignmentList";
 
 type WeekSectionCardProps = {
     courseId: string;
@@ -40,7 +42,7 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
         }
     });
 
-    // const writingAssignments = weekSection.writingAssignments ?? [];
+    const writingAssignments = weekSection.writingAssignments ?? [];
 
     return (
         <div className="flex flex-col gap-3 rounded-xl bg-bg border border-border p-4">
@@ -128,7 +130,7 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
                     />
                 </div>
 
-                {/* {writingAssignments.length > 0 ? (
+                {writingAssignments.length > 0 ? (
                     <AssignmentList 
                         courseId={courseId}
                         writingAssignments={writingAssignments} 
@@ -137,7 +139,7 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
                     <p className="rounded-lg border border-dashed border-border py-6 text-center text-sm text-muted">
                         {t("assignments.empty")}
                     </p>
-                )} */}
+                )}
             </div>
 
             {isUpdateWeekSectionModalOpen && (
@@ -149,12 +151,14 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
                 />
             )}
 
-            {/* <CreateWritingAssignmentModal
-                isOpen={isCreateWritingAssignmentModalOpen}
-                onClose={() => setIsCreateWritingAssignmentModalOpen(false)}
-                courseId={courseId}
-                weekSectionId={weekSection.id}
-            /> */}
+            {isCreateWritingAssignmentModalOpen && (
+                <CreateWritingAssignmentModal
+                    isOpen={isCreateWritingAssignmentModalOpen}
+                    onClose={() => setIsCreateWritingAssignmentModalOpen(false)}
+                    courseId={courseId}
+                    weekSectionId={weekSection.id}
+                />
+            )}
         </div>
     );
 }

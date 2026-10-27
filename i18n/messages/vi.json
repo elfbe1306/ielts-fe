@@ -242,6 +242,61 @@
                 "endTimeRequired": "Vui lòng chọn giờ kết thúc"
             },
             "updateSuccess": "Cập nhật tuần học thành công"
+        },
+        "createWritingAssignmentModal": {
+            "title": "Thêm bài tập Writing",
+            "subtitle": "Chọn một đề writing từ Kho đề, sau đó điền thông tin bài tập.",
+            "writingLabel": "Đề writing",
+            "dueDateLabel": "Hạn nộp",
+            "dueTimeLabel": "Giờ nộp",
+            "descriptionLabel": "Mô tả (Tuỳ chọn)",
+            "descriptionPlaceholder": "Ghi chú thêm cho học viên về phần bài tập này...",
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Dễ",
+                "MEDIUM": "Trung bình",
+                "HARD": "Khó"
+            },
+            "filters": {
+                "ALL": "Tất cả",
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "selected": "Đã chọn",
+            "loadError": "Không tải được danh sách đề bài.",
+            "submit": "Tạo mới",
+            "errors": {
+                "selectedQuestionRequired": "Vui lòng chọn một đề writing.",
+                "dueDateRequired": "Vui lòng chọn hạn nộp.",
+                "dueTimeRequired": "Vui lòng chọn giờ nộp."
+            },
+            "createSuccess": "Tạo bài tập thành công"
+        },
+        "updateWritingAssignmentModal": {
+            "title": "Cập nhật bài tập Writing",
+            "subtitle": "Điều chỉnh thông tin bài tập Writing.",
+            "dueDateLabel": "Hạn nộp",
+            "dueTimeLabel": "Giờ nộp",
+            "descriptionLabel": "Mô tả (Tuỳ chọn)",
+            "descriptionPlaceholder": "Ghi chú thêm cho học viên về phần bài tập này...",
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Dễ",
+                "MEDIUM": "Trung bình",
+                "HARD": "Khó"
+            },
+            "submit": "Cập nhật",
+            "errors": {
+                "dueDateRequired": "Vui lòng chọn hạn nộp.",
+                "dueTimeRequired": "Vui lòng chọn giờ nộp."
+            },
+            "updateSuccess": "Cập nhật bài tập thành công"
         }
     },
     "teacherStudentsPage": {

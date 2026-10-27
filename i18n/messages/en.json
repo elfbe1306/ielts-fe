@@ -242,6 +242,61 @@
                 "endTimeRequired": "Please select an end time"
             },
             "updateSuccess": "Week updated successfully"
+        },
+        "createWritingAssignmentModal": {
+            "title": "Add Writing Assignment",
+            "subtitle": "Select a writing prompt from the Question Bank, then fill in the assignment details.",
+            "writingLabel": "Writing prompt",
+            "dueDateLabel": "Due date",
+            "dueTimeLabel": "Due time",
+            "descriptionLabel": "Description (Optional)",
+            "descriptionPlaceholder": "Add any extra notes for students about this assignment...",
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Easy",
+                "MEDIUM": "Medium",
+                "HARD": "Hard"
+            },
+            "filters": {
+                "ALL": "All",
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "selected": "Selected",
+            "loadError": "Failed to load writing questions.",
+            "submit": "Create",
+            "errors": {
+                "selectedQuestionRequired": "Please select a writing question.",
+                "dueDateRequired": "Please select a due date.",
+                "dueTimeRequired": "Please select a due time."
+            },
+            "createSuccess": "Assignment created successfully"
+        },
+        "updateWritingAssignmentModal": {
+            "title": "Update Writing Assignment",
+            "subtitle": "Edit the details of this Writing assignment.",
+            "dueDateLabel": "Due date",
+            "dueTimeLabel": "Due time",
+            "descriptionLabel": "Description (Optional)",
+            "descriptionPlaceholder": "Add notes for students about this assignment...",
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Easy",
+                "MEDIUM": "Medium",
+                "HARD": "Hard"
+            },
+            "submit": "Update",
+            "errors": {
+                "dueDateRequired": "Please select a due date.",
+                "dueTimeRequired": "Please select a due time."
+            },
+            "updateSuccess": "Assignment updated successfully"
         }
     },
     "teacherStudentsPage": {

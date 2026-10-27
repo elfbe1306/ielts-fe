@@ -1,6 +1,8 @@
 
 // === UI Type ===
 
+import { WritingAssignment } from "./writing-assignment-type";
+
 export type SessionErrors = {
     date?: string;
     startTime?: string;
@@ -22,6 +24,7 @@ export type WeekSection = {
     weekName: string;
     createdAt: string;
     sessions: ClassSession[];
+    writingAssignments: WritingAssignment[];
 }
 
 export type CreateWeekSectionRequest = {
