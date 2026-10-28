@@ -473,5 +473,43 @@
             },
             "updateSuccess":"Cập nhật đề thành công"
         }
+    },
+    "writingWorkspace": {
+        "dueLabel": "Hạn nộp",
+        "overdue": "Quá hạn",
+        "submit": "Nộp bài",
+        "writingQuestionPanel": {
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Dễ",
+                "MEDIUM": "Trung bình",
+                "HARD": "Khó"
+            },
+            "titleLabel": "Đề bài",
+            "noteLabel": "Ghi chú",
+            "noNote": "Không"
+        },
+        "correctionMode": "Chế độ chấm bài",
+        "correctionOn": "Bật",
+        "correctionOff": "Tắt",
+        "correctionPanel": "Bảng chỗ sửa",
+        "writingEditor": {
+            "placeholder": "Viết bài của bạn ở đây...",
+            "formats": {
+                "bold": "In đậm (Ctrl+B)",
+                "italic": "In nghiêng (Ctrl+I)",
+                "underline": "Gạch chân (Ctrl+U)",
+                "strike": "Gạch ngang (Ctrl+Shift+S)"
+            },
+            "textColor": "Màu chữ",
+            "saveStatus": {
+                "saving": "Đang lưu...",
+                "saved": "Đã lưu"
+            },
+            "wordCount": "{count} từ"
+        }
     }
 }

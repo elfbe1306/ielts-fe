@@ -473,5 +473,43 @@
             },
             "updateSuccess":"Question updated successfully"
         }
+    },
+    "writingWorkspace": {
+        "dueLabel": "Due",
+        "overdue": "Overdue",
+        "submit": "Submit",
+        "writingQuestionPanel": {
+            "taskType": {
+                "TASK_1": "Task 1",
+                "TASK_2": "Task 2"
+            },
+            "difficulty": {
+                "EASY": "Easy",
+                "MEDIUM": "Medium",
+                "HARD": "Hard"
+            },
+            "titleLabel": "Question",
+            "noteLabel": "Note",
+            "noNote": "None"
+        },
+        "correctionMode": "Correction mode",
+        "correctionOn": "On",
+        "correctionOff": "Off",
+        "correctionPanel": "Corrections panel",
+        "writingEditor": {
+            "placeholder": "Write your answer here...",
+            "formats": {
+                "bold": "Bold (Ctrl+B)",
+                "italic": "Italic (Ctrl+I)",
+                "underline": "Underline (Ctrl+U)",
+                "strike": "Strikethrough (Ctrl+Shift+S)"
+            },
+            "textColor": "Text colour",
+            "saveStatus": {
+                "saving": "Saving...",
+                "saved": "Saved"
+            },
+            "wordCount": "{count} words"
+        }
     }
 }
