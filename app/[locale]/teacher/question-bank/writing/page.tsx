@@ -7,7 +7,7 @@ import TrashIcon from "@/components/icons/TrashIcon";
 import CreateWritingQuestionModal from "@/components/modals/CreateWritingQuestionModal";
 import UpdateWritingQuestionModal from "@/components/modals/UpdateWritingQuestionModal";
 import { useAppMessage } from "@/contexts/message-context";
-import { WritingQuestionApi } from "@/lib/api/writingQuestionApi";
+import { teacherWritingQuestionApi } from "@/lib/api/teacher/teacherWritingQuestionApi";
 import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingDifficulty, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
 import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image, Popconfirm, Table, TableColumnsType, Tag, Tooltip } from "antd";
@@ -33,7 +33,7 @@ export default function TeacherQuestionBankWritingPage() {
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["writing-questions", page, filter],
-        queryFn: () => WritingQuestionApi.list({
+        queryFn: () => teacherWritingQuestionApi.list({
             page,
             size: DEFAULT_PAGE_SIZE,
             taskType: filter === "ALL" ? undefined : filter,
@@ -42,7 +42,7 @@ export default function TeacherQuestionBankWritingPage() {
     });
 
     const { mutateAsync } = useMutation({
-        mutationFn: (id: string) => WritingQuestionApi.delete(id),
+        mutationFn: (id: string) => teacherWritingQuestionApi.delete(id),
         onSuccess: async () => {
             if (page > 0 && data?.content.length === 1) {
                 setPage(page - 1);

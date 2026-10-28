@@ -474,6 +474,31 @@
             "updateSuccess":"Question updated successfully"
         }
     },
+    "studentCoursesPage": {
+        "title": "Courses",
+        "subtitle": "The list of courses you are enrolled in.",
+        "emptyTitle": "No courses yet",
+        "emptySubtitle": "You haven't been added to any courses yet. Please contact your teacher to be added to a course.",
+        "filters": {
+            "ALL": "All",
+            "UPCOMING": "Upcoming",
+            "ACTIVE": "Active",
+            "ENDED": "Ended"
+        },
+        "noMatchTitle": "No courses found",
+        "noMatchSubTitle": "No courses match the status you selected.",
+        "studentCourseCard": {
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "teacherLabel": "Teacher:",
+            "startDateLabel": "Starts:",
+            "progressLabel": "Course progress",
+            "progressValue": "{completed} / {total} sessions"
+        }
+    },
     "writingWorkspace": {
         "dueLabel": "Due",
         "overdue": "Overdue",

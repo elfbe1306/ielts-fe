@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { formatTime } from "@/lib/utils";
 import { UpdateWritingAssignmentRequest, WritingAssignment } from "@/types/writing-assignment-type";
-import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
+import { teacherWritingAssignmentApi } from "@/lib/api/teacher/teacherWritingAssignmentApi";
 import { DIFFICULTY_COLORS, TASK_TYPE_COLORS } from "@/types/writing-question-type";
 import DateInput from "../form-input/DateInput";
 import TimeInput from "../form-input/TimeInput";
@@ -56,7 +56,7 @@ export default function UpdateWritingAssignmentModal({ courseId, assignment, isO
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UpdateWritingAssignmentRequest) => writingAssignmentApi.updateWritingAssignment(assignment.id, data),
+        mutationFn: (data: UpdateWritingAssignmentRequest) => teacherWritingAssignmentApi.updateWritingAssignment(assignment.id, data),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
             message.success(t("updateSuccess"));

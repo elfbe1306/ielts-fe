@@ -474,6 +474,31 @@
             "updateSuccess":"Cập nhật đề thành công"
         }
     },
+    "studentCoursesPage": {
+        "title": "Khoá học",
+        "subtitle": "Danh sách khoá học bạn đang tham gia.",
+        "emptyTitle": "Chưa có khoá học nào",
+        "emptySubtitle": "Bạn chưa được thêm vào bất kỳ khoá học nào. Vui lòng liên hệ giáo viên để được thêm vào khoá học.",
+        "filters": {
+            "ALL": "Tất cả",
+            "UPCOMING": "Sắp bắt đầu",
+            "ACTIVE": "Đang hoạt động",
+            "ENDED": "Kết thúc"
+        },
+        "noMatchTitle": "Không có khoá học nào",
+        "noMatchSubTitle": "Không có khoá học nào phù hợp với trạng thái bạn đã chọn.",
+        "studentCourseCard": {
+            "status": {
+                "UPCOMING": "Sắp bắt đầu",
+                "ACTIVE": "Đang hoạt động",
+                "ENDED": "Kết thúc"
+            },
+            "teacherLabel": "Giáo viên:",
+            "startDateLabel": "Khai giảng:",
+            "progressLabel": "Tiến độ khóa học",
+            "progressValue": "{completed} / {total} buổi"
+        }
+    },
     "writingWorkspace": {
         "dueLabel": "Hạn nộp",
         "overdue": "Quá hạn",

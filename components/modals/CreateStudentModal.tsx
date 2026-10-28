@@ -8,9 +8,9 @@ import { Table, TableColumnsType } from "antd";
 import Button from "../Button";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Course, CourseStatus } from "@/types/course-type";
-import { courseApi } from "@/lib/api/courseApi";
+import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import { CreateStudentRequest } from "@/types/user-type";
-import { userApi } from "@/lib/api/userApi";
+import { teacherStudentApi } from "@/lib/api/teacher/teacherStudentApi";
 import TextInput from "../form-input/TextInput";
 
 const STATUS_STYLE: Record<CourseStatus, string> = {
@@ -40,7 +40,7 @@ function CourseTable({ selectedIds, onSelectionChange }: CourseTableProps) {
 
     const { data, isPending, isError } = useQuery({
         queryKey: ["courses", "enrollable"],
-        queryFn: () => courseApi.listEnrollable({ page: 0, size: 100 }),
+        queryFn: () => teacherCourseApi.listEnrollable({ page: 0, size: 100 }),
     });
 
     const isFull = (course: Course) => course.enrolledCount >= course.maxStudents;
@@ -116,7 +116,7 @@ export default function CreateStudentModal({ isOpen, onClose } : CreateStudentMo
     const [errors, setErrors] = useState<Errors>({});
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateStudentRequest) => userApi.createStudentAccount(data),
+        mutationFn: (data: CreateStudentRequest) => teacherStudentApi.createStudentAccount(data),
         onSuccess: async () => {
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ["students"]}),

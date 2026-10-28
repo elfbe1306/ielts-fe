@@ -7,7 +7,7 @@ import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { Course, UpdateCourseRequest } from "@/types/course-type";
-import { courseApi } from "@/lib/api/courseApi";
+import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import TextInput from "../form-input/TextInput";
 import DateInput from "../form-input/DateInput";
 
@@ -50,7 +50,7 @@ export default function UpdateCourseModal({ course, isOpen, onClose } : UpdateCo
     }, [name, session, minStudents, maxStudents, startDate, course]);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UpdateCourseRequest) => courseApi.updateCourse(course.id, data),
+        mutationFn: (data: UpdateCourseRequest) => teacherCourseApi.updateCourse(course.id, data),
         onSuccess: async () => {
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ["courses"] }),

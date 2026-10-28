@@ -9,7 +9,7 @@ import CreateStudentModal from "@/components/modals/CreateStudentModal";
 import UpdateStudentModal from "@/components/modals/UpdateStudentModal";
 import { useAppMessage } from "@/contexts/message-context";
 import { useDebounce } from "@/hooks/useDebounce";
-import { userApi } from "@/lib/api/userApi";
+import { teacherStudentApi } from "@/lib/api/teacher/teacherStudentApi";
 import { formatInstant } from "@/lib/utils";
 import { STATUS_STYLE } from "@/types/course-type";
 import { CourseSummary, Student } from "@/types/user-type";
@@ -36,7 +36,7 @@ export default function TeacherStudentsPage() {
 
     const { data, isLoading, isFetching, isError } = useQuery({
         queryKey: ["students", page, debouncedSearch],
-        queryFn: () => userApi.getAllStudentAccounts({ 
+        queryFn: () => teacherStudentApi.getAllStudentAccounts({ 
             page, 
             size: DEFAULT_PAGE_SIZE, 
             search: debouncedSearch || undefined 
@@ -60,7 +60,7 @@ export default function TeacherStudentsPage() {
     };
 
     const { mutateAsync } = useMutation({
-        mutationFn: (userId: string) => userApi.deleteStudentAccount(userId),
+        mutationFn: (userId: string) => teacherStudentApi.deleteStudentAccount(userId),
         onSuccess: async () => {
             if (page > 0 && data?.content.length === 1) {
                 setPage(page - 1);

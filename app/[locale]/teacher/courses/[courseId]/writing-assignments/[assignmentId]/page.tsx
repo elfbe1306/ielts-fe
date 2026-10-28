@@ -1,7 +1,7 @@
 "use client";
 
 import WritingWorkspace from "@/components/assignment/WritingWorkspace";
-import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
+import { teacherWritingAssignmentApi } from "@/lib/api/teacher/teacherWritingAssignmentApi";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
@@ -10,7 +10,7 @@ export default function TeacherWritingAssignmentPage() {
 
     const { data: assignment, isLoading, error } = useQuery({
         queryKey: ["assignment", assignmentId],
-        queryFn: () => writingAssignmentApi.getWritingAssignment(assignmentId),
+        queryFn: () => teacherWritingAssignmentApi.getWritingAssignment(assignmentId),
     });
 
     if (isLoading) {

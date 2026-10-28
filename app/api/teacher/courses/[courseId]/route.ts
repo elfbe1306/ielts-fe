@@ -2,21 +2,21 @@ import { proxyToBackend } from "@/lib/api/server";
 
 type Params = { params: Promise<{ courseId: string }> };
 
-// GET /api/courses/:courseId — chi tiết
+// GET /api/teacher/courses/:courseId — chi tiết
 export async function GET(_request: Request, { params }: Params) {
     const { courseId } = await params;
-    return proxyToBackend(`/api/courses/${courseId}`);
+    return proxyToBackend(`/api/teacher/courses/${courseId}`);
 }
 
-// PATCH /api/courses/:courseId — cập nhật
+// PATCH /api/teacher/courses/:courseId — cập nhật
 export async function PATCH(request: Request, { params }: Params) {
     const { courseId } = await params;
     const body = await request.text();
-    return proxyToBackend(`/api/courses/${courseId}`, { method: "PATCH", body });
+    return proxyToBackend(`/api/teacher/courses/${courseId}`, { method: "PATCH", body });
 }
 
-// DELETE /api/courses/:courseId — xoá
+// DELETE /api/teacher/courses/:courseId — xoá
 export async function DELETE(_request: Request, { params }: Params) {
     const { courseId } = await params;
-    return proxyToBackend(`/api/courses/${courseId}`, { method: "DELETE" });
+    return proxyToBackend(`/api/teacher/courses/${courseId}`, { method: "DELETE" });
 }

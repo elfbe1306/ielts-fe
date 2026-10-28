@@ -9,7 +9,7 @@ import { WeekSection } from "@/types/week-section-type";
 import TrashIcon from "../icons/TrashIcon";
 import PencilIcon from "../icons/PencilIcon";
 import PlusIcon from "../icons/PlusIcon";
-import { weekSectionApi } from "@/lib/api/weekSectionApi";
+import { teacherWeekSectionApi } from "@/lib/api/teacher/teacherWeekSectionApi";
 import UpdateWeekSectionModal from "../modals/UpdateWeekSectionModal";
 import CreateWritingAssignmentModal from "../modals/CreateWritingAssignmentModal";
 import AssignmentList from "./AssignmentList";
@@ -32,7 +32,7 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
     const [isCreateWritingAssignmentModalOpen, setIsCreateWritingAssignmentModalOpen] = useState<boolean>(false);
 
     const { mutateAsync } = useMutation({
-        mutationFn: () => weekSectionApi.deleteWeekSection(weekSection.id),
+        mutationFn: () => teacherWeekSectionApi.deleteWeekSection(weekSection.id),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
             message.success(t("deleteSuccess"));

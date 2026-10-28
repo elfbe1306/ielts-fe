@@ -6,7 +6,7 @@ import { useMemo, useState } from "react";
 import { formatTime } from "@/lib/utils";
 import Button from "../Button";
 import { ClassSession, SessionErrors, UpdateWeekSectionRequest, WeekSection } from "@/types/week-section-type";
-import { weekSectionApi } from "@/lib/api/weekSectionApi";
+import { teacherWeekSectionApi } from "@/lib/api/teacher/teacherWeekSectionApi";
 import TextInput from "../form-input/TextInput";
 import WeekCard from "../course/WeekCard";
 
@@ -101,7 +101,7 @@ export default function UpdateWeekSectionModal({ courseId, weekSection, isOpen, 
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UpdateWeekSectionRequest) => weekSectionApi.updateWeekSection(weekSection.id, data),
+        mutationFn: (data: UpdateWeekSectionRequest) => teacherWeekSectionApi.updateWeekSection(weekSection.id, data),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
             message.success(t("updateSuccess"));

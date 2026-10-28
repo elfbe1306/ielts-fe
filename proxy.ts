@@ -1,4 +1,3 @@
-// middleware.ts
 import createMiddleware from "next-intl/middleware";
 import { jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";

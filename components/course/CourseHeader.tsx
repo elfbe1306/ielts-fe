@@ -6,7 +6,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { Course, STATUS_STYLE } from "@/types/course-type";
 import { useRouter } from "@/i18n/navigation";
-import { courseApi } from "@/lib/api/courseApi";
+import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import { ROUTES } from "@/lib/route";
 import Button from "../Button";
 import PencilIcon from "../icons/PencilIcon";
@@ -28,7 +28,7 @@ export default function CourseHeader({ course }: CourseHeaderProps) {
     const progressPercent = Math.min(Math.round((course.completedSessions / course.totalSessions) * 100), 100);
 
     const { mutateAsync } = useMutation({
-        mutationFn: () => courseApi.deleteCourse(course.id),
+        mutationFn: () => teacherCourseApi.deleteCourse(course.id),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["courses"] });
             message.success(t("deleteSuccess"));

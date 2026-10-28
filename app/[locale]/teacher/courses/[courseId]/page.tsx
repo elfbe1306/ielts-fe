@@ -2,7 +2,7 @@
 
 import CourseHeader from "@/components/course/CourseHeader";
 import WeekSection from "@/components/course/WeekSection";
-import { courseApi } from "@/lib/api/courseApi";
+import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
 
@@ -11,7 +11,7 @@ export default function TeacherCourseDetailPage() {
 
     const { data: course, isLoading, error } = useQuery({
         queryKey: ["course", courseId],
-        queryFn: () => courseApi.getCourse(courseId),
+        queryFn: () => teacherCourseApi.getCourse(courseId),
     });
 
     if (isLoading) {

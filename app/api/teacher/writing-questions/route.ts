@@ -1,12 +1,12 @@
 import { errorResponse, proxyToBackend } from "@/lib/api/server";
 
-// GET /api/writing-questions - list
+// GET /api/teacher/writing-questions - list
 export async function GET(request: Request) {
     const { search } = new URL(request.url);
-    return proxyToBackend(`/api/writing-questions${search}`);
+    return proxyToBackend(`/api/teacher/writing-questions${search}`);
 }
 
-// POST /api/writing-questions - create (multipart: có thể kèm ảnh)
+// POST /api/teacher/writing-questions - create (multipart: có thể kèm ảnh)
 export async function POST(request: Request) {
     let formData: FormData;
 
@@ -16,5 +16,5 @@ export async function POST(request: Request) {
         return errorResponse(400, "Bad Request", "Invalid form data.");
     }
 
-    return proxyToBackend("/api/writing-questions", { method: "POST", body: formData });
+    return proxyToBackend("/api/teacher/writing-questions", { method: "POST", body: formData });
 }

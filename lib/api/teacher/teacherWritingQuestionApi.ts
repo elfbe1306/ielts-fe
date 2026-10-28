@@ -1,5 +1,5 @@
 import { CreateWritingQuestionRequest, UpdateWritingQuestionRequest, WritingQuestionListResponse, WritingTaskType } from "@/types/writing-question-type";
-import { http } from "./http";
+import { http } from "../http";
 
 type ListWritingQuestionParams = {
     page: number,
@@ -18,7 +18,7 @@ function buildQuery(params: ListWritingQuestionParams): string {
     return searchParams.toString();
 }
 
-export const WritingQuestionApi = {
+export const teacherWritingQuestionApi = {
     create: (payload: CreateWritingQuestionRequest) => {
         const formData = new FormData();
 
@@ -29,10 +29,10 @@ export const WritingQuestionApi = {
 
         if (payload.image) formData.append("image", payload.image);
 
-        return http.post("/api/writing-questions", formData);
+        return http.post("/api/teacher/writing-questions", formData);
     },
 
-    list: (params: ListWritingQuestionParams) => http.get<WritingQuestionListResponse>(`/api/writing-questions?${buildQuery(params)}`),
+    list: (params: ListWritingQuestionParams) => http.get<WritingQuestionListResponse>(`/api/teacher/writing-questions?${buildQuery(params)}`),
 
     update: (id: string, payload: UpdateWritingQuestionRequest) => {
         const formData = new FormData();
@@ -43,8 +43,8 @@ export const WritingQuestionApi = {
         if (payload.image) formData.append("image", payload.image);
         if (payload.removeImage) formData.append("removeImage", "true");
 
-        return http.patch(`/api/writing-questions/${id}`, formData)
+        return http.patch(`/api/teacher/writing-questions/${id}`, formData)
     },
 
-    delete: (id: string) => http.delete<void>(`/api/writing-questions/${id}`)
+    delete: (id: string) => http.delete<void>(`/api/teacher/writing-questions/${id}`)
 }

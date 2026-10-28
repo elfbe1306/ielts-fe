@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { WritingAssignment } from "@/types/writing-assignment-type";
-import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
+import { teacherWritingAssignmentApi } from "@/lib/api/teacher/teacherWritingAssignmentApi";
 import { DIFFICULTY_COLORS, TASK_TYPE_COLORS } from "@/types/writing-question-type";
 import FileEditIcon from "../icons/FileEditIcon";
 import PencilIcon from "../icons/PencilIcon";
@@ -33,7 +33,7 @@ export default function AssignmentList({ courseId, writingAssignments } : Assign
     const [selectedAssignment, setSelectedAssignment] = useState<WritingAssignment | null>(null);
 
     const { mutateAsync } = useMutation({
-        mutationFn: (assignmentId: string) => writingAssignmentApi.deleteWritingAssignment(assignmentId),
+        mutationFn: (assignmentId: string) => teacherWritingAssignmentApi.deleteWritingAssignment(assignmentId),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
             message.success(t("deleteSuccess"));

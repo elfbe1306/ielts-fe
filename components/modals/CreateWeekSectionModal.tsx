@@ -7,7 +7,7 @@ import { useAppMessage } from "@/contexts/message-context";
 import { addDays, formatTime } from "@/lib/utils";
 import { ClassSession, CreateWeekSectionRequest, SessionErrors } from "@/types/week-section-type";
 import { Course } from "@/types/course-type";
-import { weekSectionApi } from "@/lib/api/weekSectionApi";
+import { teacherWeekSectionApi } from "@/lib/api/teacher/teacherWeekSectionApi";
 import TextInput from "../form-input/TextInput";
 import WeekCard from "../course/WeekCard";
 
@@ -90,7 +90,7 @@ export default function CreateWeekSectionModal({ course, isOpen, onClose } : Cre
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateWeekSectionRequest) => weekSectionApi.createWeekSection(data),
+        mutationFn: (data: CreateWeekSectionRequest) => teacherWeekSectionApi.createWeekSection(data),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", course.id] })
             message.success(t("createSuccess"));

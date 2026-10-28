@@ -6,7 +6,7 @@ import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { CreateCourseRequest } from "@/types/course-type";
-import { courseApi } from "@/lib/api/courseApi";
+import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import Modal from "./Modal";
 import TextInput from "../form-input/TextInput";
 import DateInput from "../form-input/DateInput";
@@ -40,7 +40,7 @@ export default function CreateCourseModal({ isOpen, onClose }: CreateCourseModal
     const queryClient = useQueryClient();
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateCourseRequest) => courseApi.createCourse(data),
+        mutationFn: (data: CreateCourseRequest) => teacherCourseApi.createCourse(data),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["courses"] });
             message.success(t("createSuccess"));

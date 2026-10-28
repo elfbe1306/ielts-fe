@@ -1,7 +1,7 @@
 import { proxyToBackend } from "@/lib/api/server";
 
-// POST - /api/week-sections - tạo 
+// POST /api/teacher/writing-assignments - create
 export async function POST(request: Request) {
     const body = await request.text();
-    return proxyToBackend("/api/week-sections", { method: "POST", body })
+    return proxyToBackend("/api/teacher/writing-assignments", { method: "POST", body });
 }
