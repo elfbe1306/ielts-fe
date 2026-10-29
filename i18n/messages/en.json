@@ -499,6 +499,51 @@
             "progressValue": "{completed} / {total} sessions"
         }
     },
+    "studentCourseDetailPage": {
+        "breadcrumbs": {
+            "courses": "Courses",
+            "detail": "Course Detail",
+            "writingAssignment": "Writing assignment"
+        },
+        "courseHeader": {
+            "status": {
+                "UPCOMING": "Upcoming",
+                "ACTIVE": "Active",
+                "ENDED": "Ended"
+            },
+            "teacherLabel": "Teacher",
+            "startDateLabel": "Start date",
+            "scheduledWeeksLabel": "Weeks scheduled",
+            "progressLabel": "Course progress",
+            "progressValue": "{completed} / {total} sessions"
+        },
+        "weekSection": {
+            "title": "Weeks",
+            "empty": "No weeks yet"
+        },
+        "weekSectionCard" : {
+            "sessionCount": "Session {count}",
+            "assignments": {
+                "title": "Writing assignments",
+                "empty": "No assignments this week yet",
+                "taskType": {
+                    "TASK_1": "Task 1",
+                    "TASK_2": "Task 2"
+                },
+                "difficulty": {
+                    "EASY": "Easy",
+                    "MEDIUM": "Medium",
+                    "HARD": "Hard"
+                },
+                "showMore": "Show more", 
+                "showLess": "Show less",
+                "noteLabel": "Note",
+                "noNote": "None",
+                "dueLabel": "Due",
+                "overdue": "Overdue"
+            }
+        }
+    },
     "writingWorkspace": {
         "dueLabel": "Due",
         "overdue": "Overdue",

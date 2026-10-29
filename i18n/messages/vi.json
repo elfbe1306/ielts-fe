@@ -499,6 +499,51 @@
             "progressValue": "{completed} / {total} buổi"
         }
     },
+    "studentCourseDetailPage": {
+        "breadcrumbs": {
+            "courses": "Khoá học",
+            "detail": "Chi tiết khoá học",
+            "writingAssignment": "Bài tập viết"
+        },
+        "courseHeader": {
+            "status": {
+                "UPCOMING": "Sắp bắt đầu",
+                "ACTIVE": "Đang hoạt động",
+                "ENDED": "Kết thúc"
+            },
+            "teacherLabel": "Giáo viên",
+            "startDateLabel": "Khai giảng",
+            "scheduledWeeksLabel": "Số tuần đã lên lịch",
+            "progressLabel": "Tiến độ khóa học",
+            "progressValue": "{completed} / {total} buổi"
+        },
+        "weekSection": {
+            "title": "Tuần học",
+            "empty": "Chưa có tuần học nào"
+        },
+        "weekSectionCard": {
+            "sessionCount": "Buổi {count}",
+            "assignments": {
+                "title": "Bài tập Writing",
+                "empty": "Chưa có bài tập nào trong tuần này",
+                "taskType": {
+                    "TASK_1": "Task 1",
+                    "TASK_2": "Task 2"
+                },
+                "difficulty": {
+                    "EASY": "Dễ",
+                    "MEDIUM": "Trung bình",
+                    "HARD": "Khó"
+                },
+                "showMore": "Xem thêm",
+                "showLess": "Thu gọn",
+                "noteLabel": "Ghi chú",
+                "noNote": "Không",
+                "dueLabel": "Hạn nộp",
+                "overdue": "Quá hạn"
+            }
+        }
+    },
     "writingWorkspace": {
         "dueLabel": "Hạn nộp",
         "overdue": "Quá hạn",

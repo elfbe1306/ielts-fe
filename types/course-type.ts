@@ -37,3 +37,15 @@ export type CourseListResponse = {
 	totalElements: number;
 	totalPages: number;
 };
+
+// === Student Course Types ===
+
+export type StudentCourse = Omit<Course, "minStudents" | "maxStudents" | "createdAt" | "enrolledCount">;
+
+export type StudentCourseListResponse = {
+	content: StudentCourse[];
+	page: number;
+	size: number;
+	totalElements: number;
+	totalPages: number;
+}
