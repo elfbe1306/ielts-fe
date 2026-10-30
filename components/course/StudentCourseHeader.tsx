@@ -1,13 +1,11 @@
+import { useStudentCourse } from "@/contexts/student-course-context";
 import { formatDateDDMMYYYY } from "@/lib/utils";
-import { STATUS_STYLE, StudentCourse } from "@/types/course-type";
+import { STATUS_STYLE } from "@/types/course-type";
 import { Progress } from "antd";
 import { useTranslations } from "next-intl";
 
-type StudentCourseHeaderProps = {
-    course: StudentCourse;
-}
-
-export default function StudentCourseHeader({ course }: StudentCourseHeaderProps) {
+export default function StudentCourseHeader() {
+    const course = useStudentCourse();
     const t = useTranslations("studentCourseDetailPage.courseHeader");
 
     const progressPercent = Math.min(Math.round((course.completedSessions / course.totalSessions) * 100), 100);

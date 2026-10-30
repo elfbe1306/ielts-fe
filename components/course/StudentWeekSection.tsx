@@ -1,12 +1,9 @@
-import { StudentCourse } from "@/types/course-type";
 import { useTranslations } from "next-intl";
 import StudentWeekSectionCard from "./StudentWeekSectionCard";
+import { useStudentCourse } from "@/contexts/student-course-context";
 
-type StudentWeekSectionProps = {
-    course: StudentCourse;
-}
-
-export default function StudentWeekSection({ course } : StudentWeekSectionProps) {
+export default function StudentWeekSection() {
+    const course = useStudentCourse();
     const t = useTranslations("studentCourseDetailPage.weekSection");
 
     return (

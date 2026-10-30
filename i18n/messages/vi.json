@@ -510,6 +510,11 @@
             "detail": "Chi tiết khoá học",
             "writingAssignment": "Bài tập viết"
         },
+        "notFound": {
+            "title": "Không tìm thấy nội dung",
+            "subtitle": "Khoá học hoặc bài tập này không tồn tại hoặc đã bị xoá.",
+            "backToCourses": "Quay lại danh sách khoá học"
+        },
         "courseHeader": {
             "status": {
                 "UPCOMING": "Sắp bắt đầu",
