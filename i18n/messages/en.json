@@ -109,6 +109,11 @@
             "detail": "Course Detail",
             "writingAssignment": "Writing assignment"
         },
+        "notFound": {
+            "title": "Content not found",
+            "subtitle": "This course or assignment doesn't exist or has been deleted.",
+            "backToCourses": "Back to courses"
+        },
         "courseHeader": {
             "status": {
                 "UPCOMING": "Upcoming",

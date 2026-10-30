@@ -4,8 +4,6 @@ import { http } from "../http";
 export const teacherWritingAssignmentApi = {
     createWritingAssignment: (data: CreateWritingAssignmentRequest) => http.post<WritingAssignment>(`/api/teacher/writing-assignments`, data),
 
-    getWritingAssignment: (assignmentId: string) => http.get<WritingAssignment>(`/api/teacher/writing-assignments/${assignmentId}`),
-
     updateWritingAssignment: (assignmentId: string, data: UpdateWritingAssignmentRequest) => http.patch<WritingAssignment>(`/api/teacher/writing-assignments/${assignmentId}`, data),
 
     deleteWritingAssignment: (assignmentId: string) => http.delete<void>(`/api/teacher/writing-assignments/${assignmentId}`),

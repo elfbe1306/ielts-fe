@@ -1,31 +1,20 @@
 "use client";
 
 import WritingWorkspace from "@/components/assignment/WritingWorkspace";
-import { teacherWritingAssignmentApi } from "@/lib/api/teacher/teacherWritingAssignmentApi";
-import { useQuery } from "@tanstack/react-query";
-import { useParams } from "next/navigation";
+import { useTeacherCourse } from "@/contexts/teacher-course-context";
+import { notFound, useParams } from "next/navigation";
 
 export default function TeacherWritingAssignmentPage() {
-    const { courseId, assignmentId } = useParams<{ courseId: string; assignmentId: string }>();
+    const { assignmentId } = useParams<{ assignmentId: string }>();
+    const course = useTeacherCourse();
 
-    const { data: assignment, isLoading, error } = useQuery({
-        queryKey: ["assignment", assignmentId],
-        queryFn: () => teacherWritingAssignmentApi.getWritingAssignment(assignmentId),
-    });
+    const assignment = course.weekSections
+        .flatMap((ws) => ws.writingAssignments ?? [])
+        .find((a) => a.id === assignmentId);
 
-    if (isLoading) {
-        return <div className="h-32 animate-pulse rounded-2xl border border-border bg-surface" />;
+    if (!assignment) {
+        notFound();
     }
-
-    if (error) {
-        return (
-            <div className="rounded-2xl border border-error/40 bg-error-bg px-6 py-10 text-center text-sm text-error">
-                {error.message}
-            </div>
-        );
-    }
-
-    if (!assignment) return null;
 
     return (
         <WritingWorkspace

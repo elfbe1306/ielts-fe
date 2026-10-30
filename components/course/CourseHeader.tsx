@@ -4,7 +4,7 @@ import { useState } from "react";
 import { formatDateDDMMYYYY } from "@/lib/utils";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
-import { Course, STATUS_STYLE } from "@/types/course-type";
+import { STATUS_STYLE } from "@/types/course-type";
 import { useRouter } from "@/i18n/navigation";
 import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
 import { ROUTES } from "@/lib/route";
@@ -12,12 +12,10 @@ import Button from "../Button";
 import PencilIcon from "../icons/PencilIcon";
 import TrashIcon from "../icons/TrashIcon";
 import UpdateCourseModal from "../modals/UpdateCourseModal";
+import { useTeacherCourse } from "@/contexts/teacher-course-context";
 
-type CourseHeaderProps = {
-    course: Course;
-};
-
-export default function CourseHeader({ course }: CourseHeaderProps) {
+export default function CourseHeader() {
+    const course = useTeacherCourse();
     const t = useTranslations("teacherCourseDetailPage.courseHeader");
     const message = useAppMessage();
     const queryClient = useQueryClient();

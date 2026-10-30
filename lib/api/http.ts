@@ -1,8 +1,4 @@
-export class ApiError extends Error {
-    constructor(public code: string, public status: number) {
-        super(code);
-    }
-}
+import { ApiError } from "./error";
 
 function toBody(data: unknown): BodyInit | undefined {
     if (data === undefined) return undefined;
@@ -27,7 +23,8 @@ async function request<T>(url: string, init: RequestInit = {}) : Promise<T> {
     const data = isJson ? await res.json().catch(() => null) : null;
 
     if (!res.ok) {
-        throw new ApiError(data?.error ?? data?.code ?? "UNKNOWN_ERROR", res.status);
+        const body = await res.json().catch(() => null);
+        throw new ApiError(body?.message ?? res.statusText, res.status);
     }
 
     return data as T;

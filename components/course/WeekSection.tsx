@@ -1,17 +1,14 @@
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Button from "../Button";
-import { Course } from "@/types/course-type";
 import CheckBoxIcon from "../icons/CheckBoxIcon";
 import PlusIcon from "../icons/PlusIcon";
 import WeekSectionCard from "./WeekSectionCard";
 import CreateWeekSectionModal from "../modals/CreateWeekSectionModal";
+import { useTeacherCourse } from "@/contexts/teacher-course-context";
 
-type WeekSectionProps = {
-    course: Course;
-};
-
-export default function WeekSection({ course }: WeekSectionProps) {
+export default function WeekSection() {
+    const course = useTeacherCourse();
     const t = useTranslations("teacherCourseDetailPage.weekSection");
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);

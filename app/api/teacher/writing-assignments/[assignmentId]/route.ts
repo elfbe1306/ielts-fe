@@ -2,12 +2,6 @@ import { proxyToBackend } from "@/lib/api/server";
 
 type Params = { params: Promise<{ assignmentId: string }> };
 
-// GET /api/teacher/writing-assignments/:assignmentId - detail
-export async function GET(_request: Request, { params }: Params) {
-    const { assignmentId } = await params;
-    return proxyToBackend(`/api/teacher/writing-assignments/${assignmentId}`);
-}
-
 // PATCH /api/teacher/writing-assignments/:assignmentId - update
 export async function PATCH(request: Request, { params }: Params) {
     const { assignmentId } = await params;
