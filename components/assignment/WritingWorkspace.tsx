@@ -22,7 +22,7 @@ type WritingWorkspaceProps = {
     mode: WorkspaceMode;
     assignment: WritingAssignment;
     members: CourseMember[];
-    membersLoading: boolean;
+    membersLoading?: boolean;
 }
 
 export default function WritingWorkspace({ mode, assignment, members, membersLoading = false } : WritingWorkspaceProps) {
@@ -44,6 +44,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const overdue = isOverdue(assignment.dueDate, assignment.dueTime);
 
     const ownerId = selectedOwnerId ?? user?.id ?? null;
+    const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
+
+    const isEditorReadOnly = !isTeacher && ownerId !== user?.id;
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -111,7 +114,14 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             </div>
                         </div>
 
-                        <WritingEditor/>
+                        {user && documentName && (
+                            <WritingEditor
+                                key={documentName}
+                                documentName={documentName}
+                                currentUser={{ id: user.id, name: user.fullName }}
+                                readOnly={isEditorReadOnly}
+                            />
+                        )}
                     </div>
                 </Splitter.Panel>
 
