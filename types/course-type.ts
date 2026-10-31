@@ -1,3 +1,4 @@
+import { Role, User } from "./auth-type";
 import { WeekSection } from "./week-section-type";
 
 // === UI Type ===
@@ -49,3 +50,11 @@ export type StudentCourseListResponse = {
 	totalElements: number;
 	totalPages: number;
 }
+
+// === Course Member Types ===
+
+export type CourseMemberRole = Exclude<Role, "ADMIN">;
+
+export type CourseMember = Pick<User, "id" | "fullName"> & {
+    role: CourseMemberRole;
+};

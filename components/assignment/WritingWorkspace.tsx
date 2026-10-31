@@ -7,6 +7,9 @@ import { Splitter, Switch } from "antd";
 import { useState } from "react";
 import WritingQuestionPanel from "./WritingQuestionPanel";
 import WritingEditor from "./WritingEditor";
+import MemberSwitcher from "./MemberSwitcher";
+import { CourseMember } from "@/types/course-type";
+import { useAuth } from "@/contexts/auth-context";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -18,13 +21,17 @@ const SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
 type WritingWorkspaceProps = {
     mode: WorkspaceMode;
     assignment: WritingAssignment;
+    members: CourseMember[];
+    membersLoading: boolean;
 }
 
-export default function WritingWorkspace({ mode, assignment } : WritingWorkspaceProps) {
+export default function WritingWorkspace({ mode, assignment, members, membersLoading = false } : WritingWorkspaceProps) {
     const t = useTranslations("writingWorkspace");
+    const { user } = useAuth();
 
     const isTeacher = mode === "teacher";
 
+    const [selectedOwnerId, setSelectedOwnerId] = useState<string | null>(null);
     const [isCorrection, setIsCorrection] = useState<boolean>(false);
     const [showCorrectionPanel, setShowCorrectionPanel] = useState<boolean>(false);
     const [sizes, setSizes] = useState<PanelSize[]>(SIZES_TWO_PANELS);
@@ -35,6 +42,8 @@ export default function WritingWorkspace({ mode, assignment } : WritingWorkspace
     };
 
     const overdue = isOverdue(assignment.dueDate, assignment.dueTime);
+
+    const ownerId = selectedOwnerId ?? user?.id ?? null;
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -50,6 +59,15 @@ export default function WritingWorkspace({ mode, assignment } : WritingWorkspace
                 </p>
 
                 <div className="flex items-center gap-3">
+                    {!membersLoading && (
+                        <MemberSwitcher 
+                            members={members} 
+                            value={ownerId}
+                            onChange={setSelectedOwnerId}
+                            currentUserId={user?.id ?? null}
+                        />
+                    )}
+
                     <Button
                         size="sm"
                         type="button"

@@ -590,6 +590,11 @@
                 "saved": "Saved"
             },
             "wordCount": "{count} words"
+        },
+        "memberSwitcher": {
+            "teacher": "Teacher",
+            "you": "You",
+            "placeholder": "Select a member"
         }
     }
 }
