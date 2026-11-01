@@ -575,7 +575,7 @@
         "correctionMode": "Chế độ chấm bài",
         "correctionOn": "Bật",
         "correctionOff": "Tắt",
-        "correctionPanel": "Bảng chỗ sửa",
+        "correctionPanelToggle": "Bảng chỗ sửa",
         "writingEditor": {
             "placeholder": "Viết bài của bạn ở đây...",
             "formats": {
@@ -595,6 +595,45 @@
             "teacher": "Giáo viên",
             "you": "Bạn",
             "placeholder": "Chọn thành viên"
+        },
+        "correctionMenu": {
+            "types": {
+                "replace": "Thay thế",
+                "delete": "Xoá",
+                "insert": "Chèn",
+                "comment": "Nhận xét"
+            },
+            "selected": "Đoạn chọn",
+            "replaceWith": "Sửa thành",
+            "replacePlaceholder": "Nhập từ/cụm từ đúng",
+            "insertText": "Chèn thêm",
+            "insertPlaceholder": "Nhập nội dung cần chèn",
+            "criterion": "Tiêu chí",
+            "comment": "Nhận xét",
+            "commentPlaceholder": "Nhập nhận xét cho đoạn này",
+            "description": "Giải thích (không bắt buộc)",
+            "descriptionPlaceholder": "Giải thích lỗi cho học viên",
+            "submit": "Tạo",
+            "save": "Lưu",
+            "cancel": "Huỷ"
+        },
+        "correctionPanel": {
+            "title": "Chỗ sửa",
+            "all": "Tất cả",
+            "empty": "Chưa có chỗ sửa nào",
+            "types": {
+                "replace": "Thay thế",
+                "delete": "Xoá",
+                "insert": "Chèn",
+                "comment": "Nhận xét"
+            },
+            "deletePopconfirm": {
+                "title": "Xoá chỗ sửa",
+                "subtitle": "Bạn có chắc chắn muốn xoá chỗ sửa này?",
+                "okText": "Xoá",
+                "cancelText": "Huỷ"
+            },
+            "apply": "Áp dụng"
         }
     }
 }

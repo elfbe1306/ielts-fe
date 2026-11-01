@@ -1,15 +1,17 @@
 import { formatDayMonth, formatTime, isOverdue } from "@/lib/utils";
 import { WritingAssignment } from "@/types/writing-assignment-type";
+import { CourseMember } from "@/types/course-type";
+import { useAuth } from "@/contexts/auth-context";
+import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
-import Button from "../Button";
-import FileEditIcon from "../icons/FileEditIcon";
 import { Splitter, Switch } from "antd";
 import { useState } from "react";
+import Button from "../Button";
+import FileEditIcon from "../icons/FileEditIcon";
 import WritingQuestionPanel from "./WritingQuestionPanel";
 import WritingEditor from "./WritingEditor";
 import MemberSwitcher from "./MemberSwitcher";
-import { CourseMember } from "@/types/course-type";
-import { useAuth } from "@/contexts/auth-context";
+import CorrectionPanel from "./CorrectionPanel";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -23,9 +25,9 @@ type WritingWorkspaceProps = {
     assignment: WritingAssignment;
     members: CourseMember[];
     membersLoading?: boolean;
-}
+};
 
-export default function WritingWorkspace({ mode, assignment, members, membersLoading = false } : WritingWorkspaceProps) {
+export default function WritingWorkspace({ mode, assignment, members, membersLoading = false }: WritingWorkspaceProps) {
     const t = useTranslations("writingWorkspace");
     const { user } = useAuth();
 
@@ -35,6 +37,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [isCorrection, setIsCorrection] = useState<boolean>(false);
     const [showCorrectionPanel, setShowCorrectionPanel] = useState<boolean>(false);
     const [sizes, setSizes] = useState<PanelSize[]>(SIZES_TWO_PANELS);
+    const [editor, setEditor] = useState<Editor | null>(null);
 
     const handleToggleCorrectionPanel = (checked: boolean) => {
         setShowCorrectionPanel(checked);
@@ -56,15 +59,13 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <span className={overdue ? "text-error" : "text-fg"}>
                         {formatTime(assignment.dueTime)} - {formatDayMonth(assignment.dueDate)}
                     </span>
-                    {overdue && (
-                        <span className="ml-2 font-medium text-error">{t("overdue")}</span>
-                    )}
+                    {overdue && <span className="ml-2 font-medium text-error">{t("overdue")}</span>}
                 </p>
 
                 <div className="flex items-center gap-3">
                     {!membersLoading && (
-                        <MemberSwitcher 
-                            members={members} 
+                        <MemberSwitcher
+                            members={members}
                             value={ownerId}
                             onChange={setSelectedOwnerId}
                             currentUserId={user?.id ?? null}
@@ -75,7 +76,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                         size="sm"
                         type="button"
                         label={t("submit")}
-                        icon={<FileEditIcon className="text-white" width={16} height={16}/>}
+                        icon={<FileEditIcon className="text-white" width={16} height={16} />}
                         onClick={() => {}}
                     />
                 </div>
@@ -84,7 +85,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             <Splitter className="rounded-2xl border border-border bg-bg" onResize={setSizes}>
                 <Splitter.Panel size={sizes[0]} min="20%" max={showCorrectionPanel ? "50%" : "70%"}>
                     <div className="p-6">
-                        <WritingQuestionPanel question={assignment.writingQuestion} note={assignment.description}/>
+                        <WritingQuestionPanel question={assignment.writingQuestion} note={assignment.description} />
                     </div>
                 </Splitter.Panel>
 
@@ -104,7 +105,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             )}
 
                             <div className="flex items-center gap-1.5">
-                                <p className="whitespace-nowrap text-muted">{t("correctionPanel")}</p>
+                                <p className="whitespace-nowrap text-muted">{t("correctionPanelToggle")}</p>
                                 <Switch
                                     checked={showCorrectionPanel}
                                     onChange={handleToggleCorrectionPanel}
@@ -120,6 +121,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                 documentName={documentName}
                                 currentUser={{ id: user.id, name: user.fullName }}
                                 readOnly={isEditorReadOnly}
+                                isCorrection={isTeacher && isCorrection}
+                                onEditorChange={setEditor}
                             />
                         )}
                     </div>
@@ -129,12 +132,16 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <Splitter.Panel size={sizes[2]} min="20%" max="40%">
                         <div className="relative h-full">
                             <div className="absolute inset-0 flex flex-col p-6">
-
+                                <CorrectionPanel
+                                    editor={editor}
+                                    readOnly={isEditorReadOnly}
+                                    canEdit={isTeacher}
+                                />
                             </div>
                         </div>
                     </Splitter.Panel>
                 )}
             </Splitter>
         </div>
-    )
+    );
 }

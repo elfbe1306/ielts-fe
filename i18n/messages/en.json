@@ -575,7 +575,7 @@
         "correctionMode": "Correction mode",
         "correctionOn": "On",
         "correctionOff": "Off",
-        "correctionPanel": "Corrections panel",
+        "correctionPanelToggle": "Corrections panel",
         "writingEditor": {
             "placeholder": "Write your answer here...",
             "formats": {
@@ -595,6 +595,45 @@
             "teacher": "Teacher",
             "you": "You",
             "placeholder": "Select a member"
+        },
+        "correctionMenu": {
+            "types": {
+                "replace": "Replace",
+                "delete": "Delete",
+                "insert": "Insert",
+                "comment": "Comment"
+            },
+            "selected": "Selected",
+            "replaceWith": "Replace with",
+            "replacePlaceholder": "Enter the correct word/phrase",
+            "insertText": "Insert text",
+            "insertPlaceholder": "Enter the text to insert",
+            "criterion": "Criterion",
+            "comment": "Comment",
+            "commentPlaceholder": "Enter a comment for this passage",
+            "description": "Explanation (optional)",
+            "descriptionPlaceholder": "Explain the mistake to the student",
+            "submit": "Create",
+            "save": "Save",
+            "cancel": "Cancel"
+        },
+        "correctionPanel": {
+            "title": "Corrections",
+            "all": "All",
+            "empty": "No corrections yet",
+            "types": {
+                "replace": "Replace",
+                "delete": "Delete",
+                "insert": "Insert",
+                "comment": "Comment"
+            },
+            "deletePopconfirm": {
+                "title": "Delete correction",
+                "subtitle": "Are you sure you want to delete this correction?",
+                "okText": "Delete",
+                "cancelText": "Cancel"
+            },
+            "apply": "Apply"
         }
     }
 }

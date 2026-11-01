@@ -1,17 +1,18 @@
-"use client";
-
 import { HocuspocusProvider } from "@hocuspocus/provider";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
 import { Placeholder, Selection as BlurSelection } from "@tiptap/extensions";
 import { EditorContent, useEditor, useEditorState, type Editor } from "@tiptap/react";
+import { BubbleMenu } from "@tiptap/react/menus";
 import StarterKit from "@tiptap/starter-kit";
 import { Popover, Spin, Tooltip } from "antd";
 import { useTranslations } from "next-intl";
 import { useEffect, useState } from "react";
 import * as Y from "yjs";
 import CheckCircleIcon from "../icons/CheckCircleIcon";
+import CorrectionMenu from "./CorrectionMenu";
+import { CorrectionMark } from "./CorrectionMark";
 
 type Format = "bold" | "italic" | "underline" | "strike";
 
@@ -28,6 +29,8 @@ type CurrentUser = {
 };
 
 const COLLAB_URL = process.env.NEXT_PUBLIC_COLLAB_URL ?? "ws://localhost:1234";
+
+const BUBBLE_MENU_KEY = "correctionBubbleMenu";
 
 const FORMATS: { format: Format; label: string; className: string }[] = [
     { format: "bold", label: "B", className: "font-bold" },
@@ -82,12 +85,20 @@ type WritingEditorProps = {
     documentName: string;
     currentUser: CurrentUser;
     readOnly?: boolean;
+    isCorrection?: boolean;
+    onEditorChange?: (editor: Editor | null) => void;
 };
 
-export default function WritingEditor({ documentName, currentUser, readOnly = false } : WritingEditorProps) {
+export default function WritingEditor({
+    documentName,
+    currentUser,
+    readOnly = false,
+    isCorrection = false,
+    onEditorChange
+}: WritingEditorProps) {
     const [connection, setConnection] = useState<Connection | null>(null);
     const [saveStatus, setSaveStatus] = useState<SaveStatus>("saved");
-    
+
     useEffect(() => {
         const doc = new Y.Doc();
 
@@ -106,9 +117,9 @@ export default function WritingEditor({ documentName, currentUser, readOnly = fa
                     const message = JSON.parse(payload);
                     if (message.type === "saved") setSaveStatus("saved");
                 } catch {
-
+                    // tin nhắn không phải JSON → bỏ qua
                 }
-            }
+            },
         });
 
         const handleUpdate = (_update: Uint8Array, origin: unknown) => {
@@ -128,13 +139,17 @@ export default function WritingEditor({ documentName, currentUser, readOnly = fa
         return <div className="flex min-h-180 flex-1 animate-pulse border border-border bg-surface" />;
     }
 
-    return <EditorBody 
-        doc={connection.doc} 
-        provider={connection.provider}
-        currentUser={currentUser}
-        readOnly={readOnly} 
-        saveStatus={saveStatus}
-    />;
+    return (
+        <EditorBody
+            doc={connection.doc}
+            provider={connection.provider}
+            currentUser={currentUser}
+            readOnly={readOnly}
+            isCorrection={isCorrection}
+            saveStatus={saveStatus}
+            onEditorChange={onEditorChange}
+        />
+    );
 }
 
 // ===== Bên trong: editor =====
@@ -144,13 +159,16 @@ type EditorBodyProps = {
     provider: HocuspocusProvider;
     currentUser: CurrentUser;
     readOnly: boolean;
-    saveStatus: SaveStatus; 
+    isCorrection: boolean;
+    saveStatus: SaveStatus;
+    onEditorChange?: (editor: Editor | null) => void;
 };
 
-function EditorBody({ doc, provider, currentUser, readOnly, saveStatus }: EditorBodyProps) {
+function EditorBody({ doc, provider, currentUser, readOnly, isCorrection, saveStatus, onEditorChange }: EditorBodyProps) {
     const t = useTranslations("writingWorkspace.writingEditor");
 
     const [isColorOpen, setIsColorOpen] = useState<boolean>(false);
+    const [isSelecting, setIsSelecting] = useState<boolean>(false);
 
     const editor = useEditor({
         extensions: [
@@ -171,6 +189,7 @@ function EditorBody({ doc, provider, currentUser, readOnly, saveStatus }: Editor
             BlurSelection.configure({ className: "bg-highlight/40" }),
             TextStyle,
             Color,
+            CorrectionMark,
             Collaboration.configure({ document: doc }),
             CollaborationCaret.configure({
                 provider,
@@ -186,6 +205,14 @@ function EditorBody({ doc, provider, currentUser, readOnly, saveStatus }: Editor
         enablePasteRules: false,
         editorProps: {
             attributes: { class: EDITOR_CLASS },
+            handleDOMEvents: {
+                mousedown: (_view, event) => {
+                    if (event.button !== 0) return false;
+                    setIsSelecting(true);
+                    document.addEventListener("mouseup", () => setIsSelecting(false), { once: true });
+                    return false;
+                },
+            },
         },
     });
 
@@ -193,6 +220,17 @@ function EditorBody({ doc, provider, currentUser, readOnly, saveStatus }: Editor
         if (!editor || editor.isDestroyed) return;
         editor.setEditable(!readOnly);
     }, [editor, readOnly]);
+
+    useEffect(() => {
+        if (!onEditorChange) return;
+        onEditorChange(editor);
+        return () => onEditorChange(null);
+    }, [editor, onEditorChange]);
+
+    useEffect(() => {
+        if (!editor || editor.isDestroyed || isSelecting || !isCorrection) return;
+        editor.commands.setMeta(BUBBLE_MENU_KEY, "updatePosition");
+    }, [editor, isSelecting, isCorrection]);
 
     const editorState = useEditorState({
         editor,
@@ -292,6 +330,21 @@ function EditorBody({ doc, provider, currentUser, readOnly, saveStatus }: Editor
                     )}
                 </div>
             </div>
+
+            {editor && isCorrection && (
+                <BubbleMenu
+                    editor={editor}
+                    pluginKey={BUBBLE_MENU_KEY}
+                    options={{ placement: "bottom", offset: 8 }}
+                    className="z-50"
+                >
+                    {!isSelecting && (
+                        <div className="rounded-lg border border-border bg-bg shadow-lg">
+                            <CorrectionMenu editor={editor} />
+                        </div>
+                    )}
+                </BubbleMenu>
+            )}
 
             <EditorContent editor={editor} className="flex flex-1 flex-col" />
         </div>
