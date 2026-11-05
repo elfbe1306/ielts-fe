@@ -12,6 +12,12 @@ import WritingQuestionPanel from "./WritingQuestionPanel";
 import WritingEditor from "./WritingEditor";
 import MemberSwitcher from "./MemberSwitcher";
 import CorrectionPanel from "./CorrectionPanel";
+import AiAssistMenu from "./AiAssistMenu";
+import { GenerateAiCorrectionsRequest, ResponseLanguage } from "@/types/writing-correction-type";
+import { useMutation } from "@tanstack/react-query";
+import { writingApi } from "@/lib/api/writingApi";
+import { useAppMessage } from "@/contexts/message-context";
+import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -30,6 +36,7 @@ type WritingWorkspaceProps = {
 export default function WritingWorkspace({ mode, assignment, members, membersLoading = false }: WritingWorkspaceProps) {
     const t = useTranslations("writingWorkspace");
     const { user } = useAuth();
+    const message = useAppMessage();
 
     const isTeacher = mode === "teacher";
 
@@ -39,15 +46,56 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [sizes, setSizes] = useState<PanelSize[]>(SIZES_TWO_PANELS);
     const [editor, setEditor] = useState<Editor | null>(null);
 
+    const ownerId = selectedOwnerId ?? user?.id ?? null;
+    const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
+
     const handleToggleCorrectionPanel = (checked: boolean) => {
         setShowCorrectionPanel(checked);
         setSizes(checked ? SIZES_THREE_PANELS : SIZES_TWO_PANELS);
     };
 
-    const overdue = isOverdue(assignment.dueDate, assignment.dueTime);
+    const { mutate, isPending } = useMutation({
+        mutationFn: (data: GenerateAiCorrectionsRequest) => writingApi.generateAiCorrections(data),
+        onSuccess: (data) => {
+            if (!editor || editor.isDestroyed) return;
 
-    const ownerId = selectedOwnerId ?? user?.id ?? null;
-    const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
+            const { applied, skipped } = applyAiCorrections(editor, data.corrections);
+
+            message.success(t("aiApplied", { count: applied }));
+            if (skipped > 0) {
+                message.warning(t("aiSkipped", { count: skipped }));
+            } else {
+                handleToggleCorrectionPanel(true);
+            }
+        },
+        onError: (error) => {
+            message.error(error.message)
+        }
+    })
+
+    const handleRunAi = (language: ResponseLanguage) => {
+        if (!editor || editor.isDestroyed || isPending) return;
+
+        const pendingCount = countPendingCorrections(editor.state.doc);
+        if (pendingCount > 0) {
+            message.warning(t("errors.aiPendingCorrections", { count: pendingCount }));
+            return;
+        }
+
+        const essay = buildTextIndex(editor.state.doc).text;
+        if (!essay.trim()) {
+            message.warning(t("errors.aiEmptyEssay"));
+            return;
+        }
+
+        mutate({
+            writingQuestionId: assignment.writingQuestion.id,
+            essay,
+            language
+        });
+    }
+
+    const overdue = isOverdue(assignment.dueDate, assignment.dueTime);
 
     const isEditorReadOnly = !isTeacher && ownerId !== user?.id;
 
@@ -113,6 +161,15 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                     unCheckedChildren={t("correctionOff")}
                                 />
                             </div>
+
+                            {!isEditorReadOnly && (
+                                <div className="ml-auto">
+                                    <AiAssistMenu
+                                        onFix={(language) => handleRunAi(language)}
+                                        isLoading={isPending}
+                                    />
+                                </div>
+                            )}
                         </div>
 
                         {user && documentName && (

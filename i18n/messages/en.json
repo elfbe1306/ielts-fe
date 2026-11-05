@@ -558,6 +558,17 @@
         "dueLabel": "Due",
         "overdue": "Overdue",
         "submit": "Submit",
+        "correctionMode": "Correction mode",
+        "correctionOn": "On",
+        "correctionOff": "Off",
+        "correctionPanelToggle": "Corrections panel",
+        "aiApplied": "Added {count} suggestions",
+        "aiSkipped": "{count} suggestions couldn't be matched to the essay",
+        "errors": {
+            "aiEmptyEssay": "The essay is empty",
+            "aiFailed": "Failed to apply AI corrections",
+            "aiPendingCorrections": "{count} corrections still pending. Accept or reject all of them before running AI again."
+        },
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",
@@ -572,10 +583,6 @@
             "noteLabel": "Note",
             "noNote": "None"
         },
-        "correctionMode": "Correction mode",
-        "correctionOn": "On",
-        "correctionOff": "Off",
-        "correctionPanelToggle": "Corrections panel",
         "writingEditor": {
             "placeholder": "Write your answer here...",
             "formats": {
@@ -598,10 +605,10 @@
         },
         "correctionMenu": {
             "types": {
-                "replace": "Replace",
-                "delete": "Delete",
-                "insert": "Insert",
-                "comment": "Comment"
+                "REPLACE": "Replace",
+                "DELETE": "Delete",
+                "INSERT": "Insert",
+                "COMMENT": "Comment"
             },
             "selected": "Selected",
             "replaceWith": "Replace with",
@@ -622,10 +629,10 @@
             "all": "All",
             "empty": "No corrections yet",
             "types": {
-                "replace": "Replace",
-                "delete": "Delete",
-                "insert": "Insert",
-                "comment": "Comment"
+                "REPLACE": "Replace",
+                "DELETE": "Delete",
+                "INSERT": "Insert",
+                "COMMENT": "Comment"
             },
             "deletePopconfirm": {
                 "title": "Delete correction",
@@ -634,6 +641,10 @@
                 "cancelText": "Cancel"
             },
             "apply": "Apply"
+        },
+        "aiAssistMenu": {
+            "fix": "AI fix",
+            "start": "Start"
         }
     }
 }

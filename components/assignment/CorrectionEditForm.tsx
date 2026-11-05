@@ -1,8 +1,9 @@
-import { CorrectionAttrs, CRITERIA, Criterion, CRITERION_STYLES } from "@/types/writing-assignment-type";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Button from "../Button";
 import TextInput from "../form-input/TextInput";
+import { CorrectionAttrs } from "@/types/writing-correction-type";
+import { CRITERIA, Criterion, CRITERION_STYLES } from "@/types/writing-criterion-type";
 
 const CRITERION_BUTTON_BASE_CLASS = "rounded-md py-1.5 text-sm transition-colors";
 const CRITERION_BUTTON_INACTIVE_CLASS = "bg-bg text-muted inset-ring inset-ring-border";
@@ -23,8 +24,8 @@ export default function CorrectionEditForm({ attrs, original, onSave, onCancel }
     const [text, setText] = useState<string>(attrs.text);
     const [description, setDescription] = useState<string>(attrs.description);
 
-    const needsText = attrs.type === "replace" || attrs.type === "insert";
-    const isComment = attrs.type === "comment";
+    const needsText = attrs.type === "REPLACE" || attrs.type === "INSERT";
+    const isComment = attrs.type === "COMMENT";
 
     const canSave =
         (!needsText || text.trim() !== "") &&
@@ -46,7 +47,7 @@ export default function CorrectionEditForm({ attrs, original, onSave, onCancel }
                 {t("selected")}: <span className="text-fg">“{original}”</span>
             </p>
 
-            {attrs.type === "replace" && (
+            {attrs.type === "REPLACE" && (
                 <TextInput
                     size="sm"
                     label={t("replaceWith")}
@@ -56,7 +57,7 @@ export default function CorrectionEditForm({ attrs, original, onSave, onCancel }
                 />
             )}
 
-            {attrs.type === "insert" && (
+            {attrs.type === "INSERT" && (
                 <TextInput
                     size="sm"
                     label={t("insertText")}

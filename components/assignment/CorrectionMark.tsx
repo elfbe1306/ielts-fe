@@ -1,4 +1,5 @@
-import { CorrectionAttrs, CorrectionRange, CRITERION_STYLES, type CorrectionType } from "@/types/writing-assignment-type";
+import { CorrectionAttrs, CorrectionRange } from "@/types/writing-correction-type";
+import { CorrectionType, CRITERION_STYLES } from "@/types/writing-criterion-type";
 import { Mark, mergeAttributes } from "@tiptap/core";
 import type { Node as ProseMirrorNode } from "@tiptap/pm/model";
 import { Plugin, PluginKey } from "@tiptap/pm/state";
@@ -19,10 +20,10 @@ declare module "@tiptap/core" {
 }
 
 const MARK_CLASS: Record<CorrectionType, string> = {
-    replace: "text-error line-through decoration-error",
-    delete: "text-error line-through decoration-error",
-    insert: "",
-    comment: "rounded-sm bg-yellow-300/40 underline decoration-2 decoration-highlight underline-offset-4",
+    REPLACE: "text-error line-through decoration-error",
+    DELETE: "text-error line-through decoration-error",
+    INSERT: "",
+    COMMENT: "rounded-sm bg-yellow-300/40 underline decoration-2 decoration-highlight underline-offset-4",
 };
 
 const BADGE_BASE_CLASS = "relative -top-2 ml-0.5 inline-flex size-4 select-none items-center justify-center rounded-full text-[10px] font-semibold leading-none";
@@ -70,9 +71,9 @@ function createWidget({ attrs }: CorrectionRange, index: number): HTMLElement {
     wrapper.contentEditable = "false";
     wrapper.dataset.correctionWidget = attrs.id;
 
-    if ((attrs.type === "replace" || attrs.type === "insert") && attrs.text) {
+    if ((attrs.type === "REPLACE" || attrs.type === "INSERT") && attrs.text) {
         const newText = document.createElement("span");
-        newText.className = attrs.type === "insert" ? INSERT_TEXT_CLASS : REPLACE_TEXT_CLASS;
+        newText.className = attrs.type === "INSERT" ? INSERT_TEXT_CLASS : REPLACE_TEXT_CLASS;
         newText.textContent = attrs.text;
         wrapper.appendChild(newText);
     }
@@ -180,22 +181,22 @@ export const CorrectionMark = Mark.create({
                     const { from, to, attrs } = range;
                     const mark = this.type.create(attrs);
 
-                    if ((attrs.type === "replace" || attrs.type === "insert") && !attrs.text) return false;
+                    if ((attrs.type === "REPLACE" || attrs.type === "INSERT") && !attrs.text) return false;
                     if (!dispatch) return true;
 
                     switch (attrs.type) {
-                        case "comment": {
+                        case "COMMENT": {
                             tr.removeMark(from, to, mark);
                             break;
                         }
 
-                        case "replace": {
+                        case "REPLACE": {
                             tr.insertText(attrs.text, from, to);
                             tr.removeMark(from, from + attrs.text.length, mark);
                             break;
                         }
 
-                        case "delete": {
+                        case "DELETE": {
                             const before = tr.doc.textBetween(Math.max(0, from - 1), from);
                             const after = tr.doc.textBetween(to, Math.min(tr.doc.content.size, to + 1));
 
@@ -212,7 +213,7 @@ export const CorrectionMark = Mark.create({
                             break;
                         }
 
-                        case "insert": {
+                        case "INSERT": {
                             tr.removeMark(from, to, mark);
 
                             const previous = tr.doc.textBetween(to - 1, to);

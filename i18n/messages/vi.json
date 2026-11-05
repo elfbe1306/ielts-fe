@@ -558,6 +558,17 @@
         "dueLabel": "Hạn nộp",
         "overdue": "Quá hạn",
         "submit": "Nộp bài",
+        "correctionMode": "Chế độ chấm bài",
+        "correctionOn": "Bật",
+        "correctionOff": "Tắt",
+        "correctionPanelToggle": "Bảng chỗ sửa",
+        "aiApplied": "Đã thêm {count} góp ý",
+        "aiSkipped": "{count} góp ý không tìm được vị trí trong bài",
+        "errors": {
+            "aiEmptyEssay": "Bài viết đang trống",
+            "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
+            "aiPendingCorrections": "Còn {count} lỗi chưa xử lý. Hãy chấp nhận hoặc bỏ qua hết trước khi gọi AI tiếp."
+        },
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",
@@ -572,10 +583,6 @@
             "noteLabel": "Ghi chú",
             "noNote": "Không"
         },
-        "correctionMode": "Chế độ chấm bài",
-        "correctionOn": "Bật",
-        "correctionOff": "Tắt",
-        "correctionPanelToggle": "Bảng chỗ sửa",
         "writingEditor": {
             "placeholder": "Viết bài của bạn ở đây...",
             "formats": {
@@ -598,10 +605,10 @@
         },
         "correctionMenu": {
             "types": {
-                "replace": "Thay thế",
-                "delete": "Xoá",
-                "insert": "Chèn",
-                "comment": "Nhận xét"
+                "REPLACE": "Thay thế",
+                "DELETE": "Xoá",
+                "INSERT": "Chèn",
+                "COMMENT": "Nhận xét"
             },
             "selected": "Đoạn chọn",
             "replaceWith": "Sửa thành",
@@ -622,10 +629,10 @@
             "all": "Tất cả",
             "empty": "Chưa có chỗ sửa nào",
             "types": {
-                "replace": "Thay thế",
-                "delete": "Xoá",
-                "insert": "Chèn",
-                "comment": "Nhận xét"
+                "REPLACE": "Thay thế",
+                "DELETE": "Xoá",
+                "INSERT": "Chèn",
+                "COMMENT": "Nhận xét"
             },
             "deletePopconfirm": {
                 "title": "Xoá chỗ sửa",
@@ -634,6 +641,10 @@
                 "cancelText": "Huỷ"
             },
             "apply": "Áp dụng"
+        },
+        "aiAssistMenu": {
+            "fix": "AI sửa lỗi",
+            "start": "Bắt đầu"
         }
     }
 }

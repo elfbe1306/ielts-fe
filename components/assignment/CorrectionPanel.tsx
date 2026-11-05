@@ -1,5 +1,4 @@
 import { useEditorState, type Editor } from "@tiptap/react";
-import { CorrectionRange, CRITERIA, CRITERION_STYLES, CriterionFilter } from "@/types/writing-assignment-type";
 import { Listy, Popconfirm } from "antd";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -8,6 +7,8 @@ import Button from "../Button";
 import PencilIcon from "../icons/PencilIcon";
 import TrashIcon from "../icons/TrashIcon";
 import CorrectionEditForm, { CorrectionPatch } from "./CorrectionEditForm";
+import { CorrectionRange } from "@/types/writing-correction-type";
+import { CRITERIA, CRITERION_STYLES, CriterionFilter } from "@/types/writing-criterion-type";
 
 const FILTERS: CriterionFilter[] = ["ALL", ...CRITERIA];
 
@@ -90,7 +91,7 @@ export default function CorrectionPanel({ editor, readOnly = false, canEdit = fa
 
     const renderContent = ({ attrs, original }: CorrectionItem) => {
         switch (attrs.type) {
-            case "replace":
+            case "REPLACE":
                 return (
                     <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1">
                         <span className={ORIGINAL_CLASS}>{original}</span>
@@ -98,19 +99,19 @@ export default function CorrectionPanel({ editor, readOnly = false, canEdit = fa
                         <span className={NEW_TEXT_CLASS}>{attrs.text}</span>
                     </p>
                 );
-            case "delete":
+            case "DELETE":
                 return (
                     <p>
                         <span className={ORIGINAL_CLASS}>{original}</span>
                     </p>
                 );
-            case "insert":
+            case "INSERT":
                 return (
                     <p>
                         <span className={NEW_TEXT_CLASS}>+ {attrs.text}</span>
                     </p>
                 );
-            case "comment":
+            case "COMMENT":
                 return <p className={QUOTE_CLASS}>“{original}”</p>;
         }
     };

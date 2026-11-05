@@ -1,4 +1,5 @@
 import { HocuspocusProvider } from "@hocuspocus/provider";
+import { posToDOMRect } from "@tiptap/core";
 import Collaboration from "@tiptap/extension-collaboration";
 import CollaborationCaret from "@tiptap/extension-collaboration-caret";
 import { Color, TextStyle } from "@tiptap/extension-text-style";
@@ -335,7 +336,14 @@ function EditorBody({ doc, provider, currentUser, readOnly, isCorrection, saveSt
                 <BubbleMenu
                     editor={editor}
                     pluginKey={BUBBLE_MENU_KEY}
-                    options={{ placement: "bottom", offset: 8 }}
+                    getReferencedVirtualElement={() => {
+                        const { to } = editor.state.selection;
+                        return {
+                            getBoundingClientRect: () => posToDOMRect(editor.view, to, to),
+                            getClientRects: () => [posToDOMRect(editor.view, to, to)],
+                        };
+                    }}
+                    options={{ placement: "bottom", offset: 8, flip: false, shift: { padding: 8 } }}
                     className="z-50"
                 >
                     {!isSelecting && (

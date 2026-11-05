@@ -1,12 +1,12 @@
-import { CorrectionType, CRITERIA, Criterion, CRITERION_STYLES } from "@/types/writing-assignment-type";
 import { useEditorState, type Editor } from "@tiptap/react";
 import { Segmented } from "antd";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import Button from "../Button";
 import TextInput from "../form-input/TextInput";
+import { CorrectionType, CRITERIA, Criterion, CRITERION_STYLES } from "@/types/writing-criterion-type";
 
-const TYPES: CorrectionType[] = ["replace", "delete", "insert", "comment"];
+const TYPES: CorrectionType[] = ["REPLACE", "DELETE", "INSERT", "COMMENT"];
 
 const CRITERION_BUTTON_BASE_CLASS = "rounded-md py-1.5 text-sm transition-colors";
 const CRITERION_BUTTON_INACTIVE_CLASS = "bg-bg text-muted inset-ring inset-ring-border";
@@ -18,7 +18,7 @@ type CorrectionMenuProps = {
 export default function CorrectionMenu({ editor }: CorrectionMenuProps) {
     const t = useTranslations("writingWorkspace.correctionMenu");
 
-    const [type, setType] = useState<CorrectionType>("replace");
+    const [type, setType] = useState<CorrectionType>("REPLACE");
     const [criterion, setCriterion] = useState<Criterion>("GRA");
     const [text, setText] = useState<string>("");
     const [description, setDescription] = useState<string>("");
@@ -31,8 +31,8 @@ export default function CorrectionMenu({ editor }: CorrectionMenuProps) {
         },
     });
 
-    const needsText = type === "replace" || type === "insert";
-    const isComment = type === "comment";
+    const needsText = type === "REPLACE" || type === "INSERT";
+    const isComment = type === "COMMENT";
 
     const canSubmit =
         selection.from !== selection.to &&
@@ -76,11 +76,11 @@ export default function CorrectionMenu({ editor }: CorrectionMenuProps) {
                 options={TYPES.map((value) => ({ value, label: t(`types.${value}`) }))}
             />
 
-            <p className="text-sm text-muted">
+            <p className="line-clamp-2 wrap-break-word text-sm text-muted">
                 {t("selected")}: <span className="text-fg">“{selection.text}”</span>
             </p>
 
-            {type === "replace" && (
+            {type === "REPLACE" && (
                 <TextInput
                     size="sm"
                     label={t("replaceWith")}
@@ -90,7 +90,7 @@ export default function CorrectionMenu({ editor }: CorrectionMenuProps) {
                 />
             )}
 
-            {type === "insert" && (
+            {type === "INSERT" && (
                 <TextInput
                     size="sm"
                     label={t("insertText")}
