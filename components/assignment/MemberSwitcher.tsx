@@ -11,6 +11,7 @@ type MemberSwitcherProps = {
     value: string | null;
     onChange: (userId: string) => void;
     currentUserId: string | null;
+    disabled?:boolean;
 }
 
 const TRIGGER_CLASS = [
@@ -20,7 +21,7 @@ const TRIGGER_CLASS = [
     "disabled:cursor-not-allowed disabled:opacity-50",
 ].join(" ");
 
-export default function MemberSwitcher({ members, value, onChange, currentUserId } : MemberSwitcherProps) {
+export default function MemberSwitcher({ members, value, onChange, currentUserId, disabled = false } : MemberSwitcherProps) {
     const t = useTranslations("writingWorkspace.memberSwitcher");
 
     const currentIndex = members.findIndex((m) => m.id === value);
@@ -73,6 +74,7 @@ export default function MemberSwitcher({ members, value, onChange, currentUserId
                 icon={<ArrowLeftIcon width={16} height={16} />}
                 iconOnly={true}
                 onClick={() => goTo(-1)}
+                disabled={disabled}
             />
 
             <Button
@@ -82,12 +84,13 @@ export default function MemberSwitcher({ members, value, onChange, currentUserId
                 icon={<ArrowRightIcon width={16} height={16} />}
                 iconOnly={true}
                 onClick={() => goTo(1)}
+                disabled={disabled}
             />
 
             <Dropdown
                 trigger={["click"]}
                 placement="bottomRight"
-                disabled={members.length === 0}
+                disabled={disabled || members.length === 0}
                 menu={{
                     items,
                     selectable: true,

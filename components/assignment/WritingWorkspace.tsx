@@ -117,6 +117,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             value={ownerId}
                             onChange={setSelectedOwnerId}
                             currentUserId={user?.id ?? null}
+                            disabled={isPending}
                         />
                     )}
 
