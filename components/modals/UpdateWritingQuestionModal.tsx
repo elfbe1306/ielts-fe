@@ -10,7 +10,7 @@ import { useAppMessage } from "@/contexts/message-context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { DIFFICULTIES, TASK_TYPES, UpdateWritingQuestionRequest, WritingDifficulty, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
 import SelectInput, { SelectOption } from "../form-input/SelectInput";
-import { teacherWritingQuestionApi } from "@/lib/api/teacher/teacherWritingQuestionApi";
+import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
 import TextInput from "../form-input/TextInput";
 import FileUploadIcon from "../icons/FileUploadIcon";
 
@@ -116,7 +116,7 @@ export default function UpdateWritingQuestionModal({ question, isOpen, onClose }
     const isDirty = Object.keys(buildPayload()).length > 0;
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (payload: UpdateWritingQuestionRequest) => teacherWritingQuestionApi.update(question.id, payload),
+        mutationFn: (payload: UpdateWritingQuestionRequest) => writingQuestionApi.update(question.id, payload),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["writing-questions"] });
             message.success(t("updateSuccess"));

@@ -3,8 +3,9 @@
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { StudentCourseProvider } from "@/contexts/student-course-context";
 import { Link } from "@/i18n/navigation";
+import { courseApi } from "@/lib/api/courseApi";
 import { isNotFoundError } from "@/lib/api/error";
-import { studentCourseApi } from "@/lib/api/student/studentCourseApi";
+
 import { ROUTES } from "@/lib/route";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb } from "antd";
@@ -17,7 +18,7 @@ export default function StudentCourseDetailLayout({ children }: { children: Reac
 
     const { data: course, isLoading, error } = useQuery({
         queryKey: ["course", courseId],
-        queryFn: () => studentCourseApi.getEnrolledCourseById(courseId),
+        queryFn: () => courseApi.getEnrolledCourseById(courseId),
     });
 
     const breadcrumbItems = [

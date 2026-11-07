@@ -2,7 +2,7 @@
 
 import WritingWorkspace from "@/components/assignment/WritingWorkspace";
 import { useTeacherCourse } from "@/contexts/teacher-course-context";
-import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
+import { courseApi } from "@/lib/api/courseApi";
 import { useQuery } from "@tanstack/react-query";
 import { notFound, useParams } from "next/navigation";
 
@@ -12,7 +12,7 @@ export default function TeacherWritingAssignmentPage() {
 
     const { data: members = [], isLoading } = useQuery({
         queryKey: ["course", course.id, "members"],
-        queryFn: () => teacherCourseApi.listMembers(course.id),
+        queryFn: () => courseApi.listMembers(course.id),
     });
 
     const assignment = course.weekSections

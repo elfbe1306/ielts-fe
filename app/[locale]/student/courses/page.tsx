@@ -1,7 +1,7 @@
 "use client";
 
 import StudentCourseCard from "@/components/course/StudentCourseCard";
-import { studentCourseApi } from "@/lib/api/student/studentCourseApi";
+import { courseApi } from "@/lib/api/courseApi";
 import { CourseStatus } from "@/types/course-type";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { Pagination } from "antd";
@@ -21,7 +21,7 @@ export default function StudentCoursesPage() {
 
     const { data, isLoading, isPlaceholderData, error } = useQuery({
         queryKey: ["courses", page, filter],
-        queryFn: () => studentCourseApi.getEnrolledCourses({
+        queryFn: () => courseApi.getEnrolledCourses({
             page,
             size: PAGE_SIZE,
             status: filter === "ALL" ? undefined : filter,

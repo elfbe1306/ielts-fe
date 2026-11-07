@@ -12,7 +12,7 @@ import { CreateWritingQuestionRequest, DIFFICULTIES, TASK_TYPES, WritingDifficul
 import SelectInput, { SelectOption } from "../form-input/SelectInput";
 import TextInput from "../form-input/TextInput";
 import FileUploadIcon from "../icons/FileUploadIcon";
-import { teacherWritingQuestionApi } from "@/lib/api/teacher/teacherWritingQuestionApi";
+import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
 
 const PROMPT_MAX_LENGTH = 1500;
 const MAX_IMAGE_SIZE_MB = 5;
@@ -90,7 +90,7 @@ export default function CreateWritingQuestionModal({ isOpen, onClose } : CreateW
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (payload: CreateWritingQuestionRequest) => teacherWritingQuestionApi.create(payload),
+        mutationFn: (payload: CreateWritingQuestionRequest) => writingQuestionApi.create(payload),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["writing-questions"] });
             message.success(t("createSuccess"));

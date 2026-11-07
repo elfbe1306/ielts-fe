@@ -6,12 +6,12 @@ import { Image, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import Button from "../Button";
 import { useAppMessage } from "@/contexts/message-context";
 import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
-import { teacherWritingQuestionApi } from "@/lib/api/teacher/teacherWritingQuestionApi";
+import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
 import DateInput from "../form-input/DateInput";
 import TimeInput from "../form-input/TimeInput";
 import TextInput from "../form-input/TextInput";
 import { CreateWritingAssignmentRequest } from "@/types/writing-assignment-type";
-import { teacherWritingAssignmentApi } from "@/lib/api/teacher/teacherWritingAssignmentApi";
+import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
 
 type Filter = "ALL" | WritingTaskType;
 
@@ -49,7 +49,7 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
 
     const { data, isLoading, isError } = useQuery({
         queryKey: ["writing-questions", page, filter],
-        queryFn: () => teacherWritingQuestionApi.list({
+        queryFn: () => writingQuestionApi.list({
             page,
             size: DEFAULT_PAGE_SIZE,
             taskType: filter === "ALL" ? undefined : filter,
@@ -64,7 +64,7 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
     };
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateWritingAssignmentRequest) => teacherWritingAssignmentApi.createWritingAssignment(data),
+        mutationFn: (data: CreateWritingAssignmentRequest) => writingAssignmentApi.createWritingAssignment(data),
         onSuccess: async () => {
             await queryClient.invalidateQueries({ queryKey: ["course", courseId] })
             message.success(t("createSuccess"));

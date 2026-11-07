@@ -9,8 +9,8 @@ import { Table, TableColumnsType } from "antd";
 import Button from "../Button";
 import { Course, CourseStatus } from "@/types/course-type";
 import { Student, UpdateStudentRequest } from "@/types/user-type";
-import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
-import { teacherStudentApi } from "@/lib/api/teacher/teacherStudentApi";
+import { courseApi } from "@/lib/api/courseApi";
+import { studentApi } from "@/lib/api/studentApi";
 import TextInput from "../form-input/TextInput";
 
 const STATUS_STYLE: Record<CourseStatus, string> = {
@@ -42,7 +42,7 @@ function CourseTable({ selectedIds, onSelectionChange, enrolledIds = [] }: Cours
 
     const { data, isPending, isError } = useQuery({
         queryKey: ["courses", "enrollable"],
-        queryFn: () => teacherCourseApi.listEnrollable({ page: 0, size: 100 }),
+        queryFn: () => courseApi.listEnrollable({ page: 0, size: 100 }),
     });
 
     const isFull = (course: Course) => course.enrolledCount >= course.maxStudents;
@@ -138,7 +138,7 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
     }, [fullName, email, phoneNumber, student, coursesChanged]);
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UpdateStudentRequest) => teacherStudentApi.updateStudentAccount(student.id, data),
+        mutationFn: (data: UpdateStudentRequest) => studentApi.updateStudentAccount(student.id, data),
         onSuccess: async () => {
             await Promise.all([
                 queryClient.invalidateQueries({ queryKey: ["students"]}),

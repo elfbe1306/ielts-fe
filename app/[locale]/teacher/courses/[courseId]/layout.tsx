@@ -4,7 +4,7 @@ import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
 import { TeacherCourseProvider } from "@/contexts/teacher-course-context";
 import { Link } from "@/i18n/navigation";
 import { isNotFoundError } from "@/lib/api/error";
-import { teacherCourseApi } from "@/lib/api/teacher/teacherCourseApi";
+import { courseApi } from "@/lib/api/courseApi";
 import { ROUTES } from "@/lib/route";
 import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb } from "antd";
@@ -17,7 +17,7 @@ export default function TeacherCourseDetailLayout({ children }: { children: Reac
 
     const { data: course, isLoading, error } = useQuery({
         queryKey: ["course", courseId],
-        queryFn: () => teacherCourseApi.getCourse(courseId),
+        queryFn: () => courseApi.getCourse(courseId),
     });
 
     const breadcrumbItems = [
