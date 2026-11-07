@@ -20,7 +20,7 @@ export type CorrectionRange = {
 
 export type ResponseLanguage = "VI" | "EN";
 
-export type GenerateAiCorrectionsRequest = {
+export type GenerateCorrectionsRequest = {
     writingQuestionId: string;
     essay: string;
     language: ResponseLanguage;
@@ -35,13 +35,13 @@ export type AiCorrection = {
     description: string;
 };
 
-export type GenerateAiCorrectionsResponse = {
+export type GenerateCorrectionsResponse = {
     corrections: AiCorrection[];
 };
 
 // === AI Grade ===
 
-export type GenerateAiGradeRequest = {
+export type GenerateGradeRequest = {
     writingQuestionId: string;
     essay: string;
     language: ResponseLanguage;
@@ -59,6 +59,6 @@ export type AiScore = {
     summary: string;
 };
 
-export type GenerateAiGradeResponse = GenerateAiCorrectionsResponse & {
+export type GenerateGradeResponse = GenerateCorrectionsResponse & {
     score: AiScore;
 };

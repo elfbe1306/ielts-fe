@@ -13,9 +13,9 @@ import WritingEditor from "./WritingEditor";
 import MemberSwitcher from "./MemberSwitcher";
 import CorrectionPanel from "./CorrectionPanel";
 import AiAssistMenu from "./AiAssistMenu";
-import { GenerateAiCorrectionsRequest, ResponseLanguage } from "@/types/writing-correction-type";
+import { GenerateCorrectionsRequest, ResponseLanguage } from "@/types/writing-correction-type";
 import { useMutation } from "@tanstack/react-query";
-import { writingApi } from "@/lib/api/writingApi";
+import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
 import { CreateWritingAttemptRequest } from "@/types/writing-attempt-type";
@@ -56,7 +56,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     };
 
     const { mutate: generateCorrections, isPending: isGenerating } = useMutation({
-        mutationFn: (data: GenerateAiCorrectionsRequest) => writingApi.generateAiCorrections(data),
+        mutationFn: (data: GenerateCorrectionsRequest) => writingAiApi.generateCorrections(data),
         onSuccess: (data) => {
             if (!editor || editor.isDestroyed) return;
 
