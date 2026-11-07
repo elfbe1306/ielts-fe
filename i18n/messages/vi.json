@@ -567,7 +567,7 @@
         "errors": {
             "aiEmptyEssay": "Bài viết đang trống",
             "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
-            "aiPendingCorrections": "Còn {count} lỗi chưa xử lý. Hãy chấp nhận hoặc bỏ qua hết trước khi gọi AI tiếp."
+            "aiPendingCorrections": "Còn {count} lỗi chưa xử lý."
         },
         "writingQuestionPanel": {
             "taskType": {

@@ -567,7 +567,7 @@
         "errors": {
             "aiEmptyEssay": "The essay is empty",
             "aiFailed": "Failed to apply AI corrections",
-            "aiPendingCorrections": "{count} corrections still pending. Accept or reject all of them before running AI again."
+            "aiPendingCorrections": "{count} corrections still pending."
         },
         "writingQuestionPanel": {
             "taskType": {

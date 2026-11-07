@@ -18,6 +18,7 @@ import { useMutation } from "@tanstack/react-query";
 import { writingApi } from "@/lib/api/writingApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
+import { CreateWritingAttemptRequest } from "@/types/writing-attempt-type";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -54,7 +55,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
         setSizes(checked ? SIZES_THREE_PANELS : SIZES_TWO_PANELS);
     };
 
-    const { mutate, isPending } = useMutation({
+    const { mutate: generateCorrections, isPending: isGenerating } = useMutation({
         mutationFn: (data: GenerateAiCorrectionsRequest) => writingApi.generateAiCorrections(data),
         onSuccess: (data) => {
             if (!editor || editor.isDestroyed) return;
@@ -74,13 +75,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     })
 
     const handleRunAi = (language: ResponseLanguage) => {
-        if (!editor || editor.isDestroyed || isPending) return;
-
-        const pendingCount = countPendingCorrections(editor.state.doc);
-        if (pendingCount > 0) {
-            message.warning(t("errors.aiPendingCorrections", { count: pendingCount }));
-            return;
-        }
+        if (!editor || editor.isDestroyed || isGenerating) return;
 
         const essay = buildTextIndex(editor.state.doc).text;
         if (!essay.trim()) {
@@ -88,16 +83,50 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             return;
         }
 
-        mutate({
+        const pendingCount = countPendingCorrections(editor.state.doc);
+        if (pendingCount > 0) {
+            message.warning(t("errors.aiPendingCorrections", { count: pendingCount }));
+            return;
+        }
+
+        generateCorrections({
             writingQuestionId: assignment.writingQuestion.id,
             essay,
             language
         });
     }
 
+    const { mutate: submitAttempt, isPending: isSubmitting } = useMutation({
+        
+    });
+
+    const handleSubmit = () => {
+        if (!editor || editor.isDestroyed || isSubmitting) return;
+
+        if (!editor.getText().trim()) {
+            message.warning(t("errors.aiEmptyEssay"));
+            return;
+        }
+
+        const pendingCount = countPendingCorrections(editor.state.doc);
+        if (pendingCount > 0) {
+            message.warning(t("errors.aiPendingCorrections", { count: pendingCount }));
+            return;
+        }
+
+        // const collaboration = editor.extensionManager.extensions.find((ext) => ext.name === "collaboration");
+        // const ydoc = collaboration?.options.document as Y.Doc | undefined;
+        // if (!ydoc) return;
+
+        // submitAttempt({
+        //     content: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(ydoc))),
+        // });
+    }
+
     const overdue = isOverdue(assignment.dueDate, assignment.dueTime);
 
     const isEditorReadOnly = !isTeacher && ownerId !== user?.id;
+    const canSubmit = ownerId === user?.id;
 
     return (
         <div className="flex flex-col gap-1.5">
@@ -117,17 +146,20 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             value={ownerId}
                             onChange={setSelectedOwnerId}
                             currentUserId={user?.id ?? null}
-                            disabled={isPending}
+                            disabled={isGenerating}
                         />
                     )}
 
-                    <Button
-                        size="sm"
-                        type="button"
-                        label={t("submit")}
-                        icon={<FileEditIcon className="text-white" width={16} height={16} />}
-                        onClick={() => {}}
-                    />
+                    {canSubmit && (
+                        <Button
+                            size="sm"
+                            type="button"
+                            label={t("submit")}
+                            icon={<FileEditIcon className="text-white" width={16} height={16} />}
+                            loading={isSubmitting}
+                            onClick={handleSubmit}
+                        />
+                    )}
                 </div>
             </div>
 
@@ -167,7 +199,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                 <div className="ml-auto">
                                     <AiAssistMenu
                                         onFix={(language) => handleRunAi(language)}
-                                        isLoading={isPending}
+                                        isLoading={isGenerating}
                                     />
                                 </div>
                             )}
