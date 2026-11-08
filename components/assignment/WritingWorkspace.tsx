@@ -14,8 +14,9 @@ import WritingEditor from "./WritingEditor";
 import MemberSwitcher from "./MemberSwitcher";
 import CorrectionPanel from "./CorrectionPanel";
 import AiAssistMenu from "./AiAssistMenu";
+import AttemptContent, { AttemptView } from "./AttemptContent";
 import { GenerateCorrectionsRequest, ResponseLanguage } from "@/types/writing-correction-type";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
@@ -26,27 +27,7 @@ type WorkspaceMode = "teacher" | "student";
 
 type WorkspaceTab = "draft" | "attempts";
 
-type AttemptView = "original" | "graded";
-
 type PanelSize = number | string;
-
-const MOCK_ATTEMPTS: WritingAttemptSummary[] = [
-    { id: "attempt-15", status: "SUBMITTED", submittedAt: "2026-11-07T21:15:00+07:00", score: null },
-    { id: "attempt-14", status: "GRADED", submittedAt: "2026-11-05T19:40:00+07:00", score: { taskResponse: 7, coherenceCohesion: 6.5, lexicalResource: 7, grammaticalRange: 6.5, overall: 7 } },
-    { id: "attempt-13", status: "GRADED", submittedAt: "2026-11-03T08:05:00+07:00", score: { taskResponse: 6.5, coherenceCohesion: 6.5, lexicalResource: 7, grammaticalRange: 6.5, overall: 6.5 } },
-    { id: "attempt-12", status: "GRADED", submittedAt: "2026-10-31T22:30:00+07:00", score: { taskResponse: 6.5, coherenceCohesion: 6.5, lexicalResource: 6.5, grammaticalRange: 6, overall: 6.5 } },
-    { id: "attempt-11", status: "GRADED", submittedAt: "2026-10-29T14:10:00+07:00", score: { taskResponse: 6.5, coherenceCohesion: 6, lexicalResource: 6.5, grammaticalRange: 6, overall: 6 } },
-    { id: "attempt-10", status: "GRADED", submittedAt: "2026-10-26T20:45:00+07:00", score: { taskResponse: 6, coherenceCohesion: 6, lexicalResource: 6.5, grammaticalRange: 6, overall: 6 } },
-    { id: "attempt-9", status: "GRADED", submittedAt: "2026-10-23T09:20:00+07:00", score: { taskResponse: 6, coherenceCohesion: 6, lexicalResource: 6, grammaticalRange: 6, overall: 6 } },
-    { id: "attempt-8", status: "GRADED", submittedAt: "2026-10-20T18:55:00+07:00", score: { taskResponse: 6, coherenceCohesion: 5.5, lexicalResource: 6, grammaticalRange: 6, overall: 6 } },
-    { id: "attempt-7", status: "GRADED", submittedAt: "2026-10-17T07:35:00+07:00", score: { taskResponse: 6, coherenceCohesion: 5.5, lexicalResource: 6, grammaticalRange: 5.5, overall: 5.5 } },
-    { id: "attempt-6", status: "GRADED", submittedAt: "2026-10-14T21:00:00+07:00", score: { taskResponse: 5.5, coherenceCohesion: 5.5, lexicalResource: 6, grammaticalRange: 5.5, overall: 5.5 } },
-    { id: "attempt-5", status: "GRADED", submittedAt: "2026-10-11T16:25:00+07:00", score: { taskResponse: 5.5, coherenceCohesion: 5.5, lexicalResource: 5.5, grammaticalRange: 5.5, overall: 5.5 } },
-    { id: "attempt-4", status: "GRADED", submittedAt: "2026-10-08T10:50:00+07:00", score: { taskResponse: 5.5, coherenceCohesion: 5, lexicalResource: 5.5, grammaticalRange: 5.5, overall: 5.5 } },
-    { id: "attempt-3", status: "GRADED", submittedAt: "2026-10-05T23:10:00+07:00", score: { taskResponse: 5.5, coherenceCohesion: 5, lexicalResource: 5.5, grammaticalRange: 5, overall: 5 } },
-    { id: "attempt-2", status: "GRADED", submittedAt: "2026-10-02T13:40:00+07:00", score: { taskResponse: 5, coherenceCohesion: 5, lexicalResource: 5.5, grammaticalRange: 5, overall: 5 } },
-    { id: "attempt-1", status: "GRADED", submittedAt: "2026-09-29T19:05:00+07:00", score: { taskResponse: 5, coherenceCohesion: 5, lexicalResource: 5, grammaticalRange: 4.5, overall: 5 } },
-];
 
 const SCORE_CRITERIA: (keyof Omit<WritingScore, "overall">)[] = ["taskResponse", "coherenceCohesion", "lexicalResource", "grammaticalRange"];
 
@@ -64,11 +45,12 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const t = useTranslations("writingWorkspace");
     const { user } = useAuth();
     const message = useAppMessage();
+    const queryClient = useQueryClient();
 
     const isTeacher = mode === "teacher";
 
     const [activeTab, setActiveTab] = useState<WorkspaceTab>("draft");
-    const [selectedAttemptId, setSelectedAttemptId] = useState<string>(MOCK_ATTEMPTS[0].id);
+    const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
     const [attemptView, setAttemptView] = useState<AttemptView>("graded");
     const [selectedOwnerId, setSelectedOwnerId] = useState<string | null>(null);
     const [isCorrection, setIsCorrection] = useState<boolean>(false);
@@ -78,6 +60,21 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const ownerId = selectedOwnerId ?? user?.id ?? null;
     const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
+
+    const attemptOwnerId = isTeacher ? ownerId : user?.id ?? null;
+
+    const { data: attempts = [], isLoading: isAttemptsLoading } = useQuery({
+        queryKey: ["writing-attempts", assignment.id, attemptOwnerId],
+        queryFn: () => writingAttemptApi.listWritingAttempts(assignment.id, attemptOwnerId!),
+        enabled: attemptOwnerId !== null && activeTab === "attempts",
+    });
+
+    const currentAttemptId = selectedAttemptId ?? attempts[0]?.id ?? null;
+
+    const handleChangeOwner = (userId: string) => {
+        setSelectedOwnerId(userId);
+        setSelectedAttemptId(null);
+    };
 
     const handleToggleCorrectionPanel = (checked: boolean) => {
         setShowCorrectionPanel(checked);
@@ -129,6 +126,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
         mutationFn: (data: CreateWritingAttemptRequest) => writingAttemptApi.createWritingAttempt(data),
         onSuccess: () => {
             message.success(t("header.submitSuccess"));
+            queryClient.invalidateQueries({ queryKey: ["writing-attempts", assignment.id] });
+            queryClient.invalidateQueries({ queryKey: ["writing-attempt"] });
         },
         onError: (error) => {
             message.error(error.message);
@@ -163,6 +162,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const isEditorReadOnly = !isTeacher && ownerId !== user?.id;
     const canSubmit = ownerId === user?.id;
+
+    const showMemberSwitcher = !membersLoading && (activeTab === "draft" || isTeacher);
+    const showSubmit = canSubmit && activeTab === "draft";
 
     const draftTab = (
         <Splitter className="rounded-2xl border border-border bg-bg" onResize={setSizes}>
@@ -249,14 +251,18 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <div className="flex w-60 shrink-0 flex-col">
                         <p className="text-muted font-semibold">{t("attempts.title")}</p>
 
+                        {!isAttemptsLoading && attempts.length === 0 && (
+                            <p className="py-4 text-sm text-muted">{t("attempts.empty")}</p>
+                        )}
+
                         <Listy<WritingAttemptSummary>
-                            items={MOCK_ATTEMPTS}
+                            items={attempts}
                             rowKey="id"
                             height={680}
                             styles={{ item: { padding: "4px 0", border: "none", background: "transparent" } }}
                             itemRender={(attempt) => {
-                                const index =  MOCK_ATTEMPTS.length - MOCK_ATTEMPTS.indexOf(attempt);
-                                const isSelected = attempt.id === selectedAttemptId;
+                                const index = attempts.length - attempts.indexOf(attempt);
+                                const isSelected = attempt.id === currentAttemptId;
                                 const score = attempt.score;
  
                                 return (
@@ -312,8 +318,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             ]}
                         />
  
-                        {/* TODO: editor không qua Hocuspocus — "original" hiện originalContent, "graded" hiện gradedContent */}
-                        <div className="flex min-h-180 flex-1 border border-border" />
+                        <AttemptContent attemptId={currentAttemptId} view={attemptView} />
                     </div>
                 </div>
             </Splitter.Panel>
@@ -322,42 +327,41 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     return (
         <div className="flex flex-col gap-1.5">
-            <div className="flex items-center justify-between">
-                <p className="text-sm">
-                    <span className="font-medium text-muted">{t("header.dueLabel")}: </span>
-                    <span className={overdue ? "text-error" : "text-fg"}>
-                        {formatTime(assignment.dueTime)} - {formatDayMonth(assignment.dueDate)}
-                    </span>
-                    {overdue && <span className="ml-2 font-medium text-error">{t("header.overdue")}</span>}
-                </p>
+            <p className="text-sm">
+                <span className="font-medium text-muted">{t("header.dueLabel")}: </span>
+                <span className={overdue ? "text-error" : "text-fg"}>
+                    {formatTime(assignment.dueTime)} - {formatDayMonth(assignment.dueDate)}
+                </span>
+                {overdue && <span className="ml-2 font-medium text-error">{t("header.overdue")}</span>}
+            </p>
 
-                <div className="flex items-center gap-3">
-                    {!membersLoading && (
-                        <MemberSwitcher
-                            members={members}
-                            value={ownerId}
-                            onChange={setSelectedOwnerId}
-                            currentUserId={user?.id ?? null}
-                            disabled={isGenerating}
-                        />
-                    )}
-
-                    {canSubmit && (
-                        <Button
-                            size="sm"
-                            type="button"
-                            label={t("header.submit")}
-                            icon={<FileEditIcon className="text-white" width={16} height={16} />}
-                            loading={isSubmitting}
-                            onClick={handleSubmit}
-                        />
-                    )}
-                </div>
-            </div>
-            
             <Tabs
                 activeKey={activeTab}
                 onChange={(key) => setActiveTab(key as WorkspaceTab)}
+                tabBarExtraContent={
+                    <div className="flex items-center gap-3">
+                        {showMemberSwitcher && (
+                            <MemberSwitcher
+                                members={members}
+                                value={ownerId}
+                                onChange={handleChangeOwner}
+                                currentUserId={user?.id ?? null}
+                                disabled={isGenerating}
+                            />
+                        )}
+
+                        {showSubmit && (
+                            <Button
+                                size="sm"
+                                type="button"
+                                label={t("header.submit")}
+                                icon={<FileEditIcon className="text-white" width={16} height={16} />}
+                                loading={isSubmitting}
+                                onClick={handleSubmit}
+                            />
+                        )}
+                    </div>
+                }
                 items={[
                     { key: "draft", label: t("tabs.draft"), children: draftTab },
                     { key: "attempts", label: t("tabs.attempts"), children: attemptTab },

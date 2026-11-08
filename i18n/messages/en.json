@@ -590,7 +590,9 @@
             "views": {
                 "original": "Original",
                 "graded": "Graded"
-            }
+            },
+            "empty": "No submissions yet",
+            "notGraded": "This submission hasn't been graded yet"
         },
         "errors": {
             "emptyEssay": "The essay is empty",
