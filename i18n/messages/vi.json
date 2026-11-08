@@ -569,6 +569,7 @@
             "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
             "aiPendingCorrections": "Còn {count} lỗi chưa xử lý."
         },
+        "submitSuccess": "Đã nộp bài",
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",

@@ -6,6 +6,7 @@ import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
 import { Splitter, Switch } from "antd";
 import { useState } from "react";
+import * as Y from "yjs";
 import Button from "../Button";
 import FileEditIcon from "../icons/FileEditIcon";
 import WritingQuestionPanel from "./WritingQuestionPanel";
@@ -19,6 +20,7 @@ import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
 import { CreateWritingAttemptRequest } from "@/types/writing-attempt-type";
+import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -97,7 +99,13 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     }
 
     const { mutate: submitAttempt, isPending: isSubmitting } = useMutation({
-        
+        mutationFn: (data: CreateWritingAttemptRequest) => writingAttemptApi.createWritingAttempt(data),
+        onSuccess: () => {
+            message.success(t("submitSuccess"));
+        },
+        onError: (error) => {
+            message.error(error.message);
+        }
     });
 
     const handleSubmit = () => {
@@ -114,13 +122,14 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             return;
         }
 
-        // const collaboration = editor.extensionManager.extensions.find((ext) => ext.name === "collaboration");
-        // const ydoc = collaboration?.options.document as Y.Doc | undefined;
-        // if (!ydoc) return;
+        const collaboration = editor.extensionManager.extensions.find((ext) => ext.name === "collaboration");
+        const ydoc = collaboration?.options.document as Y.Doc | undefined;
+        if (!ydoc) return;
 
-        // submitAttempt({
-        //     content: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(ydoc))),
-        // });
+        submitAttempt({
+            assignmentId: assignment.id,
+            content: btoa(String.fromCharCode(...Y.encodeStateAsUpdate(ydoc))),
+        });
     }
 
     const overdue = isOverdue(assignment.dueDate, assignment.dueTime);

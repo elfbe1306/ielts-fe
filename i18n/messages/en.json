@@ -569,6 +569,7 @@
             "aiFailed": "Failed to apply AI corrections",
             "aiPendingCorrections": "{count} corrections still pending."
         },
+        "submitSuccess": "Essay submitted",
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",
