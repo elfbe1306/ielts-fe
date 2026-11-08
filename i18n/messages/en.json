@@ -592,7 +592,9 @@
                 "graded": "Graded"
             },
             "empty": "No submissions yet",
-            "notGraded": "This submission hasn't been graded yet"
+            "notGraded": "This submission hasn't been graded yet",
+            "emptyHint": "Your submissions will appear here after you submit from the Draft tab",
+            "goToDraft": "Go to draft"
         },
         "errors": {
             "emptyEssay": "The essay is empty",

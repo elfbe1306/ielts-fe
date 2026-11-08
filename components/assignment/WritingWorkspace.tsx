@@ -4,7 +4,7 @@ import { CourseMember } from "@/types/course-type";
 import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
-import { Listy, Segmented, Splitter, Switch, Tabs, Tooltip } from "antd";
+import { Empty, Segmented, Splitter, Switch, Tabs, Tooltip } from "antd";
 import { useState } from "react";
 import * as Y from "yjs";
 import Button from "../Button";
@@ -20,7 +20,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
-import { CreateWritingAttemptRequest, WritingAttemptSummary, WritingScore } from "@/types/writing-attempt-type";
+import { CreateWritingAttemptRequest, WritingScore } from "@/types/writing-attempt-type";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 
 type WorkspaceMode = "teacher" | "student";
@@ -166,6 +166,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const showMemberSwitcher = !membersLoading && (activeTab === "draft" || isTeacher);
     const showSubmit = canSubmit && activeTab === "draft";
 
+    const isOwnAttempts = attemptOwnerId === user?.id;
+    const hasNoAttempts = !isAttemptsLoading && attempts.length === 0;
+
     const draftTab = (
         <Splitter className="rounded-2xl border border-border bg-bg" onResize={setSizes}>
             <Splitter.Panel size={sizes[0]} min="20%" max={showCorrectionPanel ? "50%" : "70%"}>
@@ -247,67 +250,82 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             </Splitter.Panel>
 
             <Splitter.Panel className="flex flex-col" min="30%">
-                <div className="flex flex-1 p-6">
-                    <div className="flex w-60 shrink-0 flex-col">
-                        <p className="text-muted font-semibold">{t("attempts.title")}</p>
-
-                        {!isAttemptsLoading && attempts.length === 0 && (
-                            <p className="py-4 text-sm text-muted">{t("attempts.empty")}</p>
-                        )}
-
-                        <Listy<WritingAttemptSummary>
-                            items={attempts}
-                            rowKey="id"
-                            height={680}
-                            styles={{ item: { padding: "4px 0", border: "none", background: "transparent" } }}
-                            itemRender={(attempt) => {
-                                const index = attempts.length - attempts.indexOf(attempt);
-                                const isSelected = attempt.id === currentAttemptId;
-                                const score = attempt.score;
- 
-                                return (
-                                    <button
-                                        type="button"
-                                        onClick={() => setSelectedAttemptId(attempt.id)}
-                                        className={`flex w-full flex-col gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${isSelected ? "border-accent bg-accent-bg" : "border-border bg-bg hover:border-accent/50"}`}
-                                    >
-                                        <div className="flex items-center justify-between gap-2">
-                                            <span className="font-semibold text-fg">
-                                                {t("attempts.label", { index })}
-                                            </span>
-                                            {score && (
-                                                <Tooltip
-                                                    placement="top"
-                                                    title={
-                                                        <div className="flex min-w-44 flex-col gap-1 py-0.5">
-                                                            {SCORE_CRITERIA.map((criterion) => (
-                                                                <div key={criterion} className="flex items-center justify-between gap-4">
-                                                                    <span>{t(`attempts.score.${criterion}`)}</span>
-                                                                    <span className="font-semibold">{score[criterion]}</span>
-                                                                </div>
-                                                            ))}
-                                                        </div>
-                                                    }
-                                                >
-                                                    <span className="text-lg font-bold text-accent">
-                                                        {score.overall}
-                                                    </span>
-                                                </Tooltip>
-                                            )}
-                                        </div>
-                                        <span className="text-sm text-muted">
-                                            {formatInstant(attempt.submittedAt)}
-                                        </span>
-                                        <span className={`text-sm font-medium ${attempt.status === "GRADED" ? "text-success" : "text-highlight"}`}>
-                                            {t(`attempts.status.${attempt.status}`)}
-                                        </span>
-                                    </button>
-                                )
-                            }}
+                {hasNoAttempts ? (
+                    <div className="flex flex-1 flex-col items-center gap-4 px-6 py-24 text-center">
+                        <Empty
+                            image={Empty.PRESENTED_IMAGE_SIMPLE}
+                            description={
+                                <div className="flex flex-col gap-1">
+                                    <span className="font-medium text-fg">{t("attempts.empty")}</span>
+                                    {isOwnAttempts && <span className="text-sm text-muted">{t("attempts.emptyHint")}</span>}
+                                </div>
+                            }
                         />
-                    </div>
 
-                    <div className="flex min-w-0 flex-1 flex-col gap-3 pl-6">
+                        {isOwnAttempts && (
+                            <Button
+                                size="sm"
+                                type="button"
+                                variant="secondary"
+                                label={t("attempts.goToDraft")}
+                                onClick={() => setActiveTab("draft")}
+                            />
+                        )}
+                    </div>
+                ) : (
+                    <div className="flex min-w-0 flex-1 flex-col gap-4 p-6">
+                        <div className="flex flex-col gap-2">
+                            <p className="text-muted font-semibold">{t("attempts.title")}</p>
+
+                            <div className="flex gap-3 overflow-x-auto pb-2">
+                                {attempts.map((attempt, position) => {
+                                    const index = attempts.length - position;
+                                    const isSelected = attempt.id === currentAttemptId;
+                                    const score = attempt.score;
+
+                                    return (
+                                        <button
+                                            key={attempt.id}
+                                            type="button"
+                                            onClick={() => setSelectedAttemptId(attempt.id)}
+                                            className={`flex w-44 shrink-0 flex-col gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${isSelected ? "border-accent bg-accent-bg" : "border-border bg-bg hover:border-accent/50"}`}
+                                        >
+                                            <div className="flex items-center justify-between gap-2">
+                                                <span className="font-semibold text-fg">
+                                                    {t("attempts.label", { index })}
+                                                </span>
+                                                {score && (
+                                                    <Tooltip
+                                                        placement="top"
+                                                        title={
+                                                            <div className="flex min-w-44 flex-col gap-1 py-0.5">
+                                                                {SCORE_CRITERIA.map((criterion) => (
+                                                                    <div key={criterion} className="flex items-center justify-between gap-4">
+                                                                        <span>{t(`attempts.score.${criterion}`)}</span>
+                                                                        <span className="font-semibold">{score[criterion]}</span>
+                                                                    </div>
+                                                                ))}
+                                                            </div>
+                                                        }
+                                                    >
+                                                        <span className="text-lg font-bold text-accent">
+                                                            {score.overall}
+                                                        </span>
+                                                    </Tooltip>
+                                                )}
+                                            </div>
+                                            <span className="text-sm text-muted">
+                                                {formatInstant(attempt.submittedAt)}
+                                            </span>
+                                            <span className={`text-sm font-medium ${attempt.status === "GRADED" ? "text-success" : "text-highlight"}`}>
+                                                {t(`attempts.status.${attempt.status}`)}
+                                            </span>
+                                        </button>
+                                    );
+                                })}
+                            </div>
+                        </div>
+
                         <Segmented<AttemptView>
                             className="self-start"
                             value={attemptView}
@@ -317,10 +335,10 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                 { value: "graded", label: t("attempts.views.graded") },
                             ]}
                         />
- 
+
                         <AttemptContent attemptId={currentAttemptId} view={attemptView} />
                     </div>
-                </div>
+                )}
             </Splitter.Panel>
         </Splitter>
     );
