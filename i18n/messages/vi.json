@@ -555,21 +555,48 @@
         }
     },
     "writingWorkspace": {
-        "dueLabel": "Hạn nộp",
-        "overdue": "Quá hạn",
-        "submit": "Nộp bài",
-        "correctionMode": "Chế độ chấm bài",
-        "correctionOn": "Bật",
-        "correctionOff": "Tắt",
-        "correctionPanelToggle": "Bảng chỗ sửa",
-        "aiApplied": "Đã thêm {count} góp ý",
-        "aiSkipped": "{count} góp ý không tìm được vị trí trong bài",
-        "errors": {
-            "aiEmptyEssay": "Bài viết đang trống",
-            "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
-            "aiPendingCorrections": "Còn {count} lỗi chưa xử lý."
+        "header": {
+            "dueLabel": "Hạn nộp",
+            "overdue": "Quá hạn",
+            "submit": "Nộp bài",
+            "submitSuccess": "Đã nộp bài"
         },
-        "submitSuccess": "Đã nộp bài",
+        "tabs": {
+            "draft": "Bản nháp",
+            "attempts": "Bài đã nộp"
+        },
+        "draft": {
+            "correctionMode": "Chế độ chấm bài",
+            "correctionPanel": "Bảng chỗ sửa",
+            "on": "Bật",
+            "off": "Tắt",
+            "aiApplied": "Đã thêm {count} góp ý",
+            "aiSkipped": "{count} góp ý không tìm được vị trí trong bài"
+        },
+        "attempts": {
+            "title": "Lần nộp",
+            "label": "Lần {index}",
+            "status": {
+                "SUBMITTED": "Đã nộp",
+                "GRADED": "Đã chấm"
+            },
+            "score": {
+                "taskResponse": "Hoàn thành yêu cầu đề",
+                "coherenceCohesion": "Mạch lạc & liên kết",
+                "lexicalResource": "Từ vựng",
+                "grammaticalRange": "Ngữ pháp",
+                "overall": "Điểm tổng"
+            },
+            "views": {
+                "original": "Bản gốc",
+                "graded": "Bản sửa"
+            }
+        },
+        "errors": {
+            "emptyEssay": "Bài viết đang trống",
+            "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
+            "pendingCorrections": "Còn {count} lỗi chưa xử lý."
+        },
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",

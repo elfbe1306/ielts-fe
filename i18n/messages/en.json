@@ -555,21 +555,48 @@
         }
     },
     "writingWorkspace": {
-        "dueLabel": "Due",
-        "overdue": "Overdue",
-        "submit": "Submit",
-        "correctionMode": "Correction mode",
-        "correctionOn": "On",
-        "correctionOff": "Off",
-        "correctionPanelToggle": "Corrections panel",
-        "aiApplied": "Added {count} suggestions",
-        "aiSkipped": "{count} suggestions couldn't be matched to the essay",
-        "errors": {
-            "aiEmptyEssay": "The essay is empty",
-            "aiFailed": "Failed to apply AI corrections",
-            "aiPendingCorrections": "{count} corrections still pending."
+        "header": {
+            "dueLabel": "Due",
+            "overdue": "Overdue",
+            "submit": "Submit",
+            "submitSuccess": "Submitted"
         },
-        "submitSuccess": "Essay submitted",
+        "tabs": {
+            "draft": "Draft",
+            "attempts": "Submissions"
+        },
+        "draft": {
+            "correctionMode": "Grading mode",
+            "correctionPanel": "Corrections panel",
+            "on": "On",
+            "off": "Off",
+            "aiApplied": "Added {count} suggestions",
+            "aiSkipped": "{count} suggestions couldn't be placed in the essay"
+        },
+        "attempts": {
+            "title": "Submissions",
+            "label": "Attempt {index}",
+            "status": {
+                "SUBMITTED": "Submitted",
+                "GRADED": "Graded"
+            },
+            "score": {
+                "taskResponse": "Task Response",
+                "coherenceCohesion": "Coherence & Cohesion",
+                "lexicalResource": "Lexical Resource",
+                "grammaticalRange": "Grammatical Range",
+                "overall": "Overall"
+            },
+            "views": {
+                "original": "Original",
+                "graded": "Graded"
+            }
+        },
+        "errors": {
+            "emptyEssay": "The essay is empty",
+            "aiFailed": "Couldn't apply AI corrections",
+            "pendingCorrections": "{count} corrections still pending."
+        },
         "writingQuestionPanel": {
             "taskType": {
                 "TASK_1": "Task 1",

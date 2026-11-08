@@ -143,6 +143,17 @@ export default function Providers({ children }: ProviderProps) {
                                 Switch: {
                                     colorPrimary: "var(--color-accent)",
                                     colorPrimaryHover: "var(--color-accent)"
+                                },
+                                Tabs: {
+                                    // chữ của tab bình thường / hover / đang chọn
+                                    itemColor: "var(--color-muted)",
+                                    itemHoverColor: "var(--color-accent)",
+                                    itemActiveColor: "var(--color-accent)",
+                                    itemSelectedColor: "var(--color-accent)",
+                                    // gạch chân tab đang chọn
+                                    inkBarColor: "var(--color-accent)",
+                                    // đường kẻ dưới thanh tab
+                                    colorBorderSecondary: "var(--color-border)",
                                 }
                             }
                         }}
