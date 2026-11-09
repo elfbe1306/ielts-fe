@@ -67,26 +67,6 @@ export default function MemberSwitcher({ members, value, onChange, currentUserId
 
     return (
         <div className="flex items-center gap-3">
-            <Button
-                label=""
-                type="button"
-                variant="secondary"
-                icon={<ArrowLeftIcon width={16} height={16} />}
-                iconOnly={true}
-                onClick={() => goTo(-1)}
-                disabled={disabled}
-            />
-
-            <Button
-                label=""
-                type="button"
-                variant="secondary"
-                icon={<ArrowRightIcon width={16} height={16} />}
-                iconOnly={true}
-                onClick={() => goTo(1)}
-                disabled={disabled}
-            />
-
             <Dropdown
                 trigger={["click"]}
                 placement="bottomRight"
@@ -106,6 +86,26 @@ export default function MemberSwitcher({ members, value, onChange, currentUserId
                     <ArrowDownIcon width={16} height={16} className="shrink-0" />
                 </button>
             </Dropdown>
+
+            <Button
+                label=""
+                type="button"
+                variant="secondary"
+                icon={<ArrowLeftIcon width={16} height={16} />}
+                iconOnly={true}
+                onClick={() => goTo(-1)}
+                disabled={disabled}
+            />
+
+            <Button
+                label=""
+                type="button"
+                variant="secondary"
+                icon={<ArrowRightIcon width={16} height={16} />}
+                iconOnly={true}
+                onClick={() => goTo(1)}
+                disabled={disabled}
+            />
         </div>
     )
 }

@@ -184,7 +184,6 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const canSubmit = ownerId === user?.id;
 
     const showMemberSwitcher = !membersLoading && (activeTab === "draft" || isTeacher);
-    const showSubmit = canSubmit && activeTab === "draft";
 
     const isOwnAttempts = attemptOwnerId === user?.id;
     const hasNoAttempts = !isAttemptsLoading && attempts.length === 0;
@@ -222,12 +221,25 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             />
                         </div>
 
-                        {!isEditorReadOnly && (
-                            <div className="ml-auto">
-                                <AiAssistMenu
-                                    onFix={(language) => handleRunAi(language)}
-                                    isLoading={isGenerating}
-                                />
+                        {(!isEditorReadOnly || canSubmit) && (
+                            <div className="ml-auto flex items-center gap-2">
+                                {!isEditorReadOnly && (
+                                    <AiAssistMenu
+                                        onFix={(language) => handleRunAi(language)}
+                                        isLoading={isGenerating}
+                                    />
+                                )}
+
+                                {canSubmit && (
+                                    <Button
+                                        size="sm"
+                                        type="button"
+                                        label={t("header.submit")}
+                                        icon={<FileEditIcon className="text-white" width={16} height={16} />}
+                                        loading={isSubmitting}
+                                        onClick={handleSubmit}
+                                    />
+                                )}
                             </div>
                         )}
                     </div>
@@ -430,28 +442,15 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                 activeKey={activeTab}
                 onChange={(key) => setActiveTab(key as WorkspaceTab)}
                 tabBarExtraContent={
-                    <div className="flex items-center gap-3">
-                        {showMemberSwitcher && (
-                            <MemberSwitcher
-                                members={members}
-                                value={ownerId}
-                                onChange={handleChangeOwner}
-                                currentUserId={user?.id ?? null}
-                                disabled={isGenerating}
-                            />
-                        )}
-
-                        {showSubmit && (
-                            <Button
-                                size="sm"
-                                type="button"
-                                label={t("header.submit")}
-                                icon={<FileEditIcon className="text-white" width={16} height={16} />}
-                                loading={isSubmitting}
-                                onClick={handleSubmit}
-                            />
-                        )}
-                    </div>
+                    showMemberSwitcher && (
+                        <MemberSwitcher
+                            members={members}
+                            value={ownerId}
+                            onChange={handleChangeOwner}
+                            currentUserId={user?.id ?? null}
+                            disabled={isGenerating}
+                        />
+                    )
                 }
                 items={[
                     { key: "draft", label: t("tabs.draft"), children: draftTab },
