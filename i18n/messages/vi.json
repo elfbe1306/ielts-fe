@@ -594,7 +594,9 @@
             "empty": "Chưa có lần nộp nào",
             "notGraded": "Bài này chưa được chấm",
             "emptyHint": "Bài sẽ hiện ở đây sau khi bạn bấm Nộp bài ở tab Bản nháp",
-            "goToDraft": "Về bản nháp"
+            "goToDraft": "Về bản nháp",
+            "doneGrading": "Xong",
+            "aiGrade": "AI chấm bài"
         },
         "errors": {
             "emptyEssay": "Bài viết đang trống",

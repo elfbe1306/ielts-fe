@@ -594,7 +594,9 @@
             "empty": "No submissions yet",
             "notGraded": "This submission hasn't been graded yet",
             "emptyHint": "Your submissions will appear here after you submit from the Draft tab",
-            "goToDraft": "Go to draft"
+            "goToDraft": "Go to draft",
+            "doneGrading": "Done",
+            "aiGrade": "AI grade"
         },
         "errors": {
             "emptyEssay": "The essay is empty",

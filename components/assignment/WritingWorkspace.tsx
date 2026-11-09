@@ -22,6 +22,7 @@ import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
 import { CreateWritingAttemptRequest, WritingScore } from "@/types/writing-attempt-type";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
+import PencilAiIcon from "../icons/PencilAiIcon";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -74,6 +75,14 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const handleChangeOwner = (userId: string) => {
         setSelectedOwnerId(userId);
         setSelectedAttemptId(null);
+    };
+
+    const handleSelectAttempt = (attemptId: string) => {
+        setSelectedAttemptId(attemptId);
+    };
+
+    const handleAiGrade = () => {
+        // TODO: gọi API AI chấm bài
     };
 
     const handleToggleCorrectionPanel = (checked: boolean) => {
@@ -273,11 +282,11 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                         )}
                     </div>
                 ) : (
-                    <div className="flex min-w-0 flex-1 flex-col gap-4 p-6">
-                        <div className="flex flex-col gap-2">
+                    <div className="flex min-w-0 flex-1 gap-6 p-6">
+                        <div className="flex w-52 shrink-0 flex-col gap-2">
                             <p className="text-muted font-semibold">{t("attempts.title")}</p>
 
-                            <div className="flex gap-3 overflow-x-auto pb-2">
+                            <div className="flex max-h-180 flex-col gap-2 overflow-y-auto pr-1">
                                 {attempts.map((attempt, position) => {
                                     const index = attempts.length - position;
                                     const isSelected = attempt.id === currentAttemptId;
@@ -287,8 +296,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                         <button
                                             key={attempt.id}
                                             type="button"
-                                            onClick={() => setSelectedAttemptId(attempt.id)}
-                                            className={`flex w-44 shrink-0 flex-col gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${isSelected ? "border-accent bg-accent-bg" : "border-border bg-bg hover:border-accent/50"}`}
+                                            onClick={() => handleSelectAttempt(attempt.id)}
+                                            className={`flex w-full shrink-0 flex-col gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${isSelected ? "border-accent bg-accent-bg" : "border-border bg-bg hover:border-accent/50"}`}
                                         >
                                             <div className="flex items-center justify-between gap-2">
                                                 <span className="font-semibold text-fg">
@@ -326,17 +335,41 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             </div>
                         </div>
 
-                        <Segmented<AttemptView>
-                            className="self-start"
-                            value={attemptView}
-                            onChange={setAttemptView}
-                            options={[
-                                { value: "original", label: t("attempts.views.original") },
-                                { value: "graded", label: t("attempts.views.graded") },
-                            ]}
-                        />
+                        <div className="flex min-w-0 flex-1 flex-col gap-3">
+                            <div className="flex flex-wrap items-center gap-3">
+                                <Segmented<AttemptView>
+                                    value={attemptView}
+                                    onChange={setAttemptView}
+                                    options={[
+                                        { value: "original", label: t("attempts.views.original") },
+                                        { value: "graded", label: t("attempts.views.graded") },
+                                    ]}
+                                />
 
-                        <AttemptContent attemptId={currentAttemptId} view={attemptView} />
+                                {isTeacher && currentAttemptId && (
+                                    <div className="ml-auto flex items-center gap-2">
+                                        <Button
+                                            label={t("attempts.aiGrade")}
+                                            type="button"
+                                            variant="tertiary"
+                                            size="sm"
+                                            icon={<PencilAiIcon width={16} height={16} />}
+                                            onClick={handleAiGrade}
+                                        />
+
+                                        <Button
+                                            label={t("attempts.doneGrading")}
+                                            type="button"
+                                            size="sm"
+                                            icon={<FileEditIcon width={16} height={16} />}
+                                            onClick={() => {}}
+                                        />
+                                    </div>
+                                )}
+                            </div>
+
+                            <AttemptContent attemptId={currentAttemptId} view={attemptView} />
+                        </div>
                     </div>
                 )}
             </Splitter.Panel>
