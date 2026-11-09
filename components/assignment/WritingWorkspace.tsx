@@ -35,6 +35,9 @@ const SCORE_CRITERIA: (keyof Omit<WritingScore, "overall">)[] = ["taskResponse",
 const SIZES_TWO_PANELS: PanelSize[] = ["50%", "50%"];
 const SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
 
+const ATTEMPT_SIZES_TWO_PANELS: PanelSize[] = ["25%", "75%"];
+const ATTEMPT_SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
+
 type WritingWorkspaceProps = {
     mode: WorkspaceMode;
     assignment: WritingAssignment;
@@ -52,6 +55,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const [activeTab, setActiveTab] = useState<WorkspaceTab>("draft");
     const [selectedAttemptId, setSelectedAttemptId] = useState<string | null>(null);
+    const [showAttemptCorrectionPanel, setShowAttemptCorrectionPanel] = useState<boolean>(false);
+    const [attemptSizes, setAttemptSizes] = useState<PanelSize[]>(ATTEMPT_SIZES_TWO_PANELS);
+    const [attemptEditor, setAttemptEditor] = useState<Editor | null>(null);
     const [attemptView, setAttemptView] = useState<AttemptView>("graded");
     const [selectedOwnerId, setSelectedOwnerId] = useState<string | null>(null);
     const [isCorrection, setIsCorrection] = useState<boolean>(false);
@@ -83,6 +89,11 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const handleAiGrade = () => {
         // TODO: gọi API AI chấm bài
+    };
+
+    const handleToggleAttemptCorrectionPanel = (checked: boolean) => {
+        setShowAttemptCorrectionPanel(checked);
+        setAttemptSizes(checked ? ATTEMPT_SIZES_THREE_PANELS : ATTEMPT_SIZES_TWO_PANELS);
     };
 
     const handleToggleCorrectionPanel = (checked: boolean) => {
@@ -251,14 +262,14 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     );
 
     const attemptTab = (
-        <Splitter className="rounded-2xl border border-border bg-bg">
-            <Splitter.Panel defaultSize="25%" min="20%" max="50%">
+        <Splitter className="rounded-2xl border border-border bg-bg" onResize={setAttemptSizes}>
+            <Splitter.Panel size={attemptSizes[0]} min="20%" max="50%">
                 <div className="p-6">
                     <WritingQuestionPanel question={assignment.writingQuestion} note={assignment.description} />
                 </div>
             </Splitter.Panel>
 
-            <Splitter.Panel className="flex flex-col" min="30%">
+            <Splitter.Panel size={attemptSizes[1]} className="flex flex-col" min="30%">
                 {hasNoAttempts ? (
                     <div className="flex flex-1 flex-col items-center gap-4 px-6 py-24 text-center">
                         <Empty
@@ -282,7 +293,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                         )}
                     </div>
                 ) : (
-                    <div className="flex min-w-0 flex-1 gap-6 p-6">
+                    <div className="flex min-w-0 flex-1 gap-4 p-6">
                         <div className="flex w-52 shrink-0 flex-col gap-2">
                             <p className="text-muted font-semibold">{t("attempts.title")}</p>
 
@@ -346,6 +357,16 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                     ]}
                                 />
 
+                                <div className="flex items-center gap-1.5">
+                                    <p className="whitespace-nowrap text-muted">{t("attempts.correctionPanel")}</p>
+                                    <Switch
+                                        checked={showAttemptCorrectionPanel}
+                                        onChange={handleToggleAttemptCorrectionPanel}
+                                        checkedChildren={t("attempts.on")}
+                                        unCheckedChildren={t("attempts.off")}
+                                    />
+                                </div>
+
                                 {isTeacher && currentAttemptId && (
                                     <div className="ml-auto flex items-center gap-2">
                                         <Button
@@ -368,11 +389,30 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                 )}
                             </div>
 
-                            <AttemptContent attemptId={currentAttemptId} view={attemptView} />
+                            <AttemptContent
+                                attemptId={currentAttemptId}
+                                view={attemptView}
+                                editable={isTeacher}
+                                onEditorChange={setAttemptEditor}
+                            />
                         </div>
                     </div>
                 )}
             </Splitter.Panel>
+
+            {showAttemptCorrectionPanel && (
+                <Splitter.Panel size={attemptSizes[2]} min="20%" max="40%">
+                    <div className="relative h-full">
+                        <div className="absolute inset-0 flex flex-col p-6">
+                            <CorrectionPanel
+                                editor={attemptEditor}
+                                readOnly={!isTeacher}
+                                canEdit={isTeacher}
+                            />
+                        </div>
+                    </div>
+                </Splitter.Panel>
+            )}
         </Splitter>
     );
 

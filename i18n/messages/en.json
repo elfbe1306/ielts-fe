@@ -595,13 +595,25 @@
             "notGraded": "This submission hasn't been graded yet",
             "emptyHint": "Your submissions will appear here after you submit from the Draft tab",
             "goToDraft": "Go to draft",
-            "doneGrading": "Done",
-            "aiGrade": "AI grade"
+            "doneGrading": "Finish grading",
+            "aiGrade": "AI grade",
+            "correctionPanel": "Corrections panel",
+            "on": "On",
+            "off": "Off"
         },
         "errors": {
             "emptyEssay": "The essay is empty",
             "aiFailed": "Couldn't apply AI corrections",
             "pendingCorrections": "{count} corrections still pending."
+        },
+        "attemptViewer": {
+            "wordCount": "{count} words",
+            "formats": {
+                "bold": "Bold (Ctrl+B)",
+                "italic": "Italic (Ctrl+I)",
+                "underline": "Underline (Ctrl+U)",
+                "strike": "Strikethrough (Ctrl+Shift+S)"
+            }
         },
         "writingQuestionPanel": {
             "taskType": {

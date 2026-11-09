@@ -595,13 +595,25 @@
             "notGraded": "Bài này chưa được chấm",
             "emptyHint": "Bài sẽ hiện ở đây sau khi bạn bấm Nộp bài ở tab Bản nháp",
             "goToDraft": "Về bản nháp",
-            "doneGrading": "Xong",
-            "aiGrade": "AI chấm bài"
+            "doneGrading": "Hoàn tất chấm",
+            "aiGrade": "AI chấm bài",
+            "correctionPanel": "Bảng chỗ sửa",
+            "on": "Bật",
+            "off": "Tắt"
         },
         "errors": {
             "emptyEssay": "Bài viết đang trống",
             "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
             "pendingCorrections": "Còn {count} lỗi chưa xử lý."
+        },
+        "attemptViewer": {
+            "wordCount": "{count} từ",
+            "formats": {
+                "bold": "In đậm (Ctrl+B)",
+                "italic": "In nghiêng (Ctrl+I)",
+                "underline": "Gạch chân (Ctrl+U)",
+                "strike": "Gạch ngang (Ctrl+Shift+S)"
+            }
         },
         "writingQuestionPanel": {
             "taskType": {

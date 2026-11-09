@@ -2,15 +2,18 @@ import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 import { useQuery } from "@tanstack/react-query";
 import { useTranslations } from "next-intl";
 import AttemptViewer from "./AttemptViewer";
+import type { Editor } from "@tiptap/react";
 
 export type AttemptView = "original" | "graded";
 
 type AttemptContentProps = {
     attemptId: string | null;
     view: AttemptView;
+    editable?: boolean;
+    onEditorChange?: (editor: Editor | null) => void;
 };
 
-export default function AttemptContent({ attemptId, view }: AttemptContentProps) {
+export default function AttemptContent({ attemptId, view, editable = false, onEditorChange }: AttemptContentProps) {
     const t = useTranslations("writingWorkspace.attempts");
 
     const { data: attempt, isLoading } = useQuery({
@@ -25,7 +28,11 @@ export default function AttemptContent({ attemptId, view }: AttemptContentProps)
 
     if (!attempt) return null;
 
-    const content = view === "graded" ? attempt.gradedContent : attempt.originalContent;
+    const canEdit = editable && view === "graded";
+
+    const content = view === "graded"
+        ? attempt.gradedContent ?? (canEdit ? attempt.originalContent : null)
+        : attempt.originalContent;
 
     if (!content) {
         return (
@@ -39,6 +46,8 @@ export default function AttemptContent({ attemptId, view }: AttemptContentProps)
         <AttemptViewer
             key={`${attempt.id}-${view}-${attempt.submittedAt}`}
             content={content}
+            editable={canEdit}
+            onEditorChange={onEditorChange}
         />
     );
 }
