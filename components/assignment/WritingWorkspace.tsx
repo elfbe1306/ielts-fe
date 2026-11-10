@@ -1,10 +1,10 @@
-import { formatDayMonth, formatInstant, formatTime, isOverdue } from "@/lib/utils";
+import { formatDayMonth, formatTime, isOverdue } from "@/lib/utils";
 import { WritingAssignment } from "@/types/writing-assignment-type";
 import { CourseMember } from "@/types/course-type";
 import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
-import { Empty, Segmented, Splitter, Switch, Tabs, Tooltip } from "antd";
+import { Empty, Segmented, Select, Splitter, Switch, Tabs } from "antd";
 import { useState } from "react";
 import * as Y from "yjs";
 import Button from "../Button";
@@ -20,9 +20,11 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
-import { CreateWritingAttemptRequest, WritingScore } from "@/types/writing-attempt-type";
+import { CreateWritingAttemptRequest } from "@/types/writing-attempt-type";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 import PencilAiIcon from "../icons/PencilAiIcon";
+import AttemptOption from "./AttemptOption";
+import GradingPanel from "./GradingPanel";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -30,7 +32,7 @@ type WorkspaceTab = "draft" | "attempts";
 
 type PanelSize = number | string;
 
-const SCORE_CRITERIA: (keyof Omit<WritingScore, "overall">)[] = ["taskResponse", "coherenceCohesion", "lexicalResource", "grammaticalRange"];
+type AttemptSideTab = "corrections" | "grading";
 
 const SIZES_TWO_PANELS: PanelSize[] = ["50%", "50%"];
 const SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
@@ -58,6 +60,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [showAttemptCorrectionPanel, setShowAttemptCorrectionPanel] = useState<boolean>(false);
     const [attemptSizes, setAttemptSizes] = useState<PanelSize[]>(ATTEMPT_SIZES_TWO_PANELS);
     const [attemptEditor, setAttemptEditor] = useState<Editor | null>(null);
+    const [attemptSideTab, setAttemptSideTab] = useState<AttemptSideTab>("corrections");
     const [attemptView, setAttemptView] = useState<AttemptView>("graded");
     const [selectedOwnerId, setSelectedOwnerId] = useState<string | null>(null);
     const [isCorrection, setIsCorrection] = useState<boolean>(false);
@@ -77,6 +80,10 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     });
 
     const currentAttemptId = selectedAttemptId ?? attempts[0]?.id ?? null;
+
+    const getAttemptIndex = (attemptId: string) => attempts.length - attempts.findIndex((attempt) => attempt.id === attemptId);
+    const findAttempt = (attemptId: string) => attempts.find((attempt) => attempt.id === attemptId);
+    const currentAttempt = currentAttemptId ? findAttempt(currentAttemptId) ?? null : null;
 
     const handleChangeOwner = (userId: string) => {
         setSelectedOwnerId(userId);
@@ -305,109 +312,82 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                         )}
                     </div>
                 ) : (
-                    <div className="flex min-w-0 flex-1 gap-4 p-6">
-                        <div className="flex w-52 shrink-0 flex-col gap-2">
-                            <p className="text-muted font-semibold">{t("attempts.title")}</p>
-
-                            <div className="flex max-h-180 flex-col gap-2 overflow-y-auto pr-1">
-                                {attempts.map((attempt, position) => {
-                                    const index = attempts.length - position;
-                                    const isSelected = attempt.id === currentAttemptId;
-                                    const score = attempt.score;
-
+                    <div className="flex min-w-0 flex-1 flex-col gap-3 p-6">
+                        <div className="flex flex-wrap items-center gap-3">
+                            <Select
+                                className="w-56"
+                                placeholder={t("attempts.title")}
+                                value={currentAttemptId}
+                                onChange={handleSelectAttempt}
+                                popupMatchSelectWidth={320}
+                                options={attempts.map((attempt) => ({ value: attempt.id }))}
+                                labelRender={({ value }) => {
+                                    const attempt = findAttempt(value as string);
+                                    if (!attempt) return null;
+ 
                                     return (
-                                        <button
-                                            key={attempt.id}
-                                            type="button"
-                                            onClick={() => handleSelectAttempt(attempt.id)}
-                                            className={`flex w-full shrink-0 flex-col gap-0.5 rounded-xl border px-4 py-3 text-left transition-colors ${isSelected ? "border-accent bg-accent-bg" : "border-border bg-bg hover:border-accent/50"}`}
-                                        >
-                                            <div className="flex items-center justify-between gap-2">
-                                                <span className="font-semibold text-fg">
-                                                    {t("attempts.label", { index })}
-                                                </span>
-                                                {score && (
-                                                    <Tooltip
-                                                        placement="top"
-                                                        title={
-                                                            <div className="flex min-w-44 flex-col gap-1 py-0.5">
-                                                                {SCORE_CRITERIA.map((criterion) => (
-                                                                    <div key={criterion} className="flex items-center justify-between gap-4">
-                                                                        <span>{t(`attempts.score.${criterion}`)}</span>
-                                                                        <span className="font-semibold">{score[criterion]}</span>
-                                                                    </div>
-                                                                ))}
-                                                            </div>
-                                                        }
-                                                    >
-                                                        <span className="text-lg font-bold text-accent">
-                                                            {score.overall}
-                                                        </span>
-                                                    </Tooltip>
-                                                )}
-                                            </div>
-                                            <span className="text-sm text-muted">
-                                                {formatInstant(attempt.submittedAt)}
-                                            </span>
-                                            <span className={`text-sm font-medium ${attempt.status === "GRADED" ? "text-success" : "text-highlight"}`}>
-                                                {t(`attempts.status.${attempt.status}`)}
-                                            </span>
-                                        </button>
+                                        <span className="flex items-center justify-between gap-2">
+                                            <span>{t("attempts.label", { index: getAttemptIndex(attempt.id) })}</span>
+                                            {attempt.grade && (
+                                                <span className="font-bold text-accent">{attempt.grade.overall}</span>
+                                            )}
+                                        </span>
                                     );
-                                })}
-                            </div>
-                        </div>
+                                }}
+                                optionRender={(option) => {
+                                    const attempt = findAttempt(option.value as string);
+                                    if (!attempt) return null;
+                                    return <AttemptOption attempt={attempt} index={getAttemptIndex(attempt.id)} />;
+                                }}
+                            />
 
-                        <div className="flex min-w-0 flex-1 flex-col gap-3">
-                            <div className="flex flex-wrap items-center gap-3">
-                                <Segmented<AttemptView>
-                                    value={attemptView}
-                                    onChange={setAttemptView}
-                                    options={[
-                                        { value: "original", label: t("attempts.views.original") },
-                                        { value: "graded", label: t("attempts.views.graded") },
-                                    ]}
+                            <Segmented<AttemptView>
+                                value={attemptView}
+                                onChange={setAttemptView}
+                                options={[
+                                    { value: "original", label: t("attempts.views.original") },
+                                    { value: "graded", label: t("attempts.views.graded") },
+                                ]}
+                            />
+
+                            <div className="flex items-center gap-1.5">
+                                <p className="whitespace-nowrap text-muted">{t("attempts.correctionPanel")}</p>
+                                <Switch
+                                    checked={showAttemptCorrectionPanel}
+                                    onChange={handleToggleAttemptCorrectionPanel}
+                                    checkedChildren={t("attempts.on")}
+                                    unCheckedChildren={t("attempts.off")}
                                 />
+                            </div>
 
-                                <div className="flex items-center gap-1.5">
-                                    <p className="whitespace-nowrap text-muted">{t("attempts.correctionPanel")}</p>
-                                    <Switch
-                                        checked={showAttemptCorrectionPanel}
-                                        onChange={handleToggleAttemptCorrectionPanel}
-                                        checkedChildren={t("attempts.on")}
-                                        unCheckedChildren={t("attempts.off")}
+                            {isTeacher && currentAttemptId && (
+                                <div className="ml-auto flex items-center gap-2">
+                                    <Button
+                                        label={t("attempts.aiGrade")}
+                                        type="button"
+                                        variant="tertiary"
+                                        size="sm"
+                                        icon={<PencilAiIcon width={16} height={16} />}
+                                        onClick={handleAiGrade}
+                                    />
+
+                                    <Button
+                                        label={t("attempts.doneGrading")}
+                                        type="button"
+                                        size="sm"
+                                        icon={<FileEditIcon width={16} height={16} />}
+                                        onClick={() => {}}
                                     />
                                 </div>
-
-                                {isTeacher && currentAttemptId && (
-                                    <div className="ml-auto flex items-center gap-2">
-                                        <Button
-                                            label={t("attempts.aiGrade")}
-                                            type="button"
-                                            variant="tertiary"
-                                            size="sm"
-                                            icon={<PencilAiIcon width={16} height={16} />}
-                                            onClick={handleAiGrade}
-                                        />
-
-                                        <Button
-                                            label={t("attempts.doneGrading")}
-                                            type="button"
-                                            size="sm"
-                                            icon={<FileEditIcon width={16} height={16} />}
-                                            onClick={() => {}}
-                                        />
-                                    </div>
-                                )}
-                            </div>
-
-                            <AttemptContent
-                                attemptId={currentAttemptId}
-                                view={attemptView}
-                                editable={isTeacher}
-                                onEditorChange={setAttemptEditor}
-                            />
+                            )}
                         </div>
+
+                        <AttemptContent
+                            attemptId={currentAttemptId}
+                            view={attemptView}
+                            editable={isTeacher}
+                            onEditorChange={setAttemptEditor}
+                        />
                     </div>
                 )}
             </Splitter.Panel>
@@ -415,12 +395,34 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             {showAttemptCorrectionPanel && (
                 <Splitter.Panel size={attemptSizes[2]} min="20%" max="40%">
                     <div className="relative h-full">
-                        <div className="absolute inset-0 flex flex-col p-6">
-                            <CorrectionPanel
-                                editor={attemptEditor}
-                                readOnly={!isTeacher}
-                                canEdit={isTeacher}
+                        <div className="absolute inset-0 flex flex-col gap-4 p-6">
+                            <Segmented<AttemptSideTab>
+                                block
+                                value={attemptSideTab}
+                                onChange={setAttemptSideTab}
+                                options={[
+                                    { value: "corrections", label: t("attempts.sideTabs.corrections") },
+                                    { value: "grading", label: t("attempts.sideTabs.grading") },
+                                ]}
                             />
+
+                            <div className="flex min-h-0 flex-1 flex-col">
+                                {attemptSideTab === "corrections" ? (
+                                    <CorrectionPanel
+                                        editor={attemptEditor}
+                                        readOnly={!isTeacher}
+                                        canEdit={isTeacher}
+                                    />
+                                ) : (
+                                    currentAttempt && (
+                                        <GradingPanel
+                                            key={currentAttempt.id}
+                                            initialGrade={currentAttempt.grade}
+                                            readonly={!isTeacher}
+                                        />
+                                    )
+                                )}
+                            </div>
                         </div>
                     </div>
                 </Splitter.Panel>

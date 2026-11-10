@@ -580,16 +580,13 @@
                 "SUBMITTED": "Submitted",
                 "GRADED": "Graded"
             },
-            "score": {
-                "taskResponse": "Task Response",
-                "coherenceCohesion": "Coherence & Cohesion",
-                "lexicalResource": "Lexical Resource",
-                "grammaticalRange": "Grammatical Range",
-                "overall": "Overall"
-            },
             "views": {
                 "original": "Original",
                 "graded": "Graded"
+            },
+            "sideTabs": {
+                "corrections": "Corrections",
+                "grading": "Grading"
             },
             "empty": "No submissions yet",
             "notGraded": "This submission hasn't been graded yet",
@@ -687,6 +684,20 @@
                 "cancelText": "Cancel"
             },
             "apply": "Apply"
+        },
+        "gradingPanel": {
+            "criteria": {
+                "taskResponse": "Task Response",
+                "coherenceCohesion": "Coherence & Cohesion",
+                "lexicalResource": "Lexical Resource",
+                "grammaticalRange": "Grammatical Range & Accuracy"
+            },
+            "overall": "Overall",
+            "submit": "Finish grading",
+            "feedbackPlaceholder": "Feedback for this criterion",
+            "generalFeedback": "General feedback",
+            "generalFeedbackPlaceholder": "Strengths and what to improve next time",
+            "noFeedback": "No feedback yet"        
         },
         "aiAssistMenu": {
             "fix": "AI fix",

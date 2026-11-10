@@ -580,16 +580,13 @@
                 "SUBMITTED": "Đã nộp",
                 "GRADED": "Đã chấm"
             },
-            "score": {
-                "taskResponse": "Hoàn thành yêu cầu đề",
-                "coherenceCohesion": "Mạch lạc & liên kết",
-                "lexicalResource": "Từ vựng",
-                "grammaticalRange": "Ngữ pháp",
-                "overall": "Điểm tổng"
-            },
             "views": {
                 "original": "Bản gốc",
                 "graded": "Bản sửa"
+            },
+            "sideTabs": {
+                "corrections": "Chỗ sửa",
+                "grading": "Chấm điểm"            
             },
             "empty": "Chưa có lần nộp nào",
             "notGraded": "Bài này chưa được chấm",
@@ -687,6 +684,20 @@
                 "cancelText": "Huỷ"
             },
             "apply": "Áp dụng"
+        },
+        "gradingPanel": {
+            "criteria": {
+                "taskResponse": "Hoàn thành yêu cầu đề",
+                "coherenceCohesion": "Mạch lạc & liên kết",
+                "lexicalResource": "Từ vựng",
+                "grammaticalRange": "Ngữ pháp"
+            },
+            "overall": "Điểm tổng",
+            "submit": "Hoàn tất chấm",
+            "feedbackPlaceholder": "Nhận xét cho tiêu chí này",
+            "generalFeedback": "Nhận xét chung",
+            "generalFeedbackPlaceholder": "Điểm mạnh, điểm cần cải thiện cho bài sau",
+            "noFeedback": "Chưa có nhận xét"        
         },
         "aiAssistMenu": {
             "fix": "AI sửa lỗi",

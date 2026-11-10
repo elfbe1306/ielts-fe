@@ -1,6 +1,15 @@
 export type Criterion = "TR" | "CC" | "LR" | "GRA";
 
+export type CriterionKey = "taskResponse" | "coherenceCohesion" | "lexicalResource" | "grammaticalRange";
+
 export const CRITERIA: Criterion[] = ["TR", "CC", "LR", "GRA"];
+
+export const SCORE_CRITERIA: { key: CriterionKey; label: Criterion }[] = [
+    { key: "taskResponse", label: "TR" },
+    { key: "coherenceCohesion", label: "CC" },
+    { key: "lexicalResource", label: "LR" },
+    { key: "grammaticalRange", label: "GRA" },
+];
 
 export type CriterionFilter = "ALL" | Criterion;
 

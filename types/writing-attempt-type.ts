@@ -5,12 +5,18 @@ export type CreateWritingAttemptRequest = {
 
 export type WritingAttemptStatus = "SUBMITTED" | "GRADED";
 
-export type WritingScore = {
-    taskResponse: number;
-    coherenceCohesion: number;
-    lexicalResource: number;
-    grammaticalRange: number;
+export type CriterionGrade = {
+    score: number;
+    feedback: string;
+};
+
+export type WritingGrade = {
+    taskResponse: CriterionGrade;
+    coherenceCohesion: CriterionGrade;
+    lexicalResource: CriterionGrade;
+    grammaticalRange: CriterionGrade;
     overall: number;
+    generalFeedback: string;
 };
 
 export type WritingAttempt = {
@@ -19,7 +25,8 @@ export type WritingAttempt = {
     gradedContent: string | null;
     status: WritingAttemptStatus;
     submittedAt: string;
-    score: WritingScore | null;
+    grade: WritingGrade | null;
 };
 
 export type WritingAttemptSummary = Omit<WritingAttempt, "originalContent" | "gradedContent">;
+

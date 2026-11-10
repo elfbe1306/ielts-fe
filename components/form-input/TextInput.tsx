@@ -24,6 +24,9 @@ type NumberTextInputProps = BaseProps & {
     type: "number";
     value: number | "";
     onChange: (value: number | "") => void;
+    min?: number;
+    max?: number;
+    step?: number;
 };
 
 type TextInputProps = StringTextInputProps | NumberTextInputProps;
@@ -96,6 +99,9 @@ export default function TextInput(props: TextInputProps) {
                         onChange={(e) => handleChange(e.target.value)}
                         placeholder={placeholder}
                         maxLength={maxLength}
+                        min={props.type === "number" ? props.min : undefined}
+                        max={props.type === "number" ? props.max : undefined}
+                        step={props.type === "number" ? props.step : undefined}
                         className={`${baseClass} ${sizeStyle.input} ${isPassword ? sizeStyle.passwordInput : ""}`}
                     />
                 )}
