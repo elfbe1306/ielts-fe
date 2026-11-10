@@ -20,7 +20,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
-import { CreateWritingAttemptRequest } from "@/types/writing-attempt-type";
+import { CreateWritingAttemptRequest, WritingGrade } from "@/types/writing-attempt-type";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 import PencilAiIcon from "../icons/PencilAiIcon";
 import AttemptOption from "./AttemptOption";
@@ -92,6 +92,11 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const handleSelectAttempt = (attemptId: string) => {
         setSelectedAttemptId(attemptId);
+    };
+
+    const handleFinishGrading = (grade: WritingGrade) => {
+        // TODO: gọi API lưu điểm + nhận xét, đổi trạng thái sang GRADED
+        console.log(currentAttemptId, grade);
     };
 
     const handleAiGrade = () => {
@@ -370,14 +375,6 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                         icon={<PencilAiIcon width={16} height={16} />}
                                         onClick={handleAiGrade}
                                     />
-
-                                    <Button
-                                        label={t("attempts.doneGrading")}
-                                        type="button"
-                                        size="sm"
-                                        icon={<FileEditIcon width={16} height={16} />}
-                                        onClick={() => {}}
-                                    />
                                 </div>
                             )}
                         </div>
@@ -419,6 +416,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                             key={currentAttempt.id}
                                             initialGrade={currentAttempt.grade}
                                             readonly={!isTeacher}
+                                            onSubmit={handleFinishGrading}
                                         />
                                     )
                                 )}

@@ -3,6 +3,8 @@ import { useTranslations } from "next-intl";
 import { useState } from "react";
 import TextInput from "../form-input/TextInput";
 import { WritingGrade } from "@/types/writing-attempt-type";
+import Button from "../Button";
+import FileEditIcon from "../icons/FileEditIcon";
 
 type CriterionDraft = {
     score: number | "";
@@ -32,15 +34,45 @@ function toDraft(grade: WritingGrade | null): GradeDraft {
     };
 }
 
+function calculateOverall(draft: GradeDraft): number | null {
+    const scores = SCORE_CRITERIA.map(({ key }) => draft[key].score);
+    if (scores.some((score) => score === "")) return null;
+
+    const average = (scores as number[]).reduce((sum, score) => sum + score, 0) / scores.length;
+    return Math.round(average * 2) / 2;
+}
+
 type GradingPanelProps = {
     initialGrade: WritingGrade | null;
     readonly?: boolean;
+    submitting?: boolean;
+    onSubmit?: (grade: WritingGrade) => void;
 };
 
-export default function GradingPanel({ initialGrade, readonly = false } : GradingPanelProps) {
+export default function GradingPanel({ initialGrade, readonly = false, submitting = false, onSubmit }: GradingPanelProps) {
     const t = useTranslations("writingWorkspace.gradingPanel");
 
     const [draft, setDraft] = useState<GradeDraft>(() => toDraft(initialGrade));
+
+    const overall = calculateOverall(draft);
+
+    const handleSubmit = () => {
+        if (overall === null || !onSubmit) return;
+
+        const criterion = (key: CriterionKey) => ({
+            score: draft[key].score as number,
+            feedback: draft[key].feedback.trim(),
+        });
+
+        onSubmit({
+            taskResponse: criterion("taskResponse"),
+            coherenceCohesion: criterion("coherenceCohesion"),
+            lexicalResource: criterion("lexicalResource"),
+            grammaticalRange: criterion("grammaticalRange"),
+            overall,
+            generalFeedback: draft.generalFeedback.trim(),
+        });
+    };
 
     const handleCriterionChange = (key: CriterionKey, patch: Partial<CriterionDraft>) => {
         setDraft((prev) => ({ ...prev, [key]: { ...prev[key], ...patch } }));
@@ -120,6 +152,27 @@ export default function GradingPanel({ initialGrade, readonly = false } : Gradin
                         />
                     )}
                 </div>
+            </div>
+
+            <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
+                <div className="flex items-baseline gap-2">
+                    <span className="text-sm font-semibold text-muted">{t("overall")}</span>
+                    <span className="text-2xl font-bold tabular-nums text-accent">
+                        {overall === null ? "–" : overall.toFixed(1)}
+                    </span>
+                </div>
+
+                {!readonly && (
+                    <Button
+                        label={t("submit")}
+                        type="button"
+                        size="sm"
+                        icon={<FileEditIcon className="text-white" width={16} height={16} />}
+                        loading={submitting}
+                        disabled={overall === null}
+                        onClick={handleSubmit}
+                    />
+                )}
             </div>
         </div>
     )
