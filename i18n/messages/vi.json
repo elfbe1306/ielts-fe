@@ -565,7 +565,7 @@
             "draft": "Bản nháp",
             "attempts": "Bài đã nộp"
         },
-        "draft": {
+        "drafts": {
             "correctionMode": "Chế độ chấm bài",
             "correctionPanel": "Bảng chỗ sửa",
             "on": "Bật",
@@ -593,6 +593,8 @@
             "emptyHint": "Bài sẽ hiện ở đây sau khi bạn bấm Nộp bài ở tab Bản nháp",
             "goToDraft": "Về bản nháp",
             "aiGrade": "AI chấm bài",
+            "aiApplied": "Đã thêm {count} góp ý",
+            "aiSkipped": "{count} góp ý không tìm được vị trí trong bài",
             "correctionPanel": "Bảng chỗ sửa",
             "on": "Bật",
             "off": "Tắt",
@@ -601,7 +603,8 @@
         "errors": {
             "emptyEssay": "Bài viết đang trống",
             "aiFailed": "Không thể áp dụng sửa lỗi từ AI",
-            "pendingCorrections": "Còn {count} lỗi chưa xử lý."
+            "aiPendingCorrections": "Còn {count} chỗ sửa chưa xử lý. Chấp nhận hoặc từ chối hết trước khi tiếp tục.",
+            "aiGradeHasCorrections": "Bài đã có {count} chỗ sửa. Xoá hết trước khi chấm lại bằng AI."
         },
         "attemptViewer": {
             "wordCount": "{count} từ",
@@ -687,7 +690,18 @@
                 "okText": "Xoá",
                 "cancelText": "Huỷ"
             },
-            "apply": "Áp dụng"
+            "apply": "Áp dụng",
+            "applyAll": "Áp dụng tất cả",
+            "deleteAll": "Xoá tất cả",
+            "applyAllPopconfirm": {
+                "title": "Áp dụng tất cả chỗ sửa?",
+                "subtitle": "Sẽ áp dụng {count} chỗ sửa vào bài.",
+                "okText": "Áp dụng"
+            },
+            "deleteAllPopconfirm": {
+                "title": "Xoá tất cả chỗ sửa?",
+                "subtitle": "Sẽ xoá {count} chỗ sửa, không thể hoàn tác."
+            }
         },
         "gradingPanel": {
             "criteria": {

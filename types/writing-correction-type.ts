@@ -1,3 +1,4 @@
+import { WritingGrade } from "./writing-attempt-type";
 import { CorrectionType, Criterion } from "./writing-criterion-type";
 
 // === Editor ===
@@ -47,18 +48,7 @@ export type GenerateGradeRequest = {
     language: ResponseLanguage;
 };
 
-export type CriterionScore = {
-    criterion: Criterion;
-    band: number;
-    feedback: string;
-};
-
-export type AiScore = {
-    overallBand: number;
-    criteria: CriterionScore[];
-    summary: string;
-};
-
-export type GenerateGradeResponse = GenerateCorrectionsResponse & {
-    score: AiScore;
+export type GenerateGradeResponse = {
+    corrections: AiCorrection[];
+    grade: WritingGrade;
 };

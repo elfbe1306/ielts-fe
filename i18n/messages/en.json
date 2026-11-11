@@ -565,7 +565,7 @@
             "draft": "Draft",
             "attempts": "Submissions"
         },
-        "draft": {
+        "drafts": {
             "correctionMode": "Grading mode",
             "correctionPanel": "Corrections panel",
             "on": "On",
@@ -593,6 +593,8 @@
             "emptyHint": "Your submissions will appear here after you submit from the Draft tab",
             "goToDraft": "Go to draft",
             "aiGrade": "AI grade",
+            "aiApplied": "Added {count} suggestions",
+            "aiSkipped": "{count} suggestions couldn't be placed in the essay",
             "correctionPanel": "Corrections panel",
             "on": "On",
             "off": "Off",
@@ -601,7 +603,8 @@
         "errors": {
             "emptyEssay": "The essay is empty",
             "aiFailed": "Couldn't apply AI corrections",
-            "pendingCorrections": "{count} corrections still pending."
+            "aiPendingCorrections": "There are {count} unresolved corrections. Accept or reject them all before continuing.",
+            "aiGradeHasCorrections": "This essay already has {count} corrections. Remove them before grading with AI."
         },
         "attemptViewer": {
             "wordCount": "{count} words",
@@ -687,7 +690,18 @@
                 "okText": "Delete",
                 "cancelText": "Cancel"
             },
-            "apply": "Apply"
+            "apply": "Apply",
+            "applyAll": "Apply all",
+            "deleteAll": "Delete all",
+            "applyAllPopconfirm": {
+                "title": "Apply all corrections?",
+                "subtitle": "{count} corrections will be applied to the essay.",
+                "okText": "Apply"
+            },
+            "deleteAllPopconfirm": {
+                "title": "Delete all corrections?",
+                "subtitle": "{count} corrections will be deleted. This cannot be undone."
+            }
         },
         "gradingPanel": {
             "criteria": {

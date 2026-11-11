@@ -52,7 +52,10 @@ type GradingPanelProps = {
 export default function GradingPanel({ initialGrade, readonly = false, submitting = false, onSubmit }: GradingPanelProps) {
     const t = useTranslations("writingWorkspace.gradingPanel");
 
-    const [draft, setDraft] = useState<GradeDraft>(() => toDraft(initialGrade));
+    const [initialDraft] = useState<GradeDraft>(() => toDraft(initialGrade));
+    const [draft, setDraft] = useState<GradeDraft>(initialDraft); 
+    
+    const isDirty = JSON.stringify(draft) !== JSON.stringify(initialDraft);
 
     const overall = calculateOverall(draft);
 
@@ -122,7 +125,7 @@ export default function GradingPanel({ initialGrade, readonly = false, submittin
                                 <TextInput
                                     type="textarea"
                                     size="sm"
-                                    rows={2}
+                                    rows={6}
                                     placeholder={t("feedbackPlaceholder")}
                                     value={feedback}
                                     onChange={(value) => handleCriterionChange(key, { feedback: value })}
@@ -145,7 +148,7 @@ export default function GradingPanel({ initialGrade, readonly = false, submittin
                         <TextInput
                             type="textarea"
                             size="sm"
-                            rows={4}
+                            rows={8}
                             placeholder={t("generalFeedbackPlaceholder")}
                             value={draft.generalFeedback}
                             onChange={(value) => setDraft((prev) => ({ ...prev, generalFeedback: value }))}
@@ -169,7 +172,7 @@ export default function GradingPanel({ initialGrade, readonly = false, submittin
                         size="sm"
                         icon={<FileEditIcon className="text-white" width={16} height={16} />}
                         loading={submitting}
-                        disabled={overall === null}
+                        disabled={overall === null || !isDirty}
                         onClick={handleSubmit}
                     />
                 )}

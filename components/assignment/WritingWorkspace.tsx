@@ -3,7 +3,7 @@ import { WritingAssignment } from "@/types/writing-assignment-type";
 import { CourseMember } from "@/types/course-type";
 import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
-import { useTranslations } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 import { Empty, Segmented, Select, Splitter, Switch, Tabs } from "antd";
 import { useCallback, useState } from "react";
 import * as Y from "yjs";
@@ -15,7 +15,7 @@ import MemberSwitcher from "./MemberSwitcher";
 import CorrectionPanel from "./CorrectionPanel";
 import AiAssistMenu from "./AiAssistMenu";
 import AttemptContent, { AttemptView } from "./AttemptContent";
-import { GenerateCorrectionsRequest, ResponseLanguage } from "@/types/writing-correction-type";
+import { GenerateCorrectionsRequest, GenerateGradeRequest, ResponseLanguage } from "@/types/writing-correction-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
@@ -33,6 +33,11 @@ type WorkspaceTab = "draft" | "attempts";
 type PanelSize = number | string;
 
 type AttemptSideTab = "corrections" | "grading";
+
+type AiGrade = {
+    attemptId: string;
+    grade: WritingGrade;
+};
 
 const SIZES_TWO_PANELS: PanelSize[] = ["50%", "50%"];
 const SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
@@ -52,6 +57,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const { user } = useAuth();
     const message = useAppMessage();
     const queryClient = useQueryClient();
+    const locale = useLocale();
+
+    const language: ResponseLanguage = locale === "vi" ? "VI" : "EN";
 
     const isTeacher = mode === "teacher";
 
@@ -69,6 +77,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [sizes, setSizes] = useState<PanelSize[]>(SIZES_TWO_PANELS);
     const [editor, setEditor] = useState<Editor | null>(null);
     const [editorKey, setEditorKey] = useState<number>(0);
+    const [aiGrade, setAiGrade] = useState<AiGrade | null>(null);
+    const [aiGradeKey, setAiGradeKey] = useState<number>(0);
 
     const ownerId = selectedOwnerId ?? user?.id ?? null;
     const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
@@ -111,6 +121,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
             writingAttemptApi.gradeWritingAttempt(attemptId, data),
         onSuccess: () => {
             message.success(t("attempts.gradeSuccess"));
+            setAiGrade(null);
             queryClient.invalidateQueries({ queryKey: ["writing-attempts", assignment.id] });
         },
         onError: (error) => {
@@ -124,8 +135,50 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
         gradeAttempt({ attemptId: currentAttemptId, data: { grade } });
     };
 
+    const { mutate: generateGrade, isPending: isAiGrading } = useMutation({
+        mutationFn: (data: GenerateGradeRequest) => writingAiApi.generateGrade(data),
+        onSuccess: (data) => {
+            if (!attemptEditor || attemptEditor.isDestroyed) return;
+
+            const { applied, skipped } = applyAiCorrections(attemptEditor, data.corrections);
+
+            message.success(t("attempts.aiApplied", { count: applied }));
+            if (skipped > 0) {
+                message.warning(t("attempts.aiSkipped", { count: skipped }));
+            }
+        
+            if (currentAttemptId) {
+                setAiGrade({ attemptId: currentAttemptId, grade: data.grade });
+                setAiGradeKey((key) => key + 1);
+            }
+
+            handleToggleAttemptCorrectionPanel(true);
+        },
+        onError: (error) => {
+            message.error(error.message);
+        }
+    });
+
     const handleAiGrade = () => {
-        // TODO: gọi API AI chấm bài
+        if (!attemptEditor || attemptEditor.isDestroyed || isAiGrading) return;
+
+        const essay = buildTextIndex(attemptEditor.state.doc).text;
+        if (!essay.trim()) {
+            message.warning(t("errors.aiEmptyEssay"));
+            return;
+        }
+
+        const correctionCount = countPendingCorrections(attemptEditor.state.doc);
+        if (correctionCount > 0) {
+            message.warning(t("errors.aiGradeHasCorrections", { count: correctionCount }));
+            return;
+        }
+
+        generateGrade({
+            writingQuestionId: assignment.writingQuestion.id,
+            essay,
+            language
+        })
     };
 
     const handleToggleAttemptCorrectionPanel = (checked: boolean) => {
@@ -145,9 +198,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
             const { applied, skipped } = applyAiCorrections(editor, data.corrections);
 
-            message.success(t("draft.aiApplied", { count: applied }));
+            message.success(t("drafts.aiApplied", { count: applied }));
             if (skipped > 0) {
-                message.warning(t("draft.aiSkipped", { count: skipped }));
+                message.warning(t("drafts.aiSkipped", { count: skipped }));
             } else {
                 handleToggleCorrectionPanel(true);
             }
@@ -157,7 +210,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
         }
     })
 
-    const handleRunAi = (language: ResponseLanguage) => {
+    const handleRunAi = () => {
         if (!editor || editor.isDestroyed || isGenerating) return;
 
         const essay = buildTextIndex(editor.state.doc).text;
@@ -222,6 +275,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const showMemberSwitcher = !membersLoading && (activeTab === "draft" || isTeacher);
 
+    const currentAiGrade = currentAttempt && aiGrade?.attemptId === currentAttempt.id ? aiGrade.grade : null;
+
     const isOwnAttempts = attemptOwnerId === user?.id;
     const hasNoAttempts = !isAttemptsLoading && attempts.length === 0;
 
@@ -238,23 +293,23 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <div className="flex flex-wrap items-center gap-x-4 gap-y-2">
                         {isTeacher && (
                             <div className="flex items-center gap-1.5">
-                                <p className="whitespace-nowrap text-muted">{t("draft.correctionMode")}</p>
+                                <p className="whitespace-nowrap text-muted">{t("drafts.correctionMode")}</p>
                                 <Switch
                                     checked={isCorrection}
                                     onChange={setIsCorrection}
-                                    checkedChildren={t("draft.on")}
-                                    unCheckedChildren={t("draft.off")}
+                                    checkedChildren={t("drafts.on")}
+                                    unCheckedChildren={t("drafts.off")}
                                 />
                             </div>
                         )}
 
                         <div className="flex items-center gap-1.5">
-                            <p className="whitespace-nowrap text-muted">{t("draft.correctionPanel")}</p>
+                            <p className="whitespace-nowrap text-muted">{t("drafts.correctionPanel")}</p>
                             <Switch
                                 checked={showCorrectionPanel}
                                 onChange={handleToggleCorrectionPanel}
-                                checkedChildren={t("draft.on")}
-                                unCheckedChildren={t("draft.off")}
+                                checkedChildren={t("drafts.on")}
+                                unCheckedChildren={t("drafts.off")}
                             />
                         </div>
 
@@ -262,7 +317,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             <div className="ml-auto flex items-center gap-2">
                                 {!isEditorReadOnly && (
                                     <AiAssistMenu
-                                        onFix={(language) => handleRunAi(language)}
+                                        onFix={handleRunAi}
                                         isLoading={isGenerating}
                                     />
                                 )}
@@ -346,11 +401,12 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <div className="flex min-w-0 flex-1 flex-col gap-3 p-6">
                         <div className="flex flex-wrap items-center gap-3">
                             <Select
-                                className="w-56"
+                                className="w-45"
                                 placeholder={t("attempts.title")}
                                 value={currentAttemptId}
                                 onChange={handleSelectAttempt}
-                                popupMatchSelectWidth={320}
+                                disabled={isAiGrading}
+                                popupMatchSelectWidth={280}
                                 options={attempts.map((attempt) => ({ value: attempt.id }))}
                                 labelRender={({ value }) => {
                                     const attempt = findAttempt(value as string);
@@ -375,6 +431,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             <Segmented<AttemptView>
                                 value={attemptView}
                                 onChange={setAttemptView}
+                                disabled={isAiGrading}
                                 options={[
                                     { value: "original", label: t("attempts.views.original") },
                                     { value: "graded", label: t("attempts.views.graded") },
@@ -392,16 +449,16 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             </div>
 
                             {isTeacher && currentAttemptId && (
-                                <div className="ml-auto flex items-center gap-2">
-                                    <Button
-                                        label={t("attempts.aiGrade")}
-                                        type="button"
-                                        variant="tertiary"
-                                        size="sm"
-                                        icon={<PencilAiIcon width={16} height={16} />}
-                                        onClick={handleAiGrade}
-                                    />
-                                </div>
+                                <Button
+                                    label={t("attempts.aiGrade")}
+                                    type="button"
+                                    variant="tertiary"
+                                    size="sm"
+                                    icon={<PencilAiIcon width={16} height={16} />}
+                                    onClick={handleAiGrade}
+                                    disabled={attemptView !== "graded"}
+                                    loading={isAiGrading}
+                                />
                             )}
                         </div>
 
@@ -440,8 +497,8 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                 ) : (
                                     currentAttempt && (
                                         <GradingPanel
-                                            key={currentAttempt.id}
-                                            initialGrade={currentAttempt.grade}
+                                            key={`${currentAttempt.id}-${aiGradeKey}`}
+                                            initialGrade={currentAiGrade ?? currentAttempt.grade}
                                             readonly={!isTeacher}
                                             submitting={isGrading}
                                             onSubmit={handleFinishGrading}
@@ -476,7 +533,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             value={ownerId}
                             onChange={handleChangeOwner}
                             currentUserId={user?.id ?? null}
-                            disabled={isGenerating}
+                            disabled={isGenerating || isAiGrading}
                         />
                     )
                 }

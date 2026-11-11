@@ -83,6 +83,16 @@ export default function CorrectionPanel({ editor, readOnly = false, canEdit = fa
         editor.commands.removeCorrection(id);
     };
 
+    const handleApplyAll = () => {
+        if (!editor || !canModify) return;
+        [...visible].reverse().forEach((item) => editor.commands.applyCorrection(item.attrs.id));
+    };
+
+    const handleRemoveAll = () => {
+        if (!editor || !canModify) return;
+        [...visible].reverse().forEach((item) => editor.commands.removeCorrection(item.attrs.id));
+    };
+
     const handleUpdate = (id: string, patch: CorrectionPatch) => {
         if (!editor || !canEdit) return;
         editor.commands.updateCorrection(id, patch);
@@ -239,6 +249,38 @@ export default function CorrectionPanel({ editor, readOnly = false, canEdit = fa
                     />
                 )}
             </div>
+
+            {canModify && visible.length > 0 && (
+                <div className="flex items-center justify-end gap-1.5 border-t border-border pt-3">
+                    <Popconfirm
+                        title={t("applyAllPopconfirm.title")}
+                        description={t("applyAllPopconfirm.subtitle", { count: visible.length })}
+                        placement="topRight"
+                        okText={t("applyAllPopconfirm.okText")}
+                        cancelText={t("deletePopconfirm.cancelText")}
+                        cancelButtonProps={{ style: { cursor: "pointer" } }}
+                        onConfirm={handleApplyAll}
+                    >
+                        <span>
+                            <Button label={t("applyAll")} type="button" variant="tertiary" size="sm" />
+                        </span>
+                    </Popconfirm>
+
+                    <Popconfirm
+                        title={t("deleteAllPopconfirm.title")}
+                        description={t("deleteAllPopconfirm.subtitle", { count: visible.length })}
+                        placement="topRight"
+                        okText={t("deletePopconfirm.okText")}
+                        cancelText={t("deletePopconfirm.cancelText")}
+                        cancelButtonProps={{ style: { cursor: "pointer" } }}
+                        onConfirm={handleRemoveAll}
+                    >
+                        <span>
+                            <Button label={t("deleteAll")} type="button" variant="secondary" size="sm" />
+                        </span>
+                    </Popconfirm>
+                </div>
+            )}
         </div>
     );
 }
