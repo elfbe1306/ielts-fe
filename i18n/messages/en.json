@@ -595,7 +595,8 @@
             "aiGrade": "AI grade",
             "correctionPanel": "Corrections panel",
             "on": "On",
-            "off": "Off"
+            "off": "Off",
+            "gradeSuccess": "Grade saved"
         },
         "errors": {
             "emptyEssay": "The essay is empty",
@@ -609,6 +610,10 @@
                 "italic": "Italic (Ctrl+I)",
                 "underline": "Underline (Ctrl+U)",
                 "strike": "Strikethrough (Ctrl+Shift+S)"
+            },
+            "saveStatus": {
+                "saving": "Saving...",
+                "saved": "Saved"
             }
         },
         "writingQuestionPanel": {

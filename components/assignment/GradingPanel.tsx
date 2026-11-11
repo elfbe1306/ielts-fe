@@ -157,7 +157,7 @@ export default function GradingPanel({ initialGrade, readonly = false, submittin
             <div className="flex items-center justify-between gap-3 border-t border-border pt-4">
                 <div className="flex items-baseline gap-2">
                     <span className="text-sm font-semibold text-muted">{t("overall")}</span>
-                    <span className="text-2xl font-bold tabular-nums text-accent">
+                    <span className="text-xl font-bold tabular-nums text-accent">
                         {overall === null ? "–" : overall.toFixed(1)}
                     </span>
                 </div>

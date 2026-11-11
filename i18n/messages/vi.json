@@ -595,7 +595,8 @@
             "aiGrade": "AI chấm bài",
             "correctionPanel": "Bảng chỗ sửa",
             "on": "Bật",
-            "off": "Tắt"
+            "off": "Tắt",
+            "gradeSuccess": "Đã lưu điểm"
         },
         "errors": {
             "emptyEssay": "Bài viết đang trống",
@@ -609,6 +610,10 @@
                 "italic": "In nghiêng (Ctrl+I)",
                 "underline": "Gạch chân (Ctrl+U)",
                 "strike": "Gạch ngang (Ctrl+Shift+S)"
+            },
+            "saveStatus": {
+                "saving": "Đang lưu...",
+                "saved": "Đã lưu"
             }
         },
         "writingQuestionPanel": {

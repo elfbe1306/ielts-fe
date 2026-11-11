@@ -3,11 +3,19 @@ export type CreateWritingAttemptRequest = {
     content: string;
 };
 
+export type UpdateWritingAttemptRequest = {
+    gradedContent: string;
+};
+
+export type GradeWritingAttemptRequest = {
+    grade: WritingGrade;
+};
+
 export type WritingAttemptStatus = "SUBMITTED" | "GRADED";
 
 export type CriterionGrade = {
     score: number;
-    feedback: string;
+    feedback: string | null;
 };
 
 export type WritingGrade = {
@@ -16,7 +24,7 @@ export type WritingGrade = {
     lexicalResource: CriterionGrade;
     grammaticalRange: CriterionGrade;
     overall: number;
-    generalFeedback: string;
+    generalFeedback: string | null;
 };
 
 export type WritingAttempt = {

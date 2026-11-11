@@ -5,7 +5,7 @@ import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
 import { useTranslations } from "next-intl";
 import { Empty, Segmented, Select, Splitter, Switch, Tabs } from "antd";
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import * as Y from "yjs";
 import Button from "../Button";
 import FileEditIcon from "../icons/FileEditIcon";
@@ -20,7 +20,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { writingAiApi } from "@/lib/api/writingAiApi";
 import { useAppMessage } from "@/contexts/message-context";
 import { applyAiCorrections, buildTextIndex, countPendingCorrections } from "@/lib/ai-correction";
-import { CreateWritingAttemptRequest, WritingGrade } from "@/types/writing-attempt-type";
+import { CreateWritingAttemptRequest, GradeWritingAttemptRequest, WritingGrade } from "@/types/writing-attempt-type";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 import PencilAiIcon from "../icons/PencilAiIcon";
 import AttemptOption from "./AttemptOption";
@@ -60,6 +60,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [showAttemptCorrectionPanel, setShowAttemptCorrectionPanel] = useState<boolean>(false);
     const [attemptSizes, setAttemptSizes] = useState<PanelSize[]>(ATTEMPT_SIZES_TWO_PANELS);
     const [attemptEditor, setAttemptEditor] = useState<Editor | null>(null);
+    const [attemptEditorKey, setAttemptEditorKey] = useState<number>(0);
     const [attemptSideTab, setAttemptSideTab] = useState<AttemptSideTab>("corrections");
     const [attemptView, setAttemptView] = useState<AttemptView>("graded");
     const [selectedOwnerId, setSelectedOwnerId] = useState<string | null>(null);
@@ -67,6 +68,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     const [showCorrectionPanel, setShowCorrectionPanel] = useState<boolean>(false);
     const [sizes, setSizes] = useState<PanelSize[]>(SIZES_TWO_PANELS);
     const [editor, setEditor] = useState<Editor | null>(null);
+    const [editorKey, setEditorKey] = useState<number>(0);
 
     const ownerId = selectedOwnerId ?? user?.id ?? null;
     const documentName = ownerId ? `writing:${assignment.id}:${ownerId}` : null;
@@ -94,9 +96,32 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
         setSelectedAttemptId(attemptId);
     };
 
+    const handleEditorChange = useCallback((editor: Editor | null) => {
+        setEditor(editor);
+        setEditorKey((key) => key + 1);
+    }, []);
+
+    const handleAttemptEditorChange = useCallback((editor: Editor | null) => {
+        setAttemptEditor(editor);
+        setAttemptEditorKey((key) => key + 1);
+    }, []);
+
+    const { mutate: gradeAttempt, isPending: isGrading } = useMutation({
+        mutationFn: ({ attemptId, data } : { attemptId: string, data: GradeWritingAttemptRequest }) => 
+            writingAttemptApi.gradeWritingAttempt(attemptId, data),
+        onSuccess: () => {
+            message.success(t("attempts.gradeSuccess"));
+            queryClient.invalidateQueries({ queryKey: ["writing-attempts", assignment.id] });
+        },
+        onError: (error) => {
+            message.error(error.message);
+        }    
+    });
+
     const handleFinishGrading = (grade: WritingGrade) => {
-        // TODO: gọi API lưu điểm + nhận xét, đổi trạng thái sang GRADED
-        console.log(currentAttemptId, grade);
+        if (!currentAttemptId || isGrading) return;
+
+        gradeAttempt({ attemptId: currentAttemptId, data: { grade } });
     };
 
     const handleAiGrade = () => {
@@ -263,7 +288,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             currentUser={{ id: user.id, name: user.fullName }}
                             readOnly={isEditorReadOnly}
                             isCorrection={isTeacher && isCorrection}
-                            onEditorChange={setEditor}
+                            onEditorChange={handleEditorChange}
                         />
                     )}
                 </div>
@@ -274,6 +299,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                     <div className="relative h-full">
                         <div className="absolute inset-0 flex flex-col p-6">
                             <CorrectionPanel
+                                key={editorKey}
                                 editor={editor}
                                 readOnly={isEditorReadOnly}
                                 canEdit={isTeacher}
@@ -334,7 +360,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                         <span className="flex items-center justify-between gap-2">
                                             <span>{t("attempts.label", { index: getAttemptIndex(attempt.id) })}</span>
                                             {attempt.grade && (
-                                                <span className="font-bold text-accent">{attempt.grade.overall}</span>
+                                                <span className="font-bold text-accent">{attempt.grade.overall.toFixed(1)}</span>
                                             )}
                                         </span>
                                     );
@@ -383,7 +409,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             attemptId={currentAttemptId}
                             view={attemptView}
                             editable={isTeacher}
-                            onEditorChange={setAttemptEditor}
+                            onEditorChange={handleAttemptEditorChange}
                         />
                     </div>
                 )}
@@ -406,6 +432,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                             <div className="flex min-h-0 flex-1 flex-col">
                                 {attemptSideTab === "corrections" ? (
                                     <CorrectionPanel
+                                        key={attemptEditorKey}
                                         editor={attemptEditor}
                                         readOnly={!isTeacher}
                                         canEdit={isTeacher}
@@ -416,6 +443,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                                             key={currentAttempt.id}
                                             initialGrade={currentAttempt.grade}
                                             readonly={!isTeacher}
+                                            submitting={isGrading}
                                             onSubmit={handleFinishGrading}
                                         />
                                     )

@@ -32,7 +32,7 @@ export default function AttemptOption({ attempt, index }: AttemptOptionProps) {
                 )}
             </div>
 
-            {grade && <span className="text-lg font-bold text-accent">{grade.overall}</span>}
+            {grade && <span className="text-lg font-bold text-accent">{grade.overall.toFixed(1)}</span>}
         </div>
     );
 }
