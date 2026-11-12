@@ -32,7 +32,12 @@
         "account": {
             "account": "Tài khoản",
             "language": "Ngôn ngữ",
-            "signOut": "Đăng xuất"          
+            "signOut": "Đăng xuất",
+            "roles": { 
+                "ADMIN": "Quản trị viên", 
+                "TEACHER": "Giáo viên", 
+                "STUDENT": "Học viên" 
+            }         
         }
     },
     "auth": {
