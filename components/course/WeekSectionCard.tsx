@@ -10,6 +10,7 @@ import TrashIcon from "../icons/TrashIcon";
 import PencilIcon from "../icons/PencilIcon";
 import PlusIcon from "../icons/PlusIcon";
 import { weekSectionApi } from "@/lib/api/weekSectionApi";
+import { courseKeys } from "@/lib/queries/courseQueries";
 import UpdateWeekSectionModal from "../modals/UpdateWeekSectionModal";
 import CreateWritingAssignmentModal from "../modals/CreateWritingAssignmentModal";
 import AssignmentList from "./AssignmentList";
@@ -32,9 +33,12 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
     const [isCreateWritingAssignmentModalOpen, setIsCreateWritingAssignmentModalOpen] = useState<boolean>(false);
 
     const { mutateAsync } = useMutation({
-        mutationFn: () => weekSectionApi.deleteWeekSection(weekSection.id),
+        mutationFn: () => weekSectionApi.deleteWeekSection(courseId, weekSection.id),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: courseKeys.detail(courseId) }),
+                queryClient.invalidateQueries({ queryKey: courseKeys.lists() }),
+            ]);
             message.success(t("deleteSuccess"));
         },
         onError: (error) => {
@@ -136,7 +140,7 @@ export default function WeekSectionCard({ courseId, weekSection } : WeekSectionC
                         writingAssignments={writingAssignments} 
                     />
                 ) : (
-                    <p className="rounded-lg border border-dashed border-border py-6 text-center text-sm text-muted">
+                    <p className="rounded-lg border border-dashed border-border py-10 text-center text-sm text-muted">
                         {t("assignments.empty")}
                     </p>
                 )}

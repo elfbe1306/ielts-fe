@@ -5,9 +5,9 @@ import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { addDays, formatTime } from "@/lib/utils";
-import { ClassSession, CreateWeekSectionRequest, SessionErrors } from "@/types/week-section-type";
-import { Course } from "@/types/course-type";
+import { ClassSession, CreateWeekSectionRequest, SessionErrors, WeekSection } from "@/types/week-section-type";
 import { weekSectionApi } from "@/lib/api/weekSectionApi";
+import { courseKeys } from "@/lib/queries/courseQueries";
 import TextInput from "../form-input/TextInput";
 import WeekCard from "../course/WeekCard";
 
@@ -22,7 +22,8 @@ const emptySession = (): ClassSession => ({
 });
 
 type CreateWeekSectionModalProps = {
-    course: Course;
+    courseId: string;
+    weekSections: WeekSection[];
     isOpen: boolean;
     onClose: () => void;
 }
@@ -32,14 +33,14 @@ type Errors = {
     sessions?: Record<string, SessionErrors>;
 }
 
-export default function CreateWeekSectionModal({ course, isOpen, onClose } : CreateWeekSectionModalProps) {
+export default function CreateWeekSectionModal({ courseId, weekSections, isOpen, onClose } : CreateWeekSectionModalProps) {
     const t = useTranslations("teacherCourseDetailPage.createWeekSectionModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 
-    const previousWeek = course.weekSections.at(-1);
+    const previousWeek = weekSections.at(-1);
 
-    const [weekName, setWeekName] = useState<string>(() => t("defaultWeekName", { number: course.weekSections.length + 1 }));
+    const [weekName, setWeekName] = useState<string>(() => t("defaultWeekName", { number: weekSections.length + 1 }));
     const [sessionCount, setSessionCount] = useState<number | "">(MIN_SESSIONS);
     const [sessions, setSessions] = useState<ClassSession[]>(() => [emptySession()]);
 
@@ -90,9 +91,12 @@ export default function CreateWeekSectionModal({ course, isOpen, onClose } : Cre
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateWeekSectionRequest) => weekSectionApi.createWeekSection(data),
+        mutationFn: (data: CreateWeekSectionRequest) => weekSectionApi.createWeekSection(courseId, data),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["course", course.id] })
+            await Promise.all([
+                queryClient.invalidateQueries({ queryKey: courseKeys.detail(courseId) }),
+                queryClient.invalidateQueries({ queryKey: courseKeys.lists() }),
+            ]);
             message.success(t("createSuccess"));
             onClose();
         },
@@ -135,7 +139,6 @@ export default function CreateWeekSectionModal({ course, isOpen, onClose } : Cre
         }
 
         mutate({
-            courseId: course.id,
             weekName: weekName.trim(),
             sessions: sessions.map(({ date, startTime, endTime }) => ({ date, startTime, endTime })),
         });

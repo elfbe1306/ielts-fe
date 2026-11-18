@@ -2,9 +2,9 @@ import { Popconfirm, Progress } from "antd";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 import { formatDateDDMMYYYY } from "@/lib/utils";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
-import { STATUS_STYLE } from "@/types/course-type";
+import { STATUS_TEXT_STYLE } from "@/types/course-type";
 import { useRouter } from "@/i18n/navigation";
 import { courseApi } from "@/lib/api/courseApi";
 import { ROUTES } from "@/lib/route";
@@ -12,30 +12,53 @@ import Button from "../Button";
 import PencilIcon from "../icons/PencilIcon";
 import TrashIcon from "../icons/TrashIcon";
 import UpdateCourseModal from "../modals/UpdateCourseModal";
-import { useTeacherCourse } from "@/contexts/teacher-course-context";
+import { notFound, useParams } from "next/navigation";
+import { courseKeys, courseQueries } from "@/lib/queries/courseQueries";
+import { isNotFoundError } from "@/lib/api/error";
 
 export default function CourseHeader() {
-    const course = useTeacherCourse();
+    const { courseId } = useParams<{ courseId: string; }>();
     const t = useTranslations("teacherCourseDetailPage.courseHeader");
     const message = useAppMessage();
     const queryClient = useQueryClient();
     const router = useRouter(); 
 
+    const { data: course, isLoading, error } = useQuery(courseQueries.detail(courseId));
+
     const [isUpdateModalOpen, setIsUpdateModalOpen] = useState<boolean>(false);
-    
-    const progressPercent = Math.min(Math.round((course.completedSessions / course.totalSessions) * 100), 100);
 
     const { mutateAsync } = useMutation({
-        mutationFn: () => courseApi.deleteCourse(course.id),
-        onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["courses"] });
+        mutationFn: () => courseApi.deleteCourse(courseId),
+        onSuccess: () => {
             message.success(t("deleteSuccess"));
             router.replace(ROUTES.teacher.courses);
+            queryClient.removeQueries({ queryKey: courseKeys.detail(courseId) });
+            queryClient.invalidateQueries({ queryKey: courseKeys.lists() });
         },
         onError: (error) => {
             message.error(error.message);
         }
     });
+
+    if (isLoading) {
+        return <div className="h-32 animate-pulse rounded-2xl border border-border bg-surface" />;
+    }
+ 
+    if (error) {
+        if (isNotFoundError(error)) {
+            notFound();
+        }
+ 
+        return (
+            <div className="rounded-2xl border border-error/40 bg-error-bg px-6 py-10 text-center text-sm text-error">
+                {error.message}
+            </div>
+        );
+    }
+ 
+    if (!course) return null;
+
+    const progressPercent = Math.min(Math.round((course.completedSessions / course.totalSessions) * 100), 100);
 
     return (
         <div className="rounded-2xl border border-border bg-bg p-6">
@@ -43,10 +66,6 @@ export default function CourseHeader() {
                 <p className="font-serif text-2xl font-bold">{course.name}</p>
 
                 <div className="flex flex-none items-center gap-2">
-                    <p className={`inline-flex h-7 flex-none items-center whitespace-nowrap rounded-full px-3 text-sm font-medium ${STATUS_STYLE[course.status]}`}>
-                        {t(`status.${course.status}`)}
-                    </p>
-
                     <Button
                         label=""
                         type="button"
@@ -78,12 +97,12 @@ export default function CourseHeader() {
 
             <div className="mt-5 flex flex-wrap gap-x-8 gap-y-4 border-t border-border pt-5">
                 <div className="min-w-30">
-                    <p className="text-sm text-muted">{t("teacherLabel")}</p>
-                    <p className="mt-0.5 text-sm font-semibold">{"Huynh Ngoc Nhon"}</p>
-                </div>
-                <div className="min-w-30">
                     <p className="text-sm text-muted">{t("startDateLabel")}</p>
                     <p className="mt-0.5 text-sm font-semibold">{formatDateDDMMYYYY(course.startDate)}</p>
+                </div>
+                <div className="min-w-30">
+                    <p className="text-sm text-muted">{t("statusLabel")}</p>
+                    <p className={`mt-0.5 text-sm font-semibold ${STATUS_TEXT_STYLE[course.status]}`}>{t(`status.${course.status}`)}</p>
                 </div>
                 <div className="min-w-30">
                     <p className="text-muted text-sm">{t("capacityLabel")}</p>
@@ -92,10 +111,6 @@ export default function CourseHeader() {
                         <p> / </p>
                         <p>{t("capacityValue", { min: course.minStudents, max: course.maxStudents })}</p>
                     </div>
-                </div>
-                <div className="min-w-30">
-                    <p className="text-sm text-muted">{t("scheduledWeeksLabel")}</p>
-                    <p className="mt-0.5 text-sm font-semibold">{course.weekSections.length}</p>
                 </div>
             </div>
 

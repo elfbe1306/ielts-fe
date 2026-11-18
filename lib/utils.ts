@@ -1,3 +1,10 @@
+// Return first letter of the given name
+export function getInitial(fullName: string): string {
+    const parts = fullName.trim().split(/\s+/);
+    const lastName = parts[parts.length - 1];
+    return lastName.charAt(0).toUpperCase();
+}
+
 // Convert YYYY-MM-DD to DD-MM-YYYY
 export function formatDateDDMMYYYY(dateStr: string): string {
     const [year, month, day] = dateStr.split("-");

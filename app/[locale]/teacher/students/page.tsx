@@ -10,10 +10,11 @@ import UpdateStudentModal from "@/components/modals/UpdateStudentModal";
 import { useAppMessage } from "@/contexts/message-context";
 import { useDebounce } from "@/hooks/useDebounce";
 import { studentApi } from "@/lib/api/studentApi";
+import { studentKeys, studentQueries } from "@/lib/queries/studentQueries";
 import { formatInstant } from "@/lib/utils";
 import { STATUS_STYLE } from "@/types/course-type";
-import { CourseSummary, Student } from "@/types/user-type";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CourseSummary, Student } from "@/types/student-type";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Popconfirm, Table, TableColumnsType } from "antd";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
@@ -34,15 +35,9 @@ export default function TeacherStudentsPage() {
 
     const debouncedSearch = useDebounce(search.trim(), 700);
 
-    const { data, isLoading, isFetching, isError } = useQuery({
-        queryKey: ["students", page, debouncedSearch],
-        queryFn: () => studentApi.getAllStudentAccounts({ 
-            page, 
-            size: DEFAULT_PAGE_SIZE, 
-            search: debouncedSearch || undefined 
-        }),
-        placeholderData: keepPreviousData,
-    });
+    const { data, isLoading, isFetching, isError } = useQuery(
+        studentQueries.list({ page, size: DEFAULT_PAGE_SIZE, search: debouncedSearch })
+    );
 
     const handleSearchChange = (value: string) => {
         setSearch(value);
@@ -65,10 +60,7 @@ export default function TeacherStudentsPage() {
             if (page > 0 && data?.content.length === 1) {
                 setPage(page - 1);
             }
-            await Promise.all([
-                queryClient.invalidateQueries({ queryKey: ["students"]}),
-                queryClient.invalidateQueries({ queryKey: ["courses", "enrollable"]})
-            ]);
+            await queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
             message.success(t("deleteSuccess"));
         },
         onError: (error) => {

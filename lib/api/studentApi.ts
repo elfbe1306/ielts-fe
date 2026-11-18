@@ -1,13 +1,7 @@
-import { CreateStudentRequest, StudentListResponse, UpdateStudentRequest } from "@/types/user-type";
+import { CreateStudentRequest, StudentListParams, StudentListResponse, UpdateStudentRequest } from "@/types/student-type";
 import { http } from "./http";
 
-type ListStudentsParams = {
-    page: number,
-    size: number,
-    search?: string
-}
-
-function buildQuery(params: ListStudentsParams): string {
+function buildQuery(params: StudentListParams): string {
     const searchParams = new URLSearchParams({
         page: String(params.page),
         size: String(params.size),
@@ -23,7 +17,7 @@ function buildQuery(params: ListStudentsParams): string {
 export const studentApi = {
     createStudentAccount: (data: CreateStudentRequest) => http.post<void>("/api/students", data),
 
-    getAllStudentAccounts: (params: ListStudentsParams) => http.get<StudentListResponse>(`/api/students?${buildQuery(params)}`),
+    getAllStudentAccounts: (params: StudentListParams) => http.get<StudentListResponse>(`/api/students?${buildQuery(params)}`),
 
     updateStudentAccount: (userId: string, data: UpdateStudentRequest) => http.patch<void>(`/api/students/${userId}`, data),
 

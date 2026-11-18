@@ -38,7 +38,7 @@ const ICON_ONLY_VARIANT_STYLES: Record<NonNullable<ButtonProps["variant"]>, stri
 };
 
 const SIZE_STYLES: Record<ButtonSize, string> = {
-    md: "h-11 gap-2.5 rounded-lg px-5 text-sm font-bold",
+    md: "h-11 gap-2.5 rounded-lg px-5 text-sm",
     sm: "h-8 gap-1.5 rounded-md px-3 text-sm",
 };
 
@@ -68,7 +68,7 @@ export default function Button({ label, icon, onClick, disabled = false, loading
             type={type}
             onClick={onClick}
             disabled={isDisabled}
-            className={`inline-flex items-center justify-center transition-colors cursor-pointer disabled:cursor-not-allowed ${SIZE_STYLES[size]} ${fullWidth ? "w-full" : "w-fit"} ${VARIANT_STYLES[variant]}`}
+            className={`font-serif inline-flex items-center justify-center transition-colors cursor-pointer disabled:cursor-not-allowed ${SIZE_STYLES[size]} ${fullWidth ? "w-full" : "w-fit"} ${VARIANT_STYLES[variant]}`}
         >
             {loading ? <Spin size="small" /> : icon}
             {label}

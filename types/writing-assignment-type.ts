@@ -1,7 +1,6 @@
 import { WritingQuestion } from "./writing-question-type";
 
 export type CreateWritingAssignmentRequest = {
-    weekSectionId: string;
     writingQuestionId: string;
     dueDate: string;
     dueTime: string;

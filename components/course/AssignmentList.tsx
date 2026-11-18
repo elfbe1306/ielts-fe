@@ -14,6 +14,7 @@ import { ROUTES } from "@/lib/route";
 import TrashIcon from "../icons/TrashIcon";
 import { useRouter } from "@/i18n/navigation";
 import UpdateWritingAssignmentModal from "../modals/UpdateWritingAssignmentModal";
+import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 
 const THUMB_SIZE = 64;
 
@@ -33,9 +34,9 @@ export default function AssignmentList({ courseId, writingAssignments } : Assign
     const [selectedAssignment, setSelectedAssignment] = useState<WritingAssignment | null>(null);
 
     const { mutateAsync } = useMutation({
-        mutationFn: (assignmentId: string) => writingAssignmentApi.deleteWritingAssignment(assignmentId),
+        mutationFn: (assignmentId: string) => writingAssignmentApi.deleteWritingAssignment(courseId, assignmentId),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
+            await queryClient.invalidateQueries({ queryKey: weekSectionKeys.list(courseId) });
             message.success(t("deleteSuccess"));
         },
         onError: (error) => {

@@ -4,7 +4,6 @@ export type CreateStudentRequest = {
     fullName: string;
     email: string;
     phoneNumber: string;
-    courseIds: string[];
 }
 
 export type UpdateStudentRequest = Partial<CreateStudentRequest>;
@@ -23,6 +22,12 @@ export type Student = {
     createdAt: string;
     courses: CourseSummary[];
 }
+
+export type StudentListParams = {
+    page: number;
+    size: number;
+    search: string;
+};
 
 export type StudentListResponse = {
     content: Student[];

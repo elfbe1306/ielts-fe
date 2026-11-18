@@ -1,8 +1,12 @@
 import { DatePicker } from "antd";
 import dayjs, { Dayjs } from "dayjs";
 import customParseFormat from 'dayjs/plugin/customParseFormat';
+import updateLocale from "dayjs/plugin/updateLocale";
 
 dayjs.extend(customParseFormat);
+dayjs.extend(updateLocale);
+
+dayjs.updateLocale("en", { weekStart: 1 });
 
 const DISPLAY_FORMAT = "DD-MM-YYYY";
 const VALUE_FORMAT = "YYYY-MM-DD";

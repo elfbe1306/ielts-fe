@@ -27,17 +27,15 @@ export type WeekSection = {
     writingAssignments: WritingAssignment[];
 }
 
+export type SessionTime = Pick<ClassSession, "date" | "startTime" | "endTime">;
+
 export type CreateWeekSectionRequest = {
-    courseId: string;
     weekName: string;
-    sessions: Omit<ClassSession, "id" | "isNew">[];
+    sessions: SessionTime[];
 }
 
-export type UpdateSessionRequest = {
+export type UpdateSessionRequest = SessionTime & {
     id: string | null;
-    date: string;
-    startTime: string;
-    endTime: string;
 }
 
 export type UpdateWeekSectionRequest = Partial<{

@@ -68,7 +68,7 @@ export default function StudentWeekSectionCard({ courseId, weekSection } : Stude
                         writingAssignments={writingAssignments} 
                     />
                 ) : (
-                    <p className="rounded-lg border border-dashed border-border py-6 text-center text-sm text-muted">
+                    <p className="rounded-lg border border-dashed border-border py-10 text-center text-sm text-muted">
                         {t("assignments.empty")}
                     </p>
                 )}

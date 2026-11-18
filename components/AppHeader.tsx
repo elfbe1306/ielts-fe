@@ -17,6 +17,7 @@ import TeacherNav from "./nav/TeacherNav";
 import StudentNav from "./nav/StudentNav";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authApi } from "@/lib/api/authApi";
+import { getInitial } from "@/lib/utils";
 
 const NAV_BY_ROLE: Record<Role, React.ComponentType> = {
     ADMIN: AdminNav,
@@ -38,12 +39,6 @@ const AVATAR_STYLE: CSSProperties = {
 
 function isLocale(key: string): key is Locale {
     return LOCALES.some((l) => l.code === key);
-}
-
-function getInitial(fullName: string): string {
-    const parts = fullName.trim().split(/\s+/);
-    const lastName = parts[parts.length - 1];
-    return lastName.charAt(0).toUpperCase();
 }
 
 export default function AppHeader({ role }: { role: Role }) {

@@ -19,6 +19,8 @@ export const DIFFICULTIES = ["EASY", "MEDIUM", "HARD"] as const;
 export type WritingTaskType = (typeof TASK_TYPES)[number];
 export type WritingDifficulty = (typeof DIFFICULTIES)[number];
 
+export type WritingQuestionFilter = "ALL" | WritingTaskType;
+
 export type WritingQuestion = {
     id: string;
     title: string;
@@ -27,6 +29,12 @@ export type WritingQuestion = {
     difficulty: WritingDifficulty;
     imageUrl: string | null;
     createdAt: string;
+};
+
+export type WritingQuestionListParams = {
+    page: number;
+    size: number;
+    filter: WritingQuestionFilter;
 };
 
 export type CreateWritingQuestionRequest = Omit<WritingQuestion, "id" | "imageUrl" | "createdAt"> & {

@@ -1,25 +1,15 @@
 "use client";
 
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
-import { StudentCourseProvider } from "@/contexts/student-course-context";
 import { Link } from "@/i18n/navigation";
-import { courseApi } from "@/lib/api/courseApi";
-import { isNotFoundError } from "@/lib/api/error";
-
 import { ROUTES } from "@/lib/route";
-import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb } from "antd";
 import { useTranslations } from "next-intl";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function StudentCourseDetailLayout({ children }: { children: React.ReactNode }) {
     const { courseId, assignmentId } = useParams<{ courseId: string; assignmentId?: string }>();
     const t = useTranslations("studentCourseDetailPage");
-
-    const { data: course, isLoading, error } = useQuery({
-        queryKey: ["course", courseId],
-        queryFn: () => courseApi.getEnrolledCourseById(courseId),
-    });
 
     const breadcrumbItems = [
         {
@@ -38,24 +28,6 @@ export default function StudentCourseDetailLayout({ children }: { children: Reac
             path: ROUTES.student.writingAssignment(courseId, assignmentId),
         });
     }
-
-    if (isLoading) {
-        return <div className="h-32 animate-pulse rounded-2xl border border-border bg-surface" />;
-    }
-
-    if (error) {
-        if (isNotFoundError(error)) {
-            notFound();
-        }
-    
-        return (
-            <div className="rounded-2xl border border-error/40 bg-error-bg px-6 py-10 text-center text-sm text-error">
-                {error.message}
-            </div>
-        );
-    }
-
-    if (!course) return null;
 
     return (
         <>
@@ -83,9 +55,7 @@ export default function StudentCourseDetailLayout({ children }: { children: Reac
             />
 
             <div className="mt-4">
-                <StudentCourseProvider course={course}>
-                    {children}
-                </StudentCourseProvider>
+                {children}
             </div>
         </>
     );

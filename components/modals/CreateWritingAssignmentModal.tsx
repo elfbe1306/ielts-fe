@@ -1,21 +1,20 @@
 import { useTranslations } from "next-intl";
 import Modal from "./Modal";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { Image, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import Button from "../Button";
 import { useAppMessage } from "@/contexts/message-context";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
-import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
+import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingQuestion, WritingQuestionFilter } from "@/types/writing-question-type";
+import { writingQuestionQueries } from "@/lib/queries/writingQuestionQueries";
+import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 import DateInput from "../form-input/DateInput";
 import TimeInput from "../form-input/TimeInput";
 import TextInput from "../form-input/TextInput";
 import { CreateWritingAssignmentRequest } from "@/types/writing-assignment-type";
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
 
-type Filter = "ALL" | WritingTaskType;
-
-const FILTERS: Filter[] = ["ALL", "TASK_1", "TASK_2"];
+const FILTERS: WritingQuestionFilter[] = ["ALL", "TASK_1", "TASK_2"];
 const DEFAULT_PAGE_SIZE = 5;
 const THUMB_SIZE = 64;
 
@@ -44,36 +43,30 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
 
     const [errors, setErrors] = useState<Errors>({});
 
-    const [filter, setFilter] = useState<Filter>("ALL");
+    const [filter, setFilter] = useState<WritingQuestionFilter>("ALL");
     const [page, setPage] = useState<number>(0);
 
     const { data, isLoading, isError } = useQuery({
-        queryKey: ["writing-questions", page, filter],
-        queryFn: () => writingQuestionApi.list({
-            page,
-            size: DEFAULT_PAGE_SIZE,
-            taskType: filter === "ALL" ? undefined : filter,
-        }),
-        placeholderData: keepPreviousData,
-        enabled: isOpen
+        ...writingQuestionQueries.list({ page, size: DEFAULT_PAGE_SIZE, filter }),
+        enabled: isOpen,
     });
 
-    const handleFilterChange = (key: Filter) => {
+    const handleFilterChange = (key: WritingQuestionFilter) => {
         setFilter(key);
         setPage(0);
     };
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: CreateWritingAssignmentRequest) => writingAssignmentApi.createWritingAssignment(data),
+        mutationFn: (data: CreateWritingAssignmentRequest) => writingAssignmentApi.createWritingAssignment(courseId, weekSectionId, data),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["course", courseId] })
+            await queryClient.invalidateQueries({ queryKey: weekSectionKeys.list(courseId) });
             message.success(t("createSuccess"));
             onClose();
         },
         onError: (error) => {
             message.error(error.message);
         }
-    })
+    });
 
     const handleSubmit = (e: React.SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -91,7 +84,6 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
         }
 
         mutate({
-            weekSectionId: weekSectionId,
             writingQuestionId: selectedQuestion.id,
             dueDate,
             dueTime,

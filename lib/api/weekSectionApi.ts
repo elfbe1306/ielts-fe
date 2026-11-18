@@ -2,9 +2,18 @@ import { CreateWeekSectionRequest, UpdateWeekSectionRequest, WeekSection } from 
 import { http } from "./http";
 
 export const weekSectionApi = {
-    createWeekSection: (data: CreateWeekSectionRequest) => http.post<WeekSection>(`/api/week-sections`, data),
+    // ===== Teacher =====
 
-    updateWeekSection: (weekSectionId: string, data: UpdateWeekSectionRequest) => http.patch<WeekSection>(`/api/week-sections/${weekSectionId}`, data),
+    createWeekSection: (courseId: string, data: CreateWeekSectionRequest) => http.post<WeekSection>(`/api/courses/${courseId}/week-sections`, data),
+    
+    getWeekSections: (courseId: string) => http.get<WeekSection[]>(`/api/courses/${courseId}/week-sections`),
 
-    deleteWeekSection: (weekSectionId: string) => http.delete<void>(`/api/week-sections/${weekSectionId}`),
+    updateWeekSection: (courseId: string, weekSectionId: string, data: UpdateWeekSectionRequest) => http.patch<WeekSection>(`/api/courses/${courseId}/week-sections/${weekSectionId}`, data),
+
+    deleteWeekSection: (courseId: string, weekSectionId: string) => http.delete<void>(`/api/courses/${courseId}/week-sections/${weekSectionId}`),
+
+    // ===== Student =====
+
+    getEnrolledWeekSections: (courseId: string) => http.get<WeekSection[]>(`/api/courses/enrolled/${courseId}/week-sections`),
+    
 }

@@ -1,19 +1,15 @@
-import { CreateWritingQuestionRequest, UpdateWritingQuestionRequest, WritingQuestionListResponse, WritingTaskType } from "@/types/writing-question-type";
+import { CreateWritingQuestionRequest, UpdateWritingQuestionRequest, WritingQuestion, WritingQuestionListParams, WritingQuestionListResponse } from "@/types/writing-question-type";
 import { http } from "./http";
 
-type ListWritingQuestionParams = {
-    page: number,
-    size: number,
-    taskType?: WritingTaskType,
-}
-
-function buildQuery(params: ListWritingQuestionParams): string {
+function buildQuery(params: WritingQuestionListParams): string {
     const searchParams = new URLSearchParams({
         page: String(params.page),
         size: String(params.size),
     });
 
-    if (params.taskType) searchParams.append("taskType", params.taskType);
+    if (params.filter !== "ALL") {
+        searchParams.set("taskType", params.filter);
+    }
 
     return searchParams.toString();
 }
@@ -29,10 +25,10 @@ export const writingQuestionApi = {
 
         if (payload.image) formData.append("image", payload.image);
 
-        return http.post("/api/writing-questions", formData);
+        return http.post<WritingQuestion>("/api/writing-questions", formData);
     },
 
-    list: (params: ListWritingQuestionParams) => http.get<WritingQuestionListResponse>(`/api/writing-questions?${buildQuery(params)}`),
+    list: (params: WritingQuestionListParams) => http.get<WritingQuestionListResponse>(`/api/writing-questions?${buildQuery(params)}`),
 
     update: (id: string, payload: UpdateWritingQuestionRequest) => {
         const formData = new FormData();
@@ -43,7 +39,7 @@ export const writingQuestionApi = {
         if (payload.image) formData.append("image", payload.image);
         if (payload.removeImage) formData.append("removeImage", "true");
 
-        return http.patch(`/api/writing-questions/${id}`, formData)
+        return http.patch<WritingQuestion>(`/api/writing-questions/${id}`, formData)
     },
 
     delete: (id: string) => http.delete<void>(`/api/writing-questions/${id}`)

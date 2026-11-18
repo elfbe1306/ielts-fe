@@ -1,24 +1,15 @@
 "use client";
 
 import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
-import { TeacherCourseProvider } from "@/contexts/teacher-course-context";
 import { Link } from "@/i18n/navigation";
-import { isNotFoundError } from "@/lib/api/error";
-import { courseApi } from "@/lib/api/courseApi";
 import { ROUTES } from "@/lib/route";
-import { useQuery } from "@tanstack/react-query";
 import { Breadcrumb } from "antd";
 import { useTranslations } from "next-intl";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function TeacherCourseDetailLayout({ children }: { children: React.ReactNode }) {
     const { courseId, assignmentId } = useParams<{ courseId: string; assignmentId?: string }>();
     const t = useTranslations("teacherCourseDetailPage");
-
-    const { data: course, isLoading, error } = useQuery({
-        queryKey: ["course", courseId],
-        queryFn: () => courseApi.getCourse(courseId),
-    });
 
     const breadcrumbItems = [
         {
@@ -37,24 +28,6 @@ export default function TeacherCourseDetailLayout({ children }: { children: Reac
             path: ROUTES.teacher.writingAssignment(courseId, assignmentId),
         });
     }
-
-    if (isLoading) {
-        return <div className="h-32 animate-pulse rounded-2xl border border-border bg-surface" />;
-    }
-
-    if (error) {
-        if (isNotFoundError(error)) {
-            notFound();
-        }
-    
-        return (
-            <div className="rounded-2xl border border-error/40 bg-error-bg px-6 py-10 text-center text-sm text-error">
-                {error.message}
-            </div>
-        );
-    }
-
-    if (!course) return null;
 
     return (
         <>
@@ -82,9 +55,7 @@ export default function TeacherCourseDetailLayout({ children }: { children: Reac
             />
 
             <div className="mt-4">
-                <TeacherCourseProvider course={course}>
-                    {children}
-                </TeacherCourseProvider>
+                {children}
             </div>
         </>
     );

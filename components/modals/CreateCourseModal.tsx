@@ -10,6 +10,7 @@ import { courseApi } from "@/lib/api/courseApi";
 import Modal from "./Modal";
 import TextInput from "../form-input/TextInput";
 import DateInput from "../form-input/DateInput";
+import { courseKeys } from "@/lib/queries/courseQueries";
 
 type CreateCourseModalProps = {
     isOpen: boolean;
@@ -42,7 +43,7 @@ export default function CreateCourseModal({ isOpen, onClose }: CreateCourseModal
     const { mutate, isPending } = useMutation({
         mutationFn: (data: CreateCourseRequest) => courseApi.createCourse(data),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["courses"] });
+            await queryClient.invalidateQueries({ queryKey: courseKeys.lists() });
             message.success(t("createSuccess"));
             onClose();
         },

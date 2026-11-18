@@ -10,6 +10,7 @@ import { Course, UpdateCourseRequest } from "@/types/course-type";
 import { courseApi } from "@/lib/api/courseApi";
 import TextInput from "../form-input/TextInput";
 import DateInput from "../form-input/DateInput";
+import { courseKeys } from "@/lib/queries/courseQueries";
 
 type UpdateCourseModalProps = {
     course: Course;
@@ -53,8 +54,8 @@ export default function UpdateCourseModal({ course, isOpen, onClose } : UpdateCo
         mutationFn: (data: UpdateCourseRequest) => courseApi.updateCourse(course.id, data),
         onSuccess: async () => {
             await Promise.all([
-                queryClient.invalidateQueries({ queryKey: ["courses"] }),
-                queryClient.invalidateQueries({ queryKey: ["course", course.id] })
+                queryClient.invalidateQueries({ queryKey: courseKeys.detail(course.id), exact: true }),
+                queryClient.invalidateQueries({ queryKey: courseKeys.lists() })
             ]);
             message.success(t("updateSuccess"));
             onClose();

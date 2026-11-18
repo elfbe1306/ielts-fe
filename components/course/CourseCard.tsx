@@ -1,12 +1,12 @@
 import { Link } from "@/i18n/navigation";
 import { ROUTES } from "@/lib/route";
-import { Course, STATUS_STYLE } from "@/types/course-type";
+import { Course, STATUS_TEXT_STYLE } from "@/types/course-type";
 import { useTranslations } from "next-intl";
-import BookIcon from "../icons/BookIcon";
 import CalendarIcon from "../icons/CalendarIcon";
 import UserIcon from "../icons/UserIcon";
 import { formatDateDDMMYYYY } from "@/lib/utils";
 import { Progress } from "antd";
+import BookIcon from "../icons/BookIcon";
 
 type CourseCardProps = { 
     course: Course;
@@ -22,25 +22,9 @@ export default function CourseCard({ course } : CourseCardProps) {
             href={ROUTES.teacher.courseDetail(course.id)}
             className="group flex cursor-pointer flex-col gap-2.5 rounded-2xl border border-border bg-bg p-5 transition-all duration-150 hover:-translate-y-0.5 hover:border-accent hover:shadow-lg hover:shadow-black/5"
         >
-            <div className="flex items-start justify-between gap-2.5">
-                <p className="font-serif text-base font-bold">{course.name}</p>
-
-                <p className={`inline-flex items-center h-6 flex-none rounded-full px-2.5 text-sm font-medium whitespace-nowrap ${STATUS_STYLE[course.status]}`}>
-                    {t(`status.${course.status}`)}
-                </p>
-            </div>
+            <p className="font-serif text-base font-bold">{course.name}</p>
 
             <div className="flex flex-col gap-1.5">
-                <div className="flex items-center gap-2">
-                    <BookIcon width={14} height={14} className="text-muted"/>
-                    <>
-                        <p className="text-muted text-sm">
-                            {t("teacherLabel")}
-                        </p>
-                        <p className="text-sm">{"Huynh Ngoc Nhon"}</p>
-                    </>
-                </div>
-
                 <div className="flex items-center gap-2">
                     <CalendarIcon width={14} height={14} className="text-muted"/>
                     <>
@@ -48,6 +32,14 @@ export default function CourseCard({ course } : CourseCardProps) {
                             {t("startDateLabel")}
                         </p>
                         <p className="text-sm">{formatDateDDMMYYYY(course.startDate)}</p>
+                    </>
+                </div>
+
+                <div className="flex items-center gap-2">
+                    <BookIcon width={14} height={14} className="text-muted"/>
+                    <>
+                        <p className="text-muted text-sm">{t("statusLabel")}</p>
+                        <p className={`text-sm font-medium ${STATUS_TEXT_STYLE[course.status]}`}>{t(`status.${course.status}`)}</p>
                     </>
                 </div>
 
@@ -63,7 +55,7 @@ export default function CourseCard({ course } : CourseCardProps) {
                     </>
                 </div>
 
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col gap-1.5 border-t border-border pt-3">
                     <div className="flex items-baseline justify-between gap-3">
                         <p className="text-sm text-muted">{t("progressLabel")}</p>
                         <p className="whitespace-nowrap text-sm font-bold">

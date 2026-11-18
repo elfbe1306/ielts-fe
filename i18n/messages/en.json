@@ -77,7 +77,7 @@
                 "ACTIVE": "Active",
                 "ENDED": "Ended"
             },
-            "teacherLabel": "Teacher:",
+            "statusLabel": "Status:",
             "startDateLabel": "Starts:",
             "capacityLabel": "Capacity:",
             "capacityValue": "{min}–{max} students",
@@ -132,17 +132,54 @@
                 "cancelText": "Cancel"
             },
             "deleteSuccess": "Course deleted successfully",
-            "teacherLabel": "Teacher",
+            "statusLabel": "Status",
             "startDateLabel": "Start date",
-            "scheduledWeeksLabel": "Weeks scheduled",
             "capacityLabel": "Capacity",
             "capacityValue": "{min}–{max} students",
             "progressLabel": "Course progress",
             "progressValue": "{completed} / {total} sessions"
         },
+        "tabs": { 
+            "weeks": "Weeks", 
+            "members": "Members" 
+        },
+        "courseMember": {
+            "staffTitle": "Teaching staff",
+            "studentTitle": "Students",
+            "studentEmpty": "No students yet",
+            "role": { 
+                "TEACHER": "Teacher", 
+                "ASSISTANT": "Teaching assistant", 
+                "STUDENT": "Student" 
+            },
+            "addButton": "Add member",
+            "changeRoleSuccess": "Role updated",
+            "removeSuccess": "Member removed from the course",
+            "removePopconfirm": {
+                "title": "Remove this member?",
+                "subtitle": "They will no longer have access to this course.",
+                "okText": "Remove",
+                "cancelText": "Cancel"
+            },
+            "addCourseMemberModal": {
+                "title": "Add member",
+                "subtitle": "Search for an account by email or name. If they don't have one yet, you can create it right here.",
+                "searchLabel": "Email or name",
+                "searchPlaceholder": "e.g. an@gmail.com or Nguyen Van An",
+                "searching": "Searching...",
+                "noResults": "No accounts found",
+                "searchError": "Couldn't load results, please try again",
+                "alreadyMember": "Already in course",
+                "roleLabel": "Role in course",
+                "roles": {
+                    "STUDENT": "Student",
+                    "ASSISTANT": "Teaching assistant"
+                },
+                "submit": "Add",
+                "addSuccess": "Member added to the course"
+            }
+        },
         "weekSection": {
-            "title": "Weeks",
-            "gradeButton": "Grade",
             "createButton": "Create week",
             "empty": "No weeks yet"
         },
@@ -340,19 +377,6 @@
             "emailPlaceholder": "student@gmail.com",
             "phoneLabel": "Phone Number (Optional)",
             "phonePlaceholder": "09xxxxxxxx",
-            "courseLoadError": "Failed to load courses",
-            "courseLabel": "Courses (Optional — you can select multiple courses)",
-            "columns": {
-                "name": "Course Name",
-                "enrollment": "Enrollment",
-                "status": "Status"
-            },
-            "status": {
-                "UPCOMING": "Upcoming",
-                "ACTIVE": "Active",
-                "ENDED": "Ended"
-            },
-            "full": "Full",
             "errors": {
                 "fullNameRequired": "Please enter a full name",
                 "emailRequired": "Please enter an email"
@@ -369,19 +393,6 @@
             "emailPlaceholder": "student@gmail.com",
             "phoneLabel": "Phone Number (Optional)",
             "phonePlaceholder": "09xxxxxxxx",
-            "courseLoadError": "Failed to load courses",
-            "courseLabel": "Courses (Optional — you can select multiple courses)",
-            "columns": {
-                "name": "Course Name",
-                "enrollment": "Enrollment",
-                "status": "Status"
-            },
-            "status": {
-                "UPCOMING": "Upcoming",
-                "ACTIVE": "Active",
-                "ENDED": "Ended"
-            },
-            "full": "Full",
             "errors": {
                 "fullNameRequired": "Please enter a full name",
                 "emailRequired": "Please enter an email"
@@ -503,7 +514,7 @@
                 "ACTIVE": "Active",
                 "ENDED": "Ended"
             },
-            "teacherLabel": "Teacher:",
+            "statusLabel": "Status:",
             "startDateLabel": "Starts:",
             "progressLabel": "Course progress",
             "progressValue": "{completed} / {total} sessions"
@@ -526,11 +537,24 @@
                 "ACTIVE": "Active",
                 "ENDED": "Ended"
             },
-            "teacherLabel": "Teacher",
+            "statusLabel": "Status",
             "startDateLabel": "Start date",
             "scheduledWeeksLabel": "Weeks scheduled",
             "progressLabel": "Course progress",
             "progressValue": "{completed} / {total} sessions"
+        },
+        "tabs": { 
+            "weeks": "Weeks", 
+            "members": "Members" 
+        },
+        "courseMember": {
+            "staffTitle": "Teaching staff",
+            "youTitle": "You",
+            "role": { 
+                "TEACHER": "Teacher", 
+                "ASSISTANT": "Teaching assistant", 
+                "STUDENT": "Student" 
+            }
         },
         "weekSection": {
             "title": "Weeks",

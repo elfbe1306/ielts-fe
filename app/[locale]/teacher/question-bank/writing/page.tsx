@@ -8,15 +8,14 @@ import CreateWritingQuestionModal from "@/components/modals/CreateWritingQuestio
 import UpdateWritingQuestionModal from "@/components/modals/UpdateWritingQuestionModal";
 import { useAppMessage } from "@/contexts/message-context";
 import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingDifficulty, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
-import { keepPreviousData, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { writingQuestionKeys, writingQuestionQueries } from "@/lib/queries/writingQuestionQueries";
+import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingDifficulty, WritingQuestion, WritingQuestionFilter, WritingTaskType } from "@/types/writing-question-type";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image, Popconfirm, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import { useTranslations } from "next-intl";
 import { useState } from "react";
 
-type Filter = "ALL" | WritingTaskType;
-
-const FILTERS: Filter[] = ["ALL", "TASK_1", "TASK_2"];
+const FILTERS: WritingQuestionFilter[] = ["ALL", "TASK_1", "TASK_2"];
 const DEFAULT_PAGE_SIZE = 10;
 
 export default function TeacherQuestionBankWritingPage() {
@@ -28,18 +27,12 @@ export default function TeacherQuestionBankWritingPage() {
     const [isUpdateModalOpen, setUpdateModalOpen] = useState<boolean>(false);
     const [selectedQuestion, setSelectedQuestion] = useState<WritingQuestion | null>(null);
 
-    const [filter, setFilter] = useState<Filter>("ALL");
+    const [filter, setFilter] = useState<WritingQuestionFilter>("ALL");
     const [page, setPage] = useState<number>(0);
 
-    const { data, isLoading, isError } = useQuery({
-        queryKey: ["writing-questions", page, filter],
-        queryFn: () => writingQuestionApi.list({
-            page,
-            size: DEFAULT_PAGE_SIZE,
-            taskType: filter === "ALL" ? undefined : filter,
-        }),
-        placeholderData: keepPreviousData
-    });
+    const { data, isLoading, isError } = useQuery(
+        writingQuestionQueries.list({ page, size: DEFAULT_PAGE_SIZE, filter })
+    );
 
     const { mutateAsync } = useMutation({
         mutationFn: (id: string) => writingQuestionApi.delete(id),
@@ -47,7 +40,7 @@ export default function TeacherQuestionBankWritingPage() {
             if (page > 0 && data?.content.length === 1) {
                 setPage(page - 1);
             }
-            await queryClient.invalidateQueries({ queryKey: ["writing-questions"] });
+            await queryClient.invalidateQueries({ queryKey: writingQuestionKeys.lists() });
             message.success(t("deleteSuccess"));
         },
         onError: (error) => {
@@ -65,7 +58,7 @@ export default function TeacherQuestionBankWritingPage() {
         setSelectedQuestion(null);
     };
 
-    const handleFilterChange = (key: Filter) => {
+    const handleFilterChange = (key: WritingQuestionFilter) => {
         setFilter(key);
         setPage(0);
     };

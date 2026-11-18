@@ -23,8 +23,7 @@ async function request<T>(url: string, init: RequestInit = {}) : Promise<T> {
     const data = isJson ? await res.json().catch(() => null) : null;
 
     if (!res.ok) {
-        const body = await res.json().catch(() => null);
-        throw new ApiError(body?.message ?? res.statusText, res.status);
+        throw new ApiError(data?.message ?? res.statusText, res.status);
     }
 
     return data as T;

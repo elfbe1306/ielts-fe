@@ -4,9 +4,9 @@ import Button from "@/components/Button";
 import CourseCard from "@/components/course/CourseCard";
 import PlusIcon from "@/components/icons/PlusIcon";
 import CreateCourseModal from "@/components/modals/CreateCourseModal";
-import { courseApi } from "@/lib/api/courseApi";
+import { courseQueries } from "@/lib/queries/courseQueries";
 import { CourseStatus } from "@/types/course-type";
-import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { Pagination } from "antd";
 import { useTranslations } from "next-intl"
 import { useState } from "react";
@@ -23,15 +23,9 @@ export default function TeacherCoursesPage() {
     const [filter, setFilter] = useState<Filter>("ALL");
     const [page, setPage] = useState<number>(0);
 
-    const { data, isLoading, isPlaceholderData, error } = useQuery({
-        queryKey: ["courses", page, filter],
-        queryFn: () => courseApi.listCourses({
-            page,
-            size: PAGE_SIZE,
-            status: filter === "ALL" ? undefined : filter,
-        }),
-        placeholderData: keepPreviousData,
-    });
+    const { data, isLoading, isPlaceholderData, error } = useQuery(
+        courseQueries.list({ page, size: PAGE_SIZE, filter })
+    );
 
     const courses = data?.content ?? [];
     const totalElements = data?.totalElements ?? 0;

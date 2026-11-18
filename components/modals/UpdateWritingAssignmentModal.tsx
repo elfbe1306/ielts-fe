@@ -9,6 +9,7 @@ import { formatTime } from "@/lib/utils";
 import { UpdateWritingAssignmentRequest, WritingAssignment } from "@/types/writing-assignment-type";
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
 import { DIFFICULTY_COLORS, TASK_TYPE_COLORS } from "@/types/writing-question-type";
+import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 import DateInput from "../form-input/DateInput";
 import TimeInput from "../form-input/TimeInput";
 import TextInput from "../form-input/TextInput";
@@ -56,9 +57,9 @@ export default function UpdateWritingAssignmentModal({ courseId, assignment, isO
     }
 
     const { mutate, isPending } = useMutation({
-        mutationFn: (data: UpdateWritingAssignmentRequest) => writingAssignmentApi.updateWritingAssignment(assignment.id, data),
+        mutationFn: (data: UpdateWritingAssignmentRequest) => writingAssignmentApi.updateWritingAssignment(courseId, assignment.id, data),
         onSuccess: async () => {
-            await queryClient.invalidateQueries({ queryKey: ["course", courseId] });
+            await queryClient.invalidateQueries({ queryKey: weekSectionKeys.list(courseId) });
             message.success(t("updateSuccess"));
             setErrors({});
             onClose();

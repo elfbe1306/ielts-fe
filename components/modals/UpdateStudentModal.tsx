@@ -4,20 +4,12 @@ import { useTranslations } from "next-intl";
 import Modal from "./Modal";
 import { useMemo, useState } from "react";
 import { useAppMessage } from "@/contexts/message-context";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Table, TableColumnsType } from "antd";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Button from "../Button";
-import { Course, CourseStatus } from "@/types/course-type";
-import { Student, UpdateStudentRequest } from "@/types/user-type";
-import { courseApi } from "@/lib/api/courseApi";
+import { Student, UpdateStudentRequest } from "@/types/student-type";
 import { studentApi } from "@/lib/api/studentApi";
 import TextInput from "../form-input/TextInput";
-
-const STATUS_STYLE: Record<CourseStatus, string> = {
-    UPCOMING: "text-accent-active",
-    ACTIVE: "text-success",
-    ENDED: "text-muted",
-};
+import { studentKeys } from "@/lib/queries/studentQueries";
 
 type UpdateStudentModalProps = {
     student: Student;
@@ -31,82 +23,6 @@ type Errors = {
     phoneNumber?: string;
 };
 
-type CourseTableProps = {
-    selectedIds: string[];
-    onSelectionChange: (ids: string[]) => void;
-    enrolledIds?: string[];
-};
-
-function CourseTable({ selectedIds, onSelectionChange, enrolledIds = [] }: CourseTableProps) {
-    const t = useTranslations("teacherStudentsPage.updateStudentModal");
-
-    const { data, isPending, isError } = useQuery({
-        queryKey: ["courses", "enrollable"],
-        queryFn: () => courseApi.listEnrollable({ page: 0, size: 100 }),
-    });
-
-    const isFull = (course: Course) => course.enrolledCount >= course.maxStudents;
-
-    const columns: TableColumnsType<Course> = [
-        {
-            title: t("columns.name"),
-            dataIndex: "name",
-            width: "50%",
-        },
-        {
-            title: t("columns.enrollment"),
-            key: "enrollment",
-            width: "25%",
-            render: (_, record) => (
-                <div className="flex items-center gap-2">
-                    <span className="text-sm">
-                        {record.enrolledCount}/{record.maxStudents}
-                    </span>
-                    {isFull(record) && (
-                        <span className="text-sm px-2 py-1 rounded bg-error/10 text-error">
-                            {t("full")}
-                        </span>
-                    )}
-                </div>
-            )
-        },
-        {
-            title: t("columns.status"),
-            dataIndex: "status",
-            width: "25%",
-            render: (status: CourseStatus) => (
-                <span className={`text-sm ${STATUS_STYLE[status]}`}>
-                    {t(`status.${status}`)}
-                </span>
-            ),
-        },
-    ];
-
-    if (isError) {
-        return <p className="text-sm text-error">{t("courseLoadError")}</p>;
-    }
-
-    return (
-        <Table<Course>
-            rowKey="id"
-            loading={isPending}
-            rowSelection={{
-                selectedRowKeys: selectedIds,
-                onChange: (keys) => onSelectionChange(keys as string[]),
-                getCheckboxProps: (record) => ({
-                    disabled: isFull(record) && !enrolledIds.includes(record.id),
-                }),
-            }}
-            columns={columns}
-            dataSource={data?.content ?? []}
-            pagination={false}
-            scroll={{ y: 200 }}
-            bordered={true}
-            size="small"
-        />
-    );
-}
-
 export default function UpdateStudentModal({ student, isOpen, onClose } : UpdateStudentModalProps) {
     const t = useTranslations("teacherStudentsPage.updateStudentModal");
     const message = useAppMessage();
@@ -115,35 +31,21 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
     const [fullName, setFullName] = useState<string>(student.fullName);
     const [email, setEmail] = useState<string>(student.email);
     const [phoneNumber, setPhoneNumber] = useState<string>(student.phoneNumber);
-    const [selectedCourseIds, setSelectedCourseIds] = useState<string[]>(student.courses.map((course) => course.id));
 
     const [errors, setErrors] = useState<Errors>({});
-
-    const originalCourseIds = useMemo(() => student.courses.map((course) => course.id), [student]);
-
-    const coursesChanged = useMemo(() => {
-        return (
-            selectedCourseIds.length !== originalCourseIds.length ||
-            !selectedCourseIds.every((id) => originalCourseIds.includes(id))
-        );
-    }, [selectedCourseIds, originalCourseIds]);
 
     const isDirty = useMemo(() => {
         return (
             fullName !== student.fullName ||
             email !== student.email ||
-            phoneNumber !== student.phoneNumber ||
-            coursesChanged
+            phoneNumber !== student.phoneNumber
         );
-    }, [fullName, email, phoneNumber, student, coursesChanged]);
+    }, [fullName, email, phoneNumber, student]);
 
     const { mutate, isPending } = useMutation({
         mutationFn: (data: UpdateStudentRequest) => studentApi.updateStudentAccount(student.id, data),
         onSuccess: async () => {
-            await Promise.all([
-                queryClient.invalidateQueries({ queryKey: ["students"]}),
-                queryClient.invalidateQueries({ queryKey: ["courses", "enrollable"]})
-            ]);
+            await queryClient.invalidateQueries({ queryKey: studentKeys.lists() });
             message.success(t("updateSuccess"));
             onClose();
         },
@@ -178,7 +80,6 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
         if (fullName !== student.fullName) payload.fullName = fullName;
         if (email !== student.email) payload.email = email;
         if (phoneNumber !== student.phoneNumber) payload.phoneNumber = phoneNumber;
-        if (coursesChanged) payload.courseIds = selectedCourseIds;
 
         mutate(payload);
     };
@@ -189,7 +90,6 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
             subtitle={t("subtitle")}
             isOpen={isOpen}
             onClose={onClose}
-            size="2xl"
         >
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <TextInput
@@ -216,17 +116,6 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
                     onChange={setPhoneNumber}
                     error={errors.phoneNumber}
                 />
-
-                <div className="flex flex-col gap-1.5">
-                    <p className="text-sm font-medium text-fg">
-                        {t("courseLabel")}
-                    </p>
-                    <CourseTable
-                        selectedIds={selectedCourseIds}
-                        onSelectionChange={setSelectedCourseIds}
-                        enrolledIds={originalCourseIds}
-                    />
-                </div>
 
                 <div className="flex justify-end">
                     <Button

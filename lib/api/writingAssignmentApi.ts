@@ -2,9 +2,12 @@ import { CreateWritingAssignmentRequest, UpdateWritingAssignmentRequest, Writing
 import { http } from "./http";
 
 export const writingAssignmentApi = {
-    createWritingAssignment: (data: CreateWritingAssignmentRequest) => http.post<WritingAssignment>(`/api/writing-assignments`, data),
+    createWritingAssignment: (courseId: string, weekSectionId: string, data: CreateWritingAssignmentRequest) =>
+        http.post<WritingAssignment>(`/api/courses/${courseId}/week-sections/${weekSectionId}/writing-assignments`, data),
 
-    updateWritingAssignment: (assignmentId: string, data: UpdateWritingAssignmentRequest) => http.patch<WritingAssignment>(`/api/writing-assignments/${assignmentId}`, data),
+    updateWritingAssignment: (courseId: string, assignmentId: string, data: UpdateWritingAssignmentRequest) =>
+        http.patch<WritingAssignment>(`/api/courses/${courseId}/writing-assignments/${assignmentId}`, data),
 
-    deleteWritingAssignment: (assignmentId: string) => http.delete<void>(`/api/writing-assignments/${assignmentId}`),
+    deleteWritingAssignment: (courseId: string, assignmentId: string) =>
+        http.delete<void>(`/api/courses/${courseId}/writing-assignments/${assignmentId}`),
 }
