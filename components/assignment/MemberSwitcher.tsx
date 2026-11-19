@@ -1,10 +1,10 @@
-import { CourseMember } from "@/types/course-type";
 import Button from "../Button";
 import ArrowLeftIcon from "../icons/ArrowLeftIcon";
 import ArrowRightIcon from "../icons/ArrowRightIcon";
 import { Dropdown } from "antd";
 import ArrowDownIcon from "../icons/ArrowDownIcon";
 import { useTranslations } from "next-intl";
+import { CourseMember } from "@/types/course-member-type";
 
 type MemberSwitcherProps = {
     members: CourseMember[];
@@ -30,6 +30,7 @@ export default function MemberSwitcher({ members, value, onChange, currentUserId
     const getLabel = (member: CourseMember) => {
         let label = member.fullName;
         if (member.role === "TEACHER") label += ` (${t("teacher")})`;
+        if (member.role === "ASSISTANT") label += ` (${t("assistant")})`;
         if (member.id === currentUserId) label += ` (${t("you")})`;
         return label;
     };

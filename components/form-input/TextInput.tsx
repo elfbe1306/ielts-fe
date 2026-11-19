@@ -16,7 +16,7 @@ type BaseProps = {
 
 type StringTextInputProps = BaseProps & {
     type?: "text" | "email" | "password" | "textarea";
-    value: string;
+    value: string | null;
     onChange: (value: string) => void;
 };
 
@@ -60,6 +60,8 @@ export default function TextInput(props: TextInputProps) {
 
     const sizeStyle = SIZE_STYLES[size];
 
+    const value = props.value ?? "";
+
     const handleChange = (raw: string) => {
         if (props.type === "number") {
             props.onChange(raw === "" ? "" : Number(raw));
@@ -85,7 +87,7 @@ export default function TextInput(props: TextInputProps) {
             <div className="relative">
                 {isTextarea ? (
                     <textarea
-                        value={props.value}
+                        value={value}
                         onChange={(e) => handleChange(e.target.value)}
                         placeholder={placeholder}
                         maxLength={maxLength}
@@ -95,7 +97,7 @@ export default function TextInput(props: TextInputProps) {
                 ) : (
                     <input
                         type={isPassword && showPassword ? "text" : type}
-                        value={props.value}
+                        value={value}
                         onChange={(e) => handleChange(e.target.value)}
                         placeholder={placeholder}
                         maxLength={maxLength}

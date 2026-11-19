@@ -30,17 +30,19 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
 
     const [fullName, setFullName] = useState<string>(student.fullName);
     const [email, setEmail] = useState<string>(student.email);
-    const [phoneNumber, setPhoneNumber] = useState<string>(student.phoneNumber);
+    const [phoneNumber, setPhoneNumber] = useState<string | null>(student.phoneNumber);
 
     const [errors, setErrors] = useState<Errors>({});
+
+    const isPhoneNumberDirty = (phoneNumber ?? "") !== (student.phoneNumber ?? "");
 
     const isDirty = useMemo(() => {
         return (
             fullName !== student.fullName ||
             email !== student.email ||
-            phoneNumber !== student.phoneNumber
+            isPhoneNumberDirty
         );
-    }, [fullName, email, phoneNumber, student]);
+    }, [fullName, email, isPhoneNumberDirty, student]);
 
     const { mutate, isPending } = useMutation({
         mutationFn: (data: UpdateStudentRequest) => studentApi.updateStudentAccount(student.id, data),
@@ -79,7 +81,7 @@ export default function UpdateStudentModal({ student, isOpen, onClose } : Update
         
         if (fullName !== student.fullName) payload.fullName = fullName;
         if (email !== student.email) payload.email = email;
-        if (phoneNumber !== student.phoneNumber) payload.phoneNumber = phoneNumber;
+        if (isPhoneNumberDirty) payload.phoneNumber = phoneNumber ?? "";
 
         mutate(payload);
     };

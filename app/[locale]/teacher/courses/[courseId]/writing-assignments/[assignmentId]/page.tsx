@@ -1,32 +1,36 @@
 "use client";
 
 import WritingWorkspace from "@/components/assignment/WritingWorkspace";
-import { courseApi } from "@/lib/api/courseApi";
+import { courseMemberQueries } from "@/lib/queries/courseMemberQueries";
+import { writingAssignmentQueries } from "@/lib/queries/writingAssignmentQueries";
 import { useQuery } from "@tanstack/react-query";
-import { notFound, useParams } from "next/navigation";
+import { useParams } from "next/navigation";
 
 export default function TeacherWritingAssignmentPage() {
-    const { assignmentId } = useParams<{ assignmentId: string }>();
+    const { courseId, assignmentId } = useParams<{ courseId: string; assignmentId: string }>();
 
-    // const { data: members = [], isLoading } = useQuery({
-    //     queryKey: ["course", course.id, "members"],
-    //     queryFn: () => courseApi.listMembers(course.id),
-    // });
+    const { data: assignment, isLoading, error } = useQuery(writingAssignmentQueries.detail(courseId, assignmentId));
+    const { data: members = [], isLoading: membersLoading } = useQuery(courseMemberQueries.list(courseId));
 
-    // const assignment = course.weekSections
-    //     .flatMap((ws) => ws.writingAssignments ?? [])
-    //     .find((a) => a.id === assignmentId);
+    if (isLoading) {
+        return <div className="h-64 animate-pulse rounded-2xl border border-border bg-surface" />;
+    }
 
-    // if (!assignment) {
-    //     notFound();
-    // }
+    if (error || !assignment) {
+        return (
+            <div className="rounded-2xl border border-error/40 bg-error-bg px-6 py-10 text-center text-sm text-error">
+                {error?.message}
+            </div>
+        );
+    }
 
-    // return (
-    //     <WritingWorkspace
-    //         mode="teacher"
-    //         assignment={assignment}
-    //         members={members}
-    //         membersLoading={isLoading}
-    //     />
-    // );
+    return (
+        <WritingWorkspace
+            mode="teacher"
+            courseId={courseId}
+            assignment={assignment}
+            members={members}
+            membersLoading={membersLoading}
+        />
+    );
 }

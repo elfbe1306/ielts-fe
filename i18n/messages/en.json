@@ -679,6 +679,7 @@
         },
         "memberSwitcher": {
             "teacher": "Teacher",
+            "assistant": "Assistant",
             "you": "You",
             "placeholder": "Select a member"
         },

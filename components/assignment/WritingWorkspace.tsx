@@ -1,6 +1,5 @@
 import { formatDayMonth, formatTime, isOverdue } from "@/lib/utils";
 import { WritingAssignment } from "@/types/writing-assignment-type";
-import { CourseMember } from "@/types/course-type";
 import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
 import { useLocale, useTranslations } from "next-intl";
@@ -25,6 +24,8 @@ import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
 import PencilAiIcon from "../icons/PencilAiIcon";
 import AttemptOption from "./AttemptOption";
 import GradingPanel from "./GradingPanel";
+import { CourseMember } from "@/types/course-member-type";
+import { enrolledWritingAttemptKeys, enrolledWritingAttemptQueries, writingAttemptKeys, writingAttemptQueries } from "@/lib/queries/writingAttemptQueries";
 
 type WorkspaceMode = "teacher" | "student";
 
@@ -47,12 +48,13 @@ const ATTEMPT_SIZES_THREE_PANELS: PanelSize[] = ["25%", "50%", "25%"];
 
 type WritingWorkspaceProps = {
     mode: WorkspaceMode;
+    courseId: string;
     assignment: WritingAssignment;
     members: CourseMember[];
     membersLoading?: boolean;
 };
 
-export default function WritingWorkspace({ mode, assignment, members, membersLoading = false }: WritingWorkspaceProps) {
+export default function WritingWorkspace({ mode, courseId, assignment, members, membersLoading = false }: WritingWorkspaceProps) {
     const t = useTranslations("writingWorkspace");
     const { user } = useAuth();
     const message = useAppMessage();
@@ -85,11 +87,19 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const attemptOwnerId = isTeacher ? ownerId : user?.id ?? null;
 
-    const { data: attempts = [], isLoading: isAttemptsLoading } = useQuery({
-        queryKey: ["writing-attempts", assignment.id, attemptOwnerId],
-        queryFn: () => writingAttemptApi.listWritingAttempts(assignment.id, attemptOwnerId!),
-        enabled: attemptOwnerId !== null && activeTab === "attempts",
+    const isAttemptsTab = activeTab === "attempts";
+
+    const staffAttemptsQuery = useQuery({
+        ...writingAttemptQueries.list(courseId, assignment.id, ownerId ?? ""),
+        enabled: isTeacher && ownerId !== null && isAttemptsTab,
     });
+
+    const myAttemptsQuery = useQuery({
+        ...enrolledWritingAttemptQueries.list(courseId, assignment.id),
+        enabled: !isTeacher && isAttemptsTab,
+    });
+
+    const { data: attempts = [], isLoading: isAttemptsLoading } = isTeacher ? staffAttemptsQuery : myAttemptsQuery;
 
     const currentAttemptId = selectedAttemptId ?? attempts[0]?.id ?? null;
 
@@ -118,11 +128,12 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
     const { mutate: gradeAttempt, isPending: isGrading } = useMutation({
         mutationFn: ({ attemptId, data } : { attemptId: string, data: GradeWritingAttemptRequest }) => 
-            writingAttemptApi.gradeWritingAttempt(attemptId, data),
-        onSuccess: () => {
+            writingAttemptApi.gradeWritingAttempt(courseId, attemptId, data),
+        onSuccess: (_data, { attemptId }) => {
             message.success(t("attempts.gradeSuccess"));
             setAiGrade(null);
-            queryClient.invalidateQueries({ queryKey: ["writing-attempts", assignment.id] });
+            queryClient.invalidateQueries({ queryKey: writingAttemptKeys.lists(courseId, assignment.id) });
+            queryClient.invalidateQueries({ queryKey: writingAttemptKeys.detail(courseId, attemptId) });
         },
         onError: (error) => {
             message.error(error.message);
@@ -164,7 +175,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
         const essay = buildTextIndex(attemptEditor.state.doc).text;
         if (!essay.trim()) {
-            message.warning(t("errors.aiEmptyEssay"));
+            message.warning(t("errors.emptyEssay"));
             return;
         }
 
@@ -215,7 +226,7 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
 
         const essay = buildTextIndex(editor.state.doc).text;
         if (!essay.trim()) {
-            message.warning(t("errors.aiEmptyEssay"));
+            message.warning(t("errors.emptyEssay"));
             return;
         }
 
@@ -233,11 +244,16 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
     }
 
     const { mutate: submitAttempt, isPending: isSubmitting } = useMutation({
-        mutationFn: (data: CreateWritingAttemptRequest) => writingAttemptApi.createWritingAttempt(data),
+        mutationFn: (data: CreateWritingAttemptRequest) => writingAttemptApi.createWritingAttempt(courseId, assignment.id, data),
         onSuccess: () => {
             message.success(t("header.submitSuccess"));
-            queryClient.invalidateQueries({ queryKey: ["writing-attempts", assignment.id] });
-            queryClient.invalidateQueries({ queryKey: ["writing-attempt"] });
+            if (isTeacher) {
+                queryClient.invalidateQueries({ queryKey: writingAttemptKeys.lists(courseId, assignment.id) });
+                queryClient.invalidateQueries({ queryKey: writingAttemptKeys.details(courseId) });
+            } else {
+                queryClient.invalidateQueries({ queryKey: enrolledWritingAttemptKeys.list(courseId, assignment.id) });
+                queryClient.invalidateQueries({ queryKey: enrolledWritingAttemptKeys.details(courseId) });
+            }
         },
         onError: (error) => {
             message.error(error.message);
@@ -463,7 +479,9 @@ export default function WritingWorkspace({ mode, assignment, members, membersLoa
                         </div>
 
                         <AttemptContent
+                            courseId={courseId}
                             attemptId={currentAttemptId}
+                            isTeacher={isTeacher}
                             view={attemptView}
                             editable={isTeacher}
                             onEditorChange={handleAttemptEditorChange}

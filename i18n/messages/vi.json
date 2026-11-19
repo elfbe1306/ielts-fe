@@ -679,6 +679,7 @@
         },
         "memberSwitcher": {
             "teacher": "Giáo viên",
+            "assistant": "Trợ giảng",
             "you": "Bạn",
             "placeholder": "Chọn thành viên"
         },

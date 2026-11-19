@@ -18,7 +18,7 @@ export type Student = {
     id: string;
     fullName: string;
     email: string;
-    phoneNumber: string;
+    phoneNumber: string | null;
     createdAt: string;
     courses: CourseSummary[];
 }

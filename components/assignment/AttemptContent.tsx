@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState } from "react";
 import * as Y from "yjs";
 import { writingAttemptApi } from "@/lib/api/writingAttemptApi";
+import { enrolledWritingAttemptQueries, writingAttemptKeys, writingAttemptQueries } from "@/lib/queries/writingAttemptQueries";
 import { useAppMessage } from "@/contexts/message-context";
 import CheckCircleIcon from "../icons/CheckCircleIcon";
 import CorrectionMenu from "./CorrectionMenu";
@@ -64,13 +65,15 @@ function countWords(editor: Editor): number {
 // ===== Bọc ngoài: tải bài, chọn nội dung theo view, autosave bản sửa =====
 
 type AttemptContentProps = {
+    courseId: string;
     attemptId: string | null;
+    isTeacher: boolean;
     view: AttemptView;
     editable?: boolean;
     onEditorChange?: (editor: Editor | null) => void;
 };
 
-export default function AttemptContent({ attemptId, view, editable = false, onEditorChange }: AttemptContentProps) {
+export default function AttemptContent({ courseId, attemptId, isTeacher, view, editable = false, onEditorChange }: AttemptContentProps) {
     const t = useTranslations("writingWorkspace.attempts");
     const queryClient = useQueryClient();
     const message = useAppMessage();
@@ -80,17 +83,23 @@ export default function AttemptContent({ attemptId, view, editable = false, onEd
     const pendingRef = useRef<PendingSave | null>(null);
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    const { data: attempt, isLoading } = useQuery({
-        queryKey: ["writing-attempt", attemptId],
-        queryFn: () => writingAttemptApi.getWritingAttempt(attemptId!),
-        enabled: attemptId !== null,
+    const staffAttemptQuery = useQuery({
+        ...writingAttemptQueries.detail(courseId, attemptId ?? ""),
+        enabled: isTeacher && attemptId !== null,
     });
+
+    const myAttemptQuery = useQuery({
+        ...enrolledWritingAttemptQueries.detail(courseId, attemptId ?? ""),
+        enabled: !isTeacher && attemptId !== null,
+    });
+
+    const { data: attempt, isLoading } = isTeacher ? staffAttemptQuery : myAttemptQuery;
 
     const { mutate: saveGradedContent } = useMutation({
         mutationFn: ({ attemptId, gradedContent }: PendingSave) =>
-            writingAttemptApi.updateWritingAttempt(attemptId, { gradedContent }),
+            writingAttemptApi.updateWritingAttempt(courseId, attemptId, { gradedContent }),
         onSuccess: (data) => {
-            queryClient.setQueryData(["writing-attempt", data.id], data);
+            queryClient.setQueryData(writingAttemptKeys.detail(courseId, data.id), data);
 
             if (!pendingRef.current) setSaveStatus("saved");
         },
