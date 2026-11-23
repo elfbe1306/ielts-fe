@@ -9,7 +9,7 @@ type StudentWeekSectionCardProps = {
 }
 
 export default function StudentWeekSectionCard({ courseId, weekSection } : StudentWeekSectionCardProps) {
-    const t = useTranslations("studentCourseDetailPage.weekSectionCard");
+    const t = useTranslations("courseDetail.weekSectionCard");
     const locale = useLocale();
 
     const weekdayFormatter = new Intl.DateTimeFormat(locale, { weekday: "short" });

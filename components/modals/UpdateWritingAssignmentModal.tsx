@@ -29,7 +29,7 @@ type Errors = {
 }
 
 export default function UpdateWritingAssignmentModal({ courseId, assignment, isOpen, onClose } : UpdateWritingAssignmentModalProps) {
-    const t = useTranslations("teacherCourseDetailPage.updateWritingAssignmentModal");
+    const t = useTranslations("courseDetail.updateWritingAssignmentModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

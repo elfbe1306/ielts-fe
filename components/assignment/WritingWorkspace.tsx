@@ -1,6 +1,5 @@
 import { formatDayMonth, formatTime, isOverdue } from "@/lib/utils";
 import { WritingAssignment } from "@/types/writing-assignment-type";
-import { useAuth } from "@/contexts/auth-context";
 import type { Editor } from "@tiptap/react";
 import { useLocale, useTranslations } from "next-intl";
 import { Empty, Segmented, Select, Splitter, Switch, Tabs } from "antd";
@@ -56,7 +55,6 @@ type WritingWorkspaceProps = {
 
 export default function WritingWorkspace({ mode, courseId, assignment, members, membersLoading = false }: WritingWorkspaceProps) {
     const t = useTranslations("writingWorkspace");
-    const { user } = useAuth();
     const message = useAppMessage();
     const queryClient = useQueryClient();
     const locale = useLocale();

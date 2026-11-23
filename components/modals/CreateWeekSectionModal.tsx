@@ -34,7 +34,7 @@ type Errors = {
 }
 
 export default function CreateWeekSectionModal({ courseId, weekSections, isOpen, onClose } : CreateWeekSectionModalProps) {
-    const t = useTranslations("teacherCourseDetailPage.createWeekSectionModal");
+    const t = useTranslations("courseDetail.createWeekSectionModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

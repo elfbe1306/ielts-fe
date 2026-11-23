@@ -9,25 +9,18 @@
             "register": "Book a consultation",
             "signIn": "Sign in"
         },
-        "admin": {
-            "dashboard": "Dashboard",
-            "users": "Users"
-        },
-        "teacher": {
+        "menu": {
             "dashboard": "Dashboard",
             "courses": "Courses",
             "questionBank": "Question bank",
             "questionBankItems": {
-              "listening": "Listening",
-              "reading": "Reading",
-              "writing": "Writing",
-              "speaking": "Speaking"
+                "listening": "Listening",
+                "reading": "Reading",
+                "writing": "Writing",
+                "speaking": "Speaking"
             },
-            "students": "Students"
-        },
-        "student": {
-            "dashboard": "Dashboard",
-            "courses": "My courses"
+            "students": "Students",
+            "users": "Users"
         },
         "account": {
             "account": "Account",
@@ -57,12 +50,22 @@
             "contactUs": "Contact IELTS WIT"
         }
     },
-    "teacherCoursesPage": {
+    "notFound": {
+        "title": "Page not found",
+        "subtitle": "This page doesn't exist, was removed, or you don't have access to it.",
+        "backToDashboard": "Back to dashboard"
+    },
+    "courses": {
         "title": "Courses",
-        "subtitle": "The list of courses you're teaching.",
-        "createButton": "New course",
+        "subtitle": {
+            "teacher": "Courses you are in charge of.",
+            "student": "Courses you are taking part in."
+        },
         "emptyTitle": "No courses yet",
-        "emptySubtitle": "Create your first course to start managing students and sessions.",
+        "emptySubtitle": {
+            "teacher": "Create your first course to start managing students and sessions.",
+            "student": "You haven't been added to any course yet. Please contact your teacher to be added."
+        },
         "filters": {
             "ALL": "All",
             "UPCOMING": "Upcoming",
@@ -70,7 +73,8 @@
             "ENDED": "Ended"
         },
         "noMatchTitle": "No courses found",
-        "noMatchSubTitle": "There are no courses in this status.",
+        "noMatchSubTitle": "No courses match the selected status.",
+        "createButton": "Create course",
         "courseCard": {
             "status": {
                 "UPCOMING": "Upcoming",
@@ -87,37 +91,41 @@
         "createCourseModal": {
             "title": "Create a new course",
             "subtitle": "Fill in the course details below.",
-            "createSuccess": "Course created successfully",
+            "createSuccess": "Course created",
             "nameLabel": "Course name",
-            "namePlaceholder": "e.g. IELTS Foundation - Course A1",
+            "namePlaceholder": "e.g. IELTS Foundation - Class A1",
             "sessionLabel": "Total sessions",
             "sessionPlaceholder": "e.g. 24",
-            "rangeLabel": "Student count (range)",
-            "minPlaceholder": "Min",
-            "maxPlaceholder": "Max",
+            "rangeLabel": "Number of students (range)",
+            "minPlaceholder": "From",
+            "maxPlaceholder": "To",
             "rangeSuffix": "students",
             "dateLabel": "Start date",
             "submit": "Create",
             "errors": {
-                "nameRequired": "Please enter a course name",
+                "nameRequired": "Please enter the course name",
                 "sessionRequired": "Enter a number of sessions greater than 0",
                 "minStudentsRequired": "Enter a minimum of 0 or more",
                 "maxStudentsRequired": "Enter a maximum greater than 0",
-                "startDateRequired": "Please pick a start date",
-                "rangeInvalid": "Minimum cannot be greater than maximum"
+                "startDateRequired": "Please choose a start date",
+                "rangeInvalid": "The minimum can't be greater than the maximum"
             }
         }
     },
-    "teacherCourseDetailPage": {
+    "courseDetail": {
+        "notFound": {
+            "title": "Content not found",
+            "subtitle": "This course or assignment doesn't exist or has been deleted.",
+            "backToCourses": "Back to courses"
+        },
         "breadcrumbs": {
             "courses": "Courses",
             "detail": "Course Detail",
             "writingAssignment": "Writing assignment"
         },
-        "notFound": {
-            "title": "Content not found",
-            "subtitle": "This course or assignment doesn't exist or has been deleted.",
-            "backToCourses": "Back to courses"
+        "tabs": { 
+            "weeks": "Weeks", 
+            "members": "Members" 
         },
         "courseHeader": {
             "status": {
@@ -138,46 +146,6 @@
             "capacityValue": "{min}–{max} students",
             "progressLabel": "Course progress",
             "progressValue": "{completed} / {total} sessions"
-        },
-        "tabs": { 
-            "weeks": "Weeks", 
-            "members": "Members" 
-        },
-        "courseMember": {
-            "staffTitle": "Teaching staff",
-            "studentTitle": "Students",
-            "studentEmpty": "No students yet",
-            "role": { 
-                "TEACHER": "Teacher", 
-                "ASSISTANT": "Teaching assistant", 
-                "STUDENT": "Student" 
-            },
-            "addButton": "Add member",
-            "changeRoleSuccess": "Role updated",
-            "removeSuccess": "Member removed from the course",
-            "removePopconfirm": {
-                "title": "Remove this member?",
-                "subtitle": "They will no longer have access to this course.",
-                "okText": "Remove",
-                "cancelText": "Cancel"
-            },
-            "addCourseMemberModal": {
-                "title": "Add member",
-                "subtitle": "Search for an account by email or name. If they don't have one yet, you can create it right here.",
-                "searchLabel": "Email or name",
-                "searchPlaceholder": "e.g. an@gmail.com or Nguyen Van An",
-                "searching": "Searching...",
-                "noResults": "No accounts found",
-                "searchError": "Couldn't load results, please try again",
-                "alreadyMember": "Already in course",
-                "roleLabel": "Role in course",
-                "roles": {
-                    "STUDENT": "Student",
-                    "ASSISTANT": "Teaching assistant"
-                },
-                "submit": "Add",
-                "addSuccess": "Member added to the course"
-            }
         },
         "weekSection": {
             "createButton": "Create week",
@@ -219,6 +187,25 @@
                 "deleteSuccess": "Assignment deleted successfully"
             },
             "deleteSuccess": "Week deleted successfully"
+        },
+        "courseMember": {
+            "staffTitle": "Teaching staff",
+            "studentTitle": "Students",
+            "studentEmpty": "No students yet",
+            "role": { 
+                "TEACHER": "Teacher", 
+                "ASSISTANT": "Teaching assistant", 
+                "STUDENT": "Student" 
+            },
+            "addButton": "Add member",
+            "changeRoleSuccess": "Role updated",
+            "removeSuccess": "Member removed from the course",
+            "removePopconfirm": {
+                "title": "Remove this member?",
+                "subtitle": "They will no longer have access to this course.",
+                "okText": "Remove",
+                "cancelText": "Cancel"
+            }
         },
         "updateCourseModal": {
             "title": "Update course",
@@ -344,9 +331,26 @@
                 "dueTimeRequired": "Please select a due time."
             },
             "updateSuccess": "Assignment updated successfully"
+        },
+        "addCourseMemberModal": {
+            "title": "Add member",
+            "subtitle": "Search for an account by email or name. If they don't have one yet, you can create it right here.",
+            "searchLabel": "Email or name",
+            "searchPlaceholder": "e.g. an@gmail.com or Nguyen Van An",
+            "searching": "Searching...",
+            "noResults": "No accounts found",
+            "searchError": "Couldn't load results, please try again",
+            "alreadyMember": "Already in course",
+            "roleLabel": "Role in course",
+            "roles": {
+                "STUDENT": "Student",
+                "ASSISTANT": "Teaching assistant"
+            },
+            "submit": "Add",
+            "addSuccess": "Member added to the course"
         }
     },
-    "teacherStudentsPage": {
+    "students": {
         "title": "Student List",
         "subtitle": "Manage student accounts in the system.",
         "createButton": "Add New Student",
@@ -401,7 +405,7 @@
             "submit": "Update"
         }
     },
-    "teacherQuestionBankWritingPage": {
+    "writingQuestionBank": {
         "title": "Writing Question Bank",
         "subtitle": "List of Writing test questions used for courses.",
         "createButton": "Create Writing Question",
@@ -493,94 +497,6 @@
                 "promptRequired": "Please enter a prompt"
             },
             "updateSuccess":"Question updated successfully"
-        }
-    },
-    "studentCoursesPage": {
-        "title": "Courses",
-        "subtitle": "The list of courses you are enrolled in.",
-        "emptyTitle": "No courses yet",
-        "emptySubtitle": "You haven't been added to any courses yet. Please contact your teacher to be added to a course.",
-        "filters": {
-            "ALL": "All",
-            "UPCOMING": "Upcoming",
-            "ACTIVE": "Active",
-            "ENDED": "Ended"
-        },
-        "noMatchTitle": "No courses found",
-        "noMatchSubTitle": "No courses match the status you selected.",
-        "studentCourseCard": {
-            "status": {
-                "UPCOMING": "Upcoming",
-                "ACTIVE": "Active",
-                "ENDED": "Ended"
-            },
-            "statusLabel": "Status:",
-            "startDateLabel": "Starts:",
-            "progressLabel": "Course progress",
-            "progressValue": "{completed} / {total} sessions"
-        }
-    },
-    "studentCourseDetailPage": {
-        "breadcrumbs": {
-            "courses": "Courses",
-            "detail": "Course Detail",
-            "writingAssignment": "Writing assignment"
-        },
-        "notFound": {
-            "title": "Content not found",
-            "subtitle": "This course or assignment doesn't exist or has been deleted.",
-            "backToCourses": "Back to courses"
-        },
-        "courseHeader": {
-            "status": {
-                "UPCOMING": "Upcoming",
-                "ACTIVE": "Active",
-                "ENDED": "Ended"
-            },
-            "statusLabel": "Status",
-            "startDateLabel": "Start date",
-            "scheduledWeeksLabel": "Weeks scheduled",
-            "progressLabel": "Course progress",
-            "progressValue": "{completed} / {total} sessions"
-        },
-        "tabs": { 
-            "weeks": "Weeks", 
-            "members": "Members" 
-        },
-        "courseMember": {
-            "staffTitle": "Teaching staff",
-            "youTitle": "You",
-            "role": { 
-                "TEACHER": "Teacher", 
-                "ASSISTANT": "Teaching assistant", 
-                "STUDENT": "Student" 
-            }
-        },
-        "weekSection": {
-            "title": "Weeks",
-            "empty": "No weeks yet"
-        },
-        "weekSectionCard" : {
-            "sessionCount": "Session {count}",
-            "assignments": {
-                "title": "Writing assignments",
-                "empty": "No assignments this week yet",
-                "taskType": {
-                    "TASK_1": "Task 1",
-                    "TASK_2": "Task 2"
-                },
-                "difficulty": {
-                    "EASY": "Easy",
-                    "MEDIUM": "Medium",
-                    "HARD": "Hard"
-                },
-                "showMore": "Show more", 
-                "showLess": "Show less",
-                "noteLabel": "Note",
-                "noNote": "None",
-                "dueLabel": "Due",
-                "overdue": "Overdue"
-            }
         }
     },
     "writingWorkspace": {

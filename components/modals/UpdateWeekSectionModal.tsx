@@ -49,7 +49,7 @@ type Errors = {
 }
 
 export default function UpdateWeekSectionModal({ courseId, weekSection, isOpen, onClose } : UpdateWeekSectionModalProps) {
-    const t = useTranslations("teacherCourseDetailPage.updateWeekSectionModal");
+    const t = useTranslations("courseDetail.updateWeekSectionModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

@@ -7,7 +7,7 @@ import MemberGroup from "./MemberGroup";
 
 export default function StudentCourseMember() {
     const { courseId } = useParams<{ courseId: string; }>();
-    const t = useTranslations("studentCourseDetailPage.courseMember");
+    const t = useTranslations("courseDetail.courseMember");
 
     const { data: members = [], isLoading, error } = useQuery(enrolledCourseMemberQueries.list(courseId));
 
@@ -33,7 +33,7 @@ export default function StudentCourseMember() {
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
             <MemberGroup 
                 title={t("staffTitle")} 
                 members={staff} 
@@ -41,7 +41,7 @@ export default function StudentCourseMember() {
             />
 
             <MemberGroup
-                title={t("youTitle")} 
+                title={t("studentTitle")} 
                 members={self} 
                 renderRole={renderRole}
             />

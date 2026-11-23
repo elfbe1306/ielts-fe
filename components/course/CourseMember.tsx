@@ -22,7 +22,7 @@ type UpdateMemberVariables = {
 
 export default function CourseMember() {
     const { courseId } = useParams<{ courseId: string; }>();
-    const t = useTranslations("teacherCourseDetailPage.courseMember");
+    const t = useTranslations("courseDetail.courseMember");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 
@@ -125,7 +125,7 @@ export default function CourseMember() {
     };
 
     return (
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-2">
             <div className="flex justify-end">
                 <Button
                     variant="primary"

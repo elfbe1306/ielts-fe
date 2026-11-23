@@ -24,7 +24,7 @@ type Errors = {
 };
 
 export default function UpdateStudentModal({ student, isOpen, onClose } : UpdateStudentModalProps) {
-    const t = useTranslations("teacherStudentsPage.updateStudentModal");
+    const t = useTranslations("students.updateStudentModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

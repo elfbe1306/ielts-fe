@@ -32,7 +32,7 @@ type Errors = {
 }
 
 export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId, weekSectionId } : CreateWritingAssignmentModalProps) {
-    const t = useTranslations("teacherCourseDetailPage.createWritingAssignmentModal");
+    const t = useTranslations("courseDetail.createWritingAssignmentModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

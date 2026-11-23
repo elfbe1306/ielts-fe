@@ -3,24 +3,34 @@
 import { useState } from "react";
 import { AntdRegistry } from "@ant-design/nextjs-registry";
 import { ConfigProvider } from "antd";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import { MessageProvider } from "@/contexts/message-context";
+import { ApiError } from "@/lib/api/error";
+import { ROUTES } from "@/lib/route";
 
 type ProviderProps = {
     children: React.ReactNode;
 };
 
+async function handleUnauthorized(error: unknown) {
+    if (!(error instanceof ApiError) || error.status !== 401) return;
+
+    await fetch("/api/auth/sign-out", { method: "POST" }).catch(() => {});
+    window.location.replace(`/${document.documentElement.lang}${ROUTES.signIn}`);
+}
+
 export default function Providers({ children }: ProviderProps) {
     const [queryClient] = useState(
         () =>
             new QueryClient({
+                queryCache: new QueryCache({ onError: handleUnauthorized }),
+                mutationCache: new MutationCache({ onError: handleUnauthorized }),
                 defaultOptions: {
                     queries: {
                         staleTime: 60 * 1000,
                         refetchOnWindowFocus: false,
-                        retry: 2
                     },
                 },
             })

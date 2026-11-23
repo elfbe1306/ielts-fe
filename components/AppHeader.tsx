@@ -1,29 +1,21 @@
 "use client";
 
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
-import { ROLE_HOME, ROUTES } from "@/lib/route";
-import { Role } from "@/types/auth-type";
-import { Avatar, Dropdown, Image, type MenuProps } from "antd";
-import { useAuth } from "@/contexts/auth-context";
+import { Avatar, Dropdown, Image, MenuProps } from "antd";
 import { useLocale, useTranslations, type Locale } from "next-intl";
-import LogoutIcon from "./icons/LogoutIcon";
-import GlobalIcon from "./icons/GlobalIcon";
 import VietnamIcon from "./icons/flags/VietnamIcon";
 import UsaIcon from "./icons/flags/UsaIcon";
-import { useState, useTransition, type CSSProperties } from "react";
-import ArrowDownIcon from "./icons/ArrowDownIcon";
-import AdminNav from "./nav/AdminNav";
-import TeacherNav from "./nav/TeacherNav";
-import StudentNav from "./nav/StudentNav";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { authApi } from "@/lib/api/authApi";
+import { ROUTES } from "@/lib/route";
+import { useAuth } from "@/hooks/useAuth";
 import { getInitial } from "@/lib/utils";
+import { CSSProperties, useState, useTransition } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { authApi } from "@/lib/api/authApi";
+import GlobalIcon from "./icons/GlobalIcon";
+import LogoutIcon from "./icons/LogoutIcon";
+import ArrowDownIcon from "./icons/ArrowDownIcon";
+import AppNav from "./AppNav";
 
-const NAV_BY_ROLE: Record<Role, React.ComponentType> = {
-    ADMIN: AdminNav,
-    TEACHER: TeacherNav,
-    STUDENT: StudentNav,
-};
 
 const LOCALES: { code: Locale; label: string; icon: React.ReactNode }[] = [
     { code: "vi", label: "Tiếng Việt", icon: <VietnamIcon /> },
@@ -41,29 +33,36 @@ function isLocale(key: string): key is Locale {
     return LOCALES.some((l) => l.code === key);
 }
 
-export default function AppHeader({ role }: { role: Role }) {
+export default function AppHeader() {
     const t = useTranslations("nav.account");
-    const { user, setUser } = useAuth();
-    const router = useRouter();
-    const pathname = usePathname();
     const locale = useLocale();
-    const queryClient = useQueryClient();
+    const pathname = usePathname();
+    const router = useRouter();
     const [isChangingLocale, startTransition] = useTransition();
+    const { user, isLoading } = useAuth();
 
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
-
-    const Nav = NAV_BY_ROLE[role];
-    const roleLabel = t(`roles.${role}`);
 
     const { mutate, isPending } = useMutation({
         mutationFn: authApi.signOut,
         onSettled: () => {
-            queryClient.clear();
-            setUser(null);
-            router.replace(ROUTES.landing);
-            router.refresh();
+            window.location.replace(`/${locale}${ROUTES.landing}`);
         }
     });
+
+    const onMenuClick: MenuProps["onClick"] = ({ key }) => {
+        if (isLocale(key)) {
+            if (key === locale) return;
+            startTransition(() => {
+                router.replace(pathname, { locale: key });
+            });
+            return;
+        }
+
+        if (key === "sign-out") {
+            mutate();
+        }
+    };
 
     const items: MenuProps["items"] = [
         {
@@ -85,24 +84,10 @@ export default function AppHeader({ role }: { role: Role }) {
         },
     ];
 
-    const onMenuClick: MenuProps["onClick"] = ({ key }) => {
-        if (isLocale(key)) {
-            if (key === locale) return;
-            startTransition(() => {
-                router.replace(pathname, { locale: key });
-            });
-            return;
-        }
-
-        if (key === "sign-out") {
-            mutate();
-        }
-    };
-
     return (
         <header className="sticky top-0 z-10 bg-bg border-b border-border">
             <div className="flex items-center justify-between gap-6 min-h-20 px-6">
-                <Link href={ROLE_HOME[role]} className="shrink-0 flex items-center">
+                <Link href={ROUTES.dashboard} className="shrink-0 flex items-center">
                     <Image
                         src="/WITLogo.png"
                         alt="IELTS WIT"
@@ -112,11 +97,13 @@ export default function AppHeader({ role }: { role: Role }) {
                 </Link>
 
                 <div className="hidden lg:flex flex-1 min-w-0 justify-center">
-                    <Nav />
+                    {user && <AppNav role={user.role} />}
                 </div>
 
                 <div className="flex items-center gap-3 shrink-0">
-                    {user && (
+                    {isLoading ? (
+                        <div className="h-11 w-44 animate-pulse rounded-full border border-border bg-surface" />
+                    ) : user && (
                         <Dropdown
                             menu={{
                                 items,
@@ -141,7 +128,7 @@ export default function AppHeader({ role }: { role: Role }) {
                                                 {user.fullName}
                                             </p>
                                             <span className="mt-1 inline-flex items-center rounded-full bg-accent-bg px-2 py-0.5 text-[11px] font-semibold uppercase tracking-wide text-accent">
-                                                {roleLabel}
+                                                {t(`roles.${user.role}`)}
                                             </span>
                                         </div>
                                     </div>
@@ -166,7 +153,7 @@ export default function AppHeader({ role }: { role: Role }) {
                                     <span className="max-w-40 truncate text-sm font-semibold text-fg">
                                         {user.fullName}
                                     </span>
-                                    <span className="text-xs text-muted">{roleLabel}</span>
+                                    <span className="text-xs text-muted">{t(`roles.${user.role}`)}</span>
                                 </span>
 
                                 <ArrowDownIcon

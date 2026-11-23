@@ -15,7 +15,7 @@ type WeekCardProps = {
 }
 
 export default function WeekCard({ index, value, onChange, onDelete, canDelete, errors }: WeekCardProps) {
-    const t = useTranslations("teacherCourseDetailPage.createWeekSectionModal.weekCard");
+    const t = useTranslations("courseDetail.createWeekSectionModal.weekCard");
 
     return (
         <div className="flex flex-col gap-2 rounded-xl border border-border p-3">

@@ -9,25 +9,18 @@
             "register": "Đăng ký tư vấn",
             "signIn": "Đăng nhập"
         },
-        "admin": {
-            "dashboard": "Tổng quan",
-            "users": "Người dùng"        
-        },
-        "teacher": {
+        "menu": {
             "dashboard": "Tổng quan",
             "courses": "Khoá học",
-            "questionBank": "Ngân hàng câu hỏi",
+            "questionBank": "Kho đề",
             "questionBankItems": {
-              "listening": "Listening",
-              "reading": "Reading",
-              "writing": "Writing",
-              "speaking": "Speaking"
+                "listening": "Listening",
+                "reading": "Reading",
+                "writing": "Writing",
+                "speaking": "Speaking"
             },
-            "students": "Học viên"
-        },
-        "student": {
-            "dashboard": "Tổng quan",
-            "courses": "Khoá học của tôi"
+            "students": "Học viên",
+            "users": "Người dùng"
         },
         "account": {
             "account": "Tài khoản",
@@ -57,12 +50,22 @@
             "contactUs": "Liên hệ IELTS WIT"
         }
     },
-    "teacherCoursesPage": {
+    "notFound": {
+        "title": "Không tìm thấy trang",
+        "subtitle": "Trang này không tồn tại, đã bị xoá, hoặc bạn không có quyền truy cập.",
+        "backToDashboard": "Về trang tổng quan"
+    },
+    "courses": {
         "title": "Khoá học",
-        "subtitle": "Danh sách khoá học bạn đang phụ trách.",
-        "createButton": "Tạo khoá học mới",
-        "emptyTitle": "Chưa có lớp học nào",
-        "emptySubtitle": "Tạo lớp học đầu tiên để bắt đầu quản lý học viên và buổi học.",
+        "subtitle": {
+            "teacher": "Danh sách khoá học bạn đang phụ trách.",
+            "student": "Danh sách khoá học bạn đang tham gia."
+        },
+        "emptyTitle": "Chưa có khoá học nào",
+        "emptySubtitle": {
+            "teacher": "Tạo khoá học đầu tiên để bắt đầu quản lý học viên và buổi học.",
+            "student": "Bạn chưa được thêm vào bất kỳ khoá học nào. Vui lòng liên hệ giáo viên để được thêm vào khoá học."
+        },
         "filters": {
             "ALL": "Tất cả",
             "UPCOMING": "Sắp bắt đầu",
@@ -71,6 +74,7 @@
         },
         "noMatchTitle": "Không có khoá học nào",
         "noMatchSubTitle": "Không có khoá học nào phù hợp với trạng thái bạn đã chọn.",
+        "createButton": "Tạo khoá học mới",
         "courseCard": {
             "status": {
                 "UPCOMING": "Sắp bắt đầu",
@@ -81,7 +85,7 @@
             "startDateLabel": "Khai giảng:",
             "capacityLabel": "Sĩ số:",
             "capacityValue": "{min}–{max} học viên",
-            "progressLabel": "Tiến độ khóa học",
+            "progressLabel": "Tiến độ khoá học",
             "progressValue": "{completed} / {total} buổi"
         },
         "createCourseModal": {
@@ -108,17 +112,21 @@
             }
         }
     },
-    "teacherCourseDetailPage": {
+    "courseDetail": {
+        "notFound": {
+            "title": "Không tìm thấy nội dung",
+            "subtitle": "Khoá học hoặc bài tập này không tồn tại hoặc đã bị xoá.",
+            "backToCourses": "Quay lại danh sách khoá học"
+        },
         "breadcrumbs": {
             "courses": "Khoá học",
             "detail": "Chi tiết khoá học",
             "writingAssignment": "Bài tập viết"
         },
-        "notFound": {
-            "title": "Không tìm thấy nội dung",
-            "subtitle": "Khoá học hoặc bài tập này không tồn tại hoặc đã bị xoá.",
-            "backToCourses": "Quay lại danh sách khoá học"
-        },    
+        "tabs": { 
+            "weeks": "Tuần học", 
+            "members": "Thành viên" 
+        },
         "courseHeader": {
             "status": {
                 "UPCOMING": "Sắp bắt đầu",
@@ -139,50 +147,10 @@
             "progressLabel": "Tiến độ khóa học",
             "progressValue": "{completed} / {total} buổi"
         },
-        "tabs": { 
-            "weeks": "Tuần học", 
-            "members": "Thành viên" 
-        },
-        "courseMember": {
-            "staffTitle": "Giảng dạy",
-            "studentTitle": "Học viên",
-            "studentEmpty": "Chưa có học viên nào",
-            "role": { 
-                "TEACHER": "Giáo viên", 
-                "ASSISTANT": "Trợ giảng", 
-                "STUDENT": "Học viên" 
-            },
-            "addButton": "Thêm thành viên",
-            "changeRoleSuccess": "Đã đổi vai trò",
-            "removeSuccess": "Đã xoá thành viên khỏi khoá học",
-            "removePopconfirm": {
-                "title": "Xoá thành viên này?",
-                "subtitle": "Thành viên sẽ không còn truy cập được khoá học.",
-                "okText": "Xoá",
-                "cancelText": "Huỷ"
-            },
-            "addCourseMemberModal": {
-                "title": "Thêm thành viên",
-                "subtitle": "Tìm tài khoản theo email hoặc tên. Nếu chưa có, bạn có thể tạo tài khoản mới ngay tại đây.",
-                "searchLabel": "Email hoặc tên",
-                "searchPlaceholder": "vd: an@gmail.com hoặc Nguyễn Văn An",
-                "searching": "Đang tìm...",
-                "noResults": "Không tìm thấy tài khoản nào",
-                "searchError": "Không thể tải danh sách, vui lòng thử lại",
-                "alreadyMember": "Đã trong khoá",
-                "roleLabel": "Vai trò trong khoá",
-                "roles": {
-                    "STUDENT": "Học viên",
-                    "ASSISTANT": "Trợ giảng"
-                },
-                "submit": "Thêm",
-                "addSuccess": "Đã thêm thành viên vào khoá học"
-            }
-        },
         "weekSection": {
             "createButton": "Tạo tuần học",
             "empty": "Chưa có tuần học nào"
-        },        
+        },
         "weekSectionCard" : {
             "sessionCount": "Buổi {count}",
             "deletePopconfirm": {
@@ -219,6 +187,25 @@
                 "deleteSuccess": "Xoá bài tập thành công"
             },
             "deleteSuccess": "Xoá tuần học thành công"
+        },
+        "courseMember": {
+            "staffTitle": "Giảng dạy",
+            "studentTitle": "Học viên",
+            "studentEmpty": "Chưa có học viên nào",
+            "role": { 
+                "TEACHER": "Giáo viên", 
+                "ASSISTANT": "Trợ giảng", 
+                "STUDENT": "Học viên" 
+            },
+            "addButton": "Thêm thành viên",
+            "changeRoleSuccess": "Đã đổi vai trò",
+            "removeSuccess": "Đã xoá thành viên khỏi khoá học",
+            "removePopconfirm": {
+                "title": "Xoá thành viên này?",
+                "subtitle": "Thành viên sẽ không còn truy cập được khoá học.",
+                "okText": "Xoá",
+                "cancelText": "Huỷ"
+            }
         },
         "updateCourseModal" : {
             "title": "Cập nhật khoá học",
@@ -344,9 +331,26 @@
                 "dueTimeRequired": "Vui lòng chọn giờ nộp."
             },
             "updateSuccess": "Cập nhật bài tập thành công"
+        },
+        "addCourseMemberModal": {
+            "title": "Thêm thành viên",
+            "subtitle": "Tìm tài khoản theo email hoặc tên. Nếu chưa có, bạn có thể tạo tài khoản mới ngay tại đây.",
+            "searchLabel": "Email hoặc tên",
+            "searchPlaceholder": "vd: an@gmail.com hoặc Nguyễn Văn An",
+            "searching": "Đang tìm...",
+            "noResults": "Không tìm thấy tài khoản nào",
+            "searchError": "Không thể tải danh sách, vui lòng thử lại",
+            "alreadyMember": "Đã trong khoá",
+            "roleLabel": "Vai trò trong khoá",
+            "roles": {
+                "STUDENT": "Học viên",
+                "ASSISTANT": "Trợ giảng"
+            },
+            "submit": "Thêm",
+            "addSuccess": "Đã thêm thành viên vào khoá học"
         }
     },
-    "teacherStudentsPage": {
+    "students": {
         "title": "Danh sách học viên",
         "subtitle": "Quản lý tài khoản học viên trong hệ thống.",
         "createButton": "Thêm học viên mới",
@@ -401,7 +405,7 @@
             "submit": "Cập nhật"
         }
     },
-    "teacherQuestionBankWritingPage": {
+    "writingQuestionBank": {
         "title": "Kho đề Writing",
         "subtitle": "Danh sách đề thi Writing dùng cho các khoá học.",
         "createButton": "Tạo đề writing",
@@ -493,94 +497,6 @@
                 "promptRequired": "Vui lòng nhập đề bài"
             },
             "updateSuccess":"Cập nhật đề thành công"
-        }
-    },
-    "studentCoursesPage": {
-        "title": "Khoá học",
-        "subtitle": "Danh sách khoá học bạn đang tham gia.",
-        "emptyTitle": "Chưa có khoá học nào",
-        "emptySubtitle": "Bạn chưa được thêm vào bất kỳ khoá học nào. Vui lòng liên hệ giáo viên để được thêm vào khoá học.",
-        "filters": {
-            "ALL": "Tất cả",
-            "UPCOMING": "Sắp bắt đầu",
-            "ACTIVE": "Đang hoạt động",
-            "ENDED": "Kết thúc"
-        },
-        "noMatchTitle": "Không có khoá học nào",
-        "noMatchSubTitle": "Không có khoá học nào phù hợp với trạng thái bạn đã chọn.",
-        "studentCourseCard": {
-            "status": {
-                "UPCOMING": "Sắp bắt đầu",
-                "ACTIVE": "Đang hoạt động",
-                "ENDED": "Kết thúc"
-            },
-            "statusLabel": "Trạng thái:",
-            "startDateLabel": "Khai giảng:",
-            "progressLabel": "Tiến độ khóa học",
-            "progressValue": "{completed} / {total} buổi"
-        }
-    },
-    "studentCourseDetailPage": {
-        "breadcrumbs": {
-            "courses": "Khoá học",
-            "detail": "Chi tiết khoá học",
-            "writingAssignment": "Bài tập viết"
-        },
-        "notFound": {
-            "title": "Không tìm thấy nội dung",
-            "subtitle": "Khoá học hoặc bài tập này không tồn tại hoặc đã bị xoá.",
-            "backToCourses": "Quay lại danh sách khoá học"
-        },
-        "courseHeader": {
-            "status": {
-                "UPCOMING": "Sắp bắt đầu",
-                "ACTIVE": "Đang hoạt động",
-                "ENDED": "Kết thúc"
-            },
-            "statusLabel": "Trạng thái",
-            "startDateLabel": "Khai giảng",
-            "scheduledWeeksLabel": "Số tuần đã lên lịch",
-            "progressLabel": "Tiến độ khóa học",
-            "progressValue": "{completed} / {total} buổi"
-        },
-        "tabs": { 
-            "weeks": "Tuần học", 
-            "members": "Thành viên" 
-        },
-        "courseMember": {
-            "staffTitle": "Giảng dạy",
-            "youTitle": "Bạn",
-            "role": { 
-                "TEACHER": "Giáo viên", 
-                "ASSISTANT": "Trợ giảng", 
-                "STUDENT": "Học viên" 
-            }
-        },
-        "weekSection": {
-            "title": "Tuần học",
-            "empty": "Chưa có tuần học nào"
-        },
-        "weekSectionCard": {
-            "sessionCount": "Buổi {count}",
-            "assignments": {
-                "title": "Bài tập Writing",
-                "empty": "Chưa có bài tập nào trong tuần này",
-                "taskType": {
-                    "TASK_1": "Task 1",
-                    "TASK_2": "Task 2"
-                },
-                "difficulty": {
-                    "EASY": "Dễ",
-                    "MEDIUM": "Trung bình",
-                    "HARD": "Khó"
-                },
-                "showMore": "Xem thêm",
-                "showLess": "Thu gọn",
-                "noteLabel": "Ghi chú",
-                "noNote": "Không",
-                "dueLabel": "Hạn nộp",
-                "overdue": "Quá hạn"
-            }
         }
     },
     "writingWorkspace": {

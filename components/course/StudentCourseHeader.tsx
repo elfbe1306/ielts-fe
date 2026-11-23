@@ -9,7 +9,7 @@ import { notFound, useParams } from "next/navigation";
 
 export default function StudentCourseHeader() {
     const { courseId } = useParams<{ courseId: string; }>();
-    const t = useTranslations("studentCourseDetailPage.courseHeader");
+    const t = useTranslations("courseDetail.courseHeader");
 
     const { data: course, isLoading, error } = useQuery(enrolledCourseQueries.detail(courseId));
 

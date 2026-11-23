@@ -18,7 +18,7 @@ import { isNotFoundError } from "@/lib/api/error";
 
 export default function CourseHeader() {
     const { courseId } = useParams<{ courseId: string; }>();
-    const t = useTranslations("teacherCourseDetailPage.courseHeader");
+    const t = useTranslations("courseDetail.courseHeader");
     const message = useAppMessage();
     const queryClient = useQueryClient();
     const router = useRouter(); 
@@ -31,7 +31,7 @@ export default function CourseHeader() {
         mutationFn: () => courseApi.deleteCourse(courseId),
         onSuccess: () => {
             message.success(t("deleteSuccess"));
-            router.replace(ROUTES.teacher.courses);
+            router.replace(ROUTES.courses);
             queryClient.removeQueries({ queryKey: courseKeys.detail(courseId) });
             queryClient.invalidateQueries({ queryKey: courseKeys.lists() });
         },

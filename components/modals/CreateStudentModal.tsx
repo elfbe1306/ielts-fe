@@ -23,7 +23,7 @@ type Errors = {
 };
 
 export default function CreateStudentModal({ isOpen, onClose } : CreateStudentModalProps) {
-    const t = useTranslations("teacherStudentsPage.createStudentModal");
+    const t = useTranslations("students.createStudentModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

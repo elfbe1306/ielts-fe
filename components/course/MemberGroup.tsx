@@ -11,7 +11,7 @@ type MemberGroupProps = {
 
 export default function MemberGroup({ title, members, emptyText, renderRole } : MemberGroupProps) {
     return (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-2">
             <p className="text-sm font-semibold text-muted">{title}</p>
 
             {members.length === 0 ? (

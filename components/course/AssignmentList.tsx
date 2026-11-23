@@ -24,7 +24,7 @@ type AssignmentListProps = {
 }
 
 export default function AssignmentList({ courseId, writingAssignments } : AssignmentListProps) {
-    const t = useTranslations("teacherCourseDetailPage.weekSectionCard.assignments");
+    const t = useTranslations("courseDetail.weekSectionCard.assignments");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 
@@ -134,7 +134,7 @@ export default function AssignmentList({ courseId, writingAssignments } : Assign
                                     variant="secondary"
                                     icon={<FileEditIcon width={18} height={18} />}
                                     iconOnly={true}
-                                    onClick={() => router.push(ROUTES.teacher.writingAssignment(courseId, assignment.id))}
+                                    onClick={() => router.push(ROUTES.writingAssignment(courseId, assignment.id))}
                                 />
 
                                 <Button

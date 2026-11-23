@@ -24,7 +24,7 @@ type AddCourseMemberModalProps = {
 }
 
 export default function AddCourseMemberModal({ courseId, isOpen, onClose } : AddCourseMemberModalProps) {
-    const t = useTranslations("teacherCourseDetailPage.courseMember.addCourseMemberModal");
+    const t = useTranslations("courseDetail.addCourseMemberModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

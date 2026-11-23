@@ -37,7 +37,7 @@ const toInitialFileList = (question: WritingQuestion): UploadFile[] =>
         : [];
 
 export default function UpdateWritingQuestionModal({ question, isOpen, onClose } : UpdateWritingQuestionModalProps) {
-    const t = useTranslations("teacherQuestionBankWritingPage.updateWritingQuestionModal");
+    const t = useTranslations("writingQuestionBank.updateWritingQuestionModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
 

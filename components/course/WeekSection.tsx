@@ -10,7 +10,7 @@ import { weekSectionQueries } from "@/lib/queries/weekSectionQueries";
 
 export default function WeekSection() {
     const { courseId } = useParams<{ courseId: string; }>();
-    const t = useTranslations("teacherCourseDetailPage.weekSection");
+    const t = useTranslations("courseDetail.weekSection");
 
     const [isCreateModalOpen, setIsCreateModalOpen] = useState<boolean>(false);
 

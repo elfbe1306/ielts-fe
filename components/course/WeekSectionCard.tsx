@@ -21,7 +21,7 @@ type WeekSectionCardProps = {
 }
 
 export default function WeekSectionCard({ courseId, weekSection } : WeekSectionCardProps) {
-    const t = useTranslations("teacherCourseDetailPage.weekSectionCard");
+    const t = useTranslations("courseDetail.weekSectionCard");
     const locale = useLocale();
     const message = useAppMessage();
     const queryClient = useQueryClient();
