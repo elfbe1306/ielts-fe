@@ -20,7 +20,11 @@ type UpdateMemberVariables = {
     data: UpdateCourseMemberRequest;
 }
 
-export default function CourseMember() {
+type CourseMemberProps = {
+    canManage: boolean;
+}
+
+export default function CourseMember({ canManage }: CourseMemberProps) {
     const { courseId } = useParams<{ courseId: string; }>();
     const t = useTranslations("courseDetail.courseMember");
     const message = useAppMessage();
@@ -85,11 +89,40 @@ export default function CourseMember() {
         updateMember({ userId: member.id, data: { courseRole } });
     };
 
+    const renderDeleteButton = (member: CourseMemberType) => (
+        <Popconfirm
+            title={t("removePopconfirm.title")}
+            description={t("removePopconfirm.subtitle")}
+            placement="bottomRight"
+            okText={t("removePopconfirm.okText")}
+            cancelText={t("removePopconfirm.cancelText")}
+            okButtonProps={{ style: { cursor: "pointer" } }}
+            cancelButtonProps={{ style: { cursor: "pointer" } }}
+            onConfirm={() => deleteMember(member.id)}
+        >
+            <button
+                type="button"
+                className="inline-flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border bg-bg text-muted transition-colors cursor-pointer hover:border-error hover:bg-error-bg hover:text-error"
+            >
+                <TrashIcon width={16} height={16} />
+            </button>
+        </Popconfirm>
+    );
+
     const renderRole = (member: CourseMemberType) => {
         if (member.role === "TEACHER") {
             return (
                 <p className="text-sm text-muted">{t(`role.${member.role}`)}</p>
             )
+        }
+
+        if (!canManage) {
+            return (
+                <div className="flex items-center gap-2">
+                    <p className="text-sm text-muted">{t(`role.${member.role}`)}</p>
+                    {member.role === "STUDENT" && renderDeleteButton(member)}
+                </div>
+            );
         }
 
         return (
@@ -103,23 +136,7 @@ export default function CourseMember() {
                     onChange={(courseRole) => handleRoleChange(member, courseRole)}
                 />
 
-                <Popconfirm
-                    title={t("removePopconfirm.title")}
-                    description={t("removePopconfirm.subtitle")}
-                    placement="bottomRight"
-                    okText={t("removePopconfirm.okText")}
-                    cancelText={t("removePopconfirm.cancelText")}
-                    okButtonProps={{ style: { cursor: "pointer" } }}
-                    cancelButtonProps={{ style: { cursor: "pointer" } }}
-                    onConfirm={() => deleteMember(member.id)}
-                >
-                    <button
-                        type="button"
-                        className="inline-flex h-8 w-8 flex-none items-center justify-center rounded-lg border border-border bg-bg text-muted transition-colors cursor-pointer hover:border-error hover:bg-error-bg hover:text-error"
-                    >
-                        <TrashIcon width={16} height={16} />
-                    </button>
-                </Popconfirm>
+                {renderDeleteButton(member)}
             </div>
         );
     };
@@ -151,6 +168,7 @@ export default function CourseMember() {
             {isAddModalOpen && (
                 <AddCourseMemberModal
                     courseId={courseId}
+                    canAssignRole={canManage}
                     isOpen={isAddModalOpen}
                     onClose={() => setIsAddModalOpen(false)}
                 />

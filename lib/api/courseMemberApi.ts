@@ -11,7 +11,11 @@ export const courseMemberApi = {
     updateMember: (courseId: string, userId: string, data: UpdateCourseMemberRequest) => http.patch<CourseMember>(`/api/courses/${courseId}/members/${userId}`, data),
 
     deleteMember: (courseId: string, userId: string) => http.delete<void>(`/api/courses/${courseId}/members/${userId}`),
- 
+
+    // ===== Any member =====
+
+    getMyMembership: (courseId: string) => http.get<CourseMember>(`/api/courses/${courseId}/members/me`),
+
     // ===== Student =====
  
     getEnrolledMembers: (courseId: string) => http.get<CourseMember[]>(`/api/courses/enrolled/${courseId}/members`),

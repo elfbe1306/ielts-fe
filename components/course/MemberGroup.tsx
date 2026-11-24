@@ -30,7 +30,7 @@ export default function MemberGroup({ title, members, emptyText, renderRole } : 
  
                             <div className="min-w-0 flex-1">
                                 <p className="truncate text-sm font-medium">{member.fullName}</p>
-                                <p className="truncate text-xs text-muted">{member.email}</p>
+                                <p className="truncate text-sm text-muted">{member.email}</p>
                             </div>
  
                             {renderRole(member)}

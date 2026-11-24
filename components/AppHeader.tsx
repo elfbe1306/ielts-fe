@@ -153,7 +153,7 @@ export default function AppHeader() {
                                     <span className="max-w-40 truncate text-sm font-semibold text-fg">
                                         {user.fullName}
                                     </span>
-                                    <span className="text-xs text-muted">{t(`roles.${user.role}`)}</span>
+                                    <span className="text-sm text-muted">{t(`roles.${user.role}`)}</span>
                                 </span>
 
                                 <ArrowDownIcon

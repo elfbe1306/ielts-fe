@@ -19,11 +19,12 @@ const SEARCH_PAGE_SIZE = 5;
 
 type AddCourseMemberModalProps = {
     courseId: string;
+    canAssignRole: boolean;
     isOpen: boolean;
     onClose: () => void;
 }
 
-export default function AddCourseMemberModal({ courseId, isOpen, onClose } : AddCourseMemberModalProps) {
+export default function AddCourseMemberModal({ courseId, canAssignRole, isOpen, onClose } : AddCourseMemberModalProps) {
     const t = useTranslations("courseDetail.addCourseMemberModal");
     const message = useAppMessage();
     const queryClient = useQueryClient();
@@ -78,7 +79,7 @@ export default function AddCourseMemberModal({ courseId, isOpen, onClose } : Add
 
         mutate({ 
             userId: selectedStudent.id,  
-            courseRole: role
+            courseRole: canAssignRole ? role : "STUDENT"
         });
     }
 
@@ -131,11 +132,11 @@ export default function AddCourseMemberModal({ courseId, isOpen, onClose } : Add
 
                                                 <div className="min-w-0 flex-1">
                                                     <p className="truncate text-sm font-medium text-fg">{student.fullName}</p>
-                                                    <p className="truncate text-xs text-muted">{student.email}</p>
+                                                    <p className="truncate text-sm text-muted">{student.email}</p>
                                                 </div>
 
                                                 {isMember && (
-                                                    <span className="flex-none text-xs text-muted">
+                                                    <span className="flex-none text-sm text-muted">
                                                         {t("alreadyMember")}
                                                     </span>
                                                 )}
@@ -151,9 +152,9 @@ export default function AddCourseMemberModal({ courseId, isOpen, onClose } : Add
                 <SelectInput<AssignableCourseRole>
                     label={t("roleLabel")}
                     options={roleOptions}
-                    value={role}
+                    value={canAssignRole ? role : "STUDENT"}
                     onChange={setRole}
-                    disabled={!selectedStudent}
+                    disabled={!selectedStudent || !canAssignRole}
                 />
 
                 <div className="flex justify-end">
