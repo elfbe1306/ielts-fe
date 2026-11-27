@@ -1,9 +1,7 @@
 "use client";
 
-import ArrowLeftIcon from "@/components/icons/ArrowLeftIcon";
-import { Link } from "@/i18n/navigation";
+import AppBreadcrumb, { BreadcrumbItem } from "@/components/AppBreadcrumb";
 import { ROUTES } from "@/lib/route";
-import { Breadcrumb } from "antd";
 import { useTranslations } from "next-intl";
 import { useParams } from "next/navigation";
 
@@ -11,7 +9,7 @@ export default function CourseDetailLayout({ children } : { children: React.Reac
     const { courseId, assignmentId } = useParams<{ courseId: string; assignmentId?: string }>();
     const t = useTranslations("courseDetail");
 
-    const breadcrumbItems = [
+    const breadcrumbItems: BreadcrumbItem[] = [
         {
             title: t("breadcrumbs.courses"),
             path: ROUTES.courses,
@@ -31,28 +29,7 @@ export default function CourseDetailLayout({ children } : { children: React.Reac
 
     return (
         <>
-            <Breadcrumb
-                items={breadcrumbItems}
-                itemRender={(currentRoute) => {
-                    const isFirst = currentRoute.path === breadcrumbItems[0].path;
-                    const isLast = currentRoute.path === breadcrumbItems[breadcrumbItems.length - 1].path;
-
-                    const content = (
-                        <span className="group inline-flex items-center gap-1.5">
-                            {isFirst && (
-                                <ArrowLeftIcon width={16} height={16} className="text-muted transition-colors group-hover:text-accent" />
-                            )}
-                            <span>{currentRoute.title}</span>
-                        </span>
-                    );
-
-                    return isLast ? (
-                        <>{content}</>
-                    ) : (
-                        <Link href={currentRoute.path as string}>{content}</Link>
-                    );
-                }}
-            />
+            <AppBreadcrumb items={breadcrumbItems} />
 
             <div className="mt-4">
                 {children}

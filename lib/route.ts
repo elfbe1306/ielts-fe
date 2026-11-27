@@ -4,6 +4,14 @@ export const ROUTES = {
 
     dashboard: "/dashboard",
 
+    practices: {
+        root: "/practices",
+        listening: "/practices/listening",
+        reading: "/practices/reading",
+        writing: "/practices/writing",
+        speaking: "/practices/speaking",
+    },
+
     courses: "/courses",
     courseDetail: (courseId: string) => `/courses/${courseId}`,
     writingAssignment: (courseId: string, assignmentId: string) => `/courses/${courseId}/writing-assignments/${assignmentId}`,

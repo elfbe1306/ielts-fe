@@ -16,6 +16,7 @@ const QUESTION_BANK_ITEMS = [
 
 const LEAF_ROUTES = [
     ROUTES.dashboard,
+    ROUTES.practices.root,
     ROUTES.courses,
     ROUTES.students,
     ROUTES.users,
@@ -43,6 +44,17 @@ export default function AppNav({ role } : AppNavProps) {
                     </Link>
                 ),
             }
+        },
+        {
+            roles: ["TEACHER", "STUDENT"],
+            item: {
+                key: ROUTES.practices.root,
+                label: (
+                    <Link href={ROUTES.practices.root} replace>
+                        {t("practices")}
+                    </Link>
+                ),
+            },
         },
         {
             roles: ["TEACHER", "STUDENT"],

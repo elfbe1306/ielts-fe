@@ -11,6 +11,7 @@
         },
         "menu": {
             "dashboard": "Tổng quan",
+            "practices": "Luyện tập",
             "courses": "Khoá học",
             "questionBank": "Kho đề",
             "questionBankItems": {
@@ -54,6 +55,49 @@
         "title": "Không tìm thấy trang",
         "subtitle": "Trang này không tồn tại, đã bị xoá, hoặc bạn không có quyền truy cập.",
         "backToDashboard": "Về trang tổng quan"
+    },
+    "practices": {
+        "title": "Luyện tập",
+        "subtitle": "Tự luyện từng kỹ năng IELTS.",
+        "skills": {
+            "listening": { "title": "Listening", "subtitle": "Nghe và trả lời, chấm tự động" },
+            "reading": { "title": "Reading", "subtitle": "Đọc hiểu, chấm tự động theo đáp án" },
+            "writing": { "title": "Writing", "subtitle": "Task 1 và Task 2, AI chấm theo 4 tiêu chí" },
+            "speaking": { "title": "Speaking", "subtitle": "Ghi âm câu trả lời theo Part 1 - 3" }
+        },
+        "start": "Vào luyện"
+    },
+    "writing": {
+        "breadcrumbs": {
+            "practices": "Luyện tập",
+            "writing": "Writing"
+        },
+        "title": "Writing",
+        "subtitle": "Chọn một đề để viết. AI chấm theo 4 tiêu chí ngay khi bạn nộp."
+    },
+    "reading": {
+        "breadcrumbs": {
+            "practices": "Luyện tập",
+            "reading": "Reading"
+        },
+        "title": "Reading",
+        "subtitle": "Đọc từng Passage và trả lời câu hỏi. Chấm tự động theo đáp án."
+    },
+    "listening": {
+        "breadcrumbs": {
+            "practices": "Luyện tập",
+            "listening": "Listening"
+        },
+        "title": "Listening",
+        "subtitle": "Nghe audio và trả lời câu hỏi theo từng Part. Chấm tự động ngay khi nộp."
+    },
+    "speaking": {
+        "breadcrumbs": {
+            "practices": "Luyện tập",
+            "speaking": "Speaking"
+        },
+        "title": "Speaking",
+        "subtitle": "Ghi âm câu trả lời theo từng Part và nghe lại bài nói của mình."
     },
     "courses": {
         "title": "Khoá học",

@@ -1,6 +1,7 @@
 import { Role } from "@/types/auth-type";
 
 export const ACCESS = {
+    practices: ["TEACHER", "STUDENT"],
     courses: ["TEACHER", "STUDENT"],
     questionBank: ["TEACHER"],
     students: ["TEACHER"],

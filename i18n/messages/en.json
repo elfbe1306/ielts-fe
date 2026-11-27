@@ -11,6 +11,7 @@
         },
         "menu": {
             "dashboard": "Dashboard",
+            "practices": "Practices",
             "courses": "Courses",
             "questionBank": "Question bank",
             "questionBankItems": {
@@ -54,6 +55,49 @@
         "title": "Page not found",
         "subtitle": "This page doesn't exist, was removed, or you don't have access to it.",
         "backToDashboard": "Back to dashboard"
+    },
+    "practices": {
+        "title": "Practice",
+        "subtitle": "Practise each IELTS skill on your own.",
+        "skills": {
+            "listening": { "title": "Listening", "subtitle": "Listen and answer, auto-graded" },
+            "reading": { "title": "Reading", "subtitle": "Comprehension, auto-graded against answers" },
+            "writing": { "title": "Writing", "subtitle": "Task 1 and Task 2 · AI grades on 4 criteria" },
+            "speaking": { "title": "Speaking", "subtitle": "Record answers for Parts 1–3" }
+        },
+        "start": "Start practising"
+    },
+    "writing": {
+        "breadcrumbs": {
+            "practices": "Practice",
+            "writing": "Writing"
+        },
+        "title": "Writing",
+        "subtitle": "Pick a prompt to write. AI grades it on 4 criteria as soon as you submit."
+    },
+    "reading": {
+        "breadcrumbs": {
+            "practices": "Practice",
+            "reading": "Reading"
+        },
+        "title": "Reading",
+        "subtitle": "Read each passage and answer the questions. Auto-graded against the answer key."
+    },
+    "listening": {
+        "breadcrumbs": {
+            "practices": "Practice",
+            "listening": "Listening"
+        },
+        "title": "Listening",
+        "subtitle": "Listen to the audio and answer questions part by part. Graded as soon as you submit."
+    },
+    "speaking": {
+        "breadcrumbs": {
+            "practices": "Practice",
+            "speaking": "Speaking"
+        },
+        "title": "Speaking",
+        "subtitle": "Record your answers part by part and listen back to how you sound."
     },
     "courses": {
         "title": "Courses",
