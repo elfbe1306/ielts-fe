@@ -1,4 +1,4 @@
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingQuestion } from "@/types/writing-question-type";
+import { TASK_TYPE_COLORS, WritingQuestion } from "@/types/writing-question-type";
 import { Image, Tag } from "antd";
 import { useTranslations } from "next-intl";
 
@@ -22,9 +22,9 @@ export default function WritingQuestionPanel({ question, note }: WritingQuestion
                 <Tag variant="filled" color={TASK_TYPE_COLORS[question.taskType]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
                     {t(`taskType.${question.taskType}`)}
                 </Tag>
-                <Tag variant="filled" color={DIFFICULTY_COLORS[question.difficulty]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                {/* <Tag variant="filled" color={DIFFICULTY_COLORS[question.difficulty]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
                     {t(`difficulty.${question.difficulty}`)}
-                </Tag>
+                </Tag> */}
             </div>
 
             <p className="text-lg font-semibold text-fg">{t("titleLabel")}</p>
