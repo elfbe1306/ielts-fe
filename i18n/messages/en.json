@@ -74,11 +74,14 @@
         },
         "title": "Writing",
         "subtitle": "Pick a prompt to write. AI grades it on 4 criteria as soon as you submit.",
-        "filters": {
-            "ALL": "All",
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
-        }
+        "filterPanel": {
+            "title": "Dạng bài",
+            "clear": "Bỏ chọn"
+        },
+        "start": "Start",
+        "loadError": "Could not load the prompts.",
+        "emptyTitle": "No matching prompts",
+        "emptySubtitle": "Try removing some question types from the filter."
     },
     "reading": {
         "breadcrumbs": {
@@ -325,10 +328,9 @@
             "dueTimeLabel": "Due time",
             "descriptionLabel": "Description (Optional)",
             "descriptionPlaceholder": "Add any extra notes for students about this assignment...",
-            "filters": {
-                "ALL": "All",
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
+            "filterPanel": {
+                "title": "Question type",
+                "clear": "Clear"
             },
             "selected": "Selected",
             "loadError": "Failed to load writing questions.",
@@ -438,10 +440,9 @@
             "image": "Image",
             "action": "Actions"
         },
-        "filters": {
-            "ALL": "All",
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
+        "filterPanel": {
+            "title": "Dạng bài",
+            "clear": "Bỏ chọn"
         },
         "loadError": "Could not load the prompt list.",
         "deletePopconfirm": {

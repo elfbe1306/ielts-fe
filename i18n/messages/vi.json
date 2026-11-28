@@ -74,11 +74,14 @@
         },
         "title": "Writing",
         "subtitle": "Chọn một đề để viết. AI chấm theo 4 tiêu chí ngay khi bạn nộp.",
-        "filters": {
-            "ALL": "Tất cả",
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
-        }
+        "filterPanel": {
+            "title": "Dạng bài",
+            "clear": "Bỏ chọn"
+        },
+        "start": "Làm bài",
+        "loadError": "Không tải được danh sách đề.",
+        "emptyTitle": "Không có đề phù hợp",
+        "emptySubtitle": "Thử bỏ bớt dạng bài trong bộ lọc."
     },
     "reading": {
         "breadcrumbs": {
@@ -325,10 +328,9 @@
             "dueTimeLabel": "Giờ nộp",
             "descriptionLabel": "Mô tả (Tuỳ chọn)",
             "descriptionPlaceholder": "Ghi chú thêm cho học viên về phần bài tập này...",
-            "filters": {
-                "ALL": "Tất cả",
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
+            "filterPanel": {
+                "title": "Dạng bài",
+                "clear": "Bỏ chọn"
             },
             "selected": "Đã chọn",
             "loadError": "Không tải được danh sách đề bài.",
@@ -438,10 +440,9 @@
             "image": "Hình ảnh",
             "action": "Thao tác"
         },
-        "filters": {
-            "ALL": "Tất cả",
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
+        "filterPanel": {
+            "title": "Dạng bài",
+            "clear": "Bỏ chọn"
         },
         "loadError": "Không tải được danh sách đề bài.",
         "deletePopconfirm": {

@@ -7,9 +7,7 @@ function buildQuery(params: WritingQuestionListParams): string {
         size: String(params.size),
     });
 
-    if (params.filter !== "ALL") {
-        searchParams.set("taskType", params.filter);
-    }
+    params.questionTypes?.forEach((type) => searchParams.append("questionTypes", type));
 
     return searchParams.toString();
 }

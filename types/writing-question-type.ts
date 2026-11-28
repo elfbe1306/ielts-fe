@@ -55,8 +55,6 @@ export const QUESTION_TYPES_BY_TASK: Record<WritingTaskType, readonly WritingQue
     TASK_2: TASK_2_QUESTION_TYPES,
 };
 
-export type WritingQuestionFilter = "ALL" | WritingTaskType;
-
 export type WritingQuestion = {
     id: string;
     title: string;
@@ -70,7 +68,7 @@ export type WritingQuestion = {
 export type WritingQuestionListParams = {
     page: number;
     size: number;
-    filter: WritingQuestionFilter;
+    questionTypes?: WritingQuestionType[];
 };
 
 export type CreateWritingQuestionRequest = Pick<WritingQuestion, "title" | "prompt" | "taskType" | "questionType"> & {

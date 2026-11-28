@@ -2,10 +2,10 @@ import { useTranslations } from "next-intl";
 import Modal from "./Modal";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
-import { Image, Table, TableColumnsType, Tag, Tooltip } from "antd";
+import { Checkbox, Image, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import Button from "../Button";
 import { useAppMessage } from "@/contexts/message-context";
-import { QUESTION_TYPE_LABELS, TASK_TYPE_COLORS, TASK_TYPE_LABELS, WritingQuestion, WritingQuestionFilter } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, QUESTION_TYPES_BY_TASK, TASK_TYPE_COLORS, TASK_TYPE_LABELS, TASK_TYPES, WritingQuestion, WritingQuestionType, WritingTaskType } from "@/types/writing-question-type";
 import { writingQuestionQueries } from "@/lib/queries/writingQuestionQueries";
 import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 import DateInput from "../form-input/DateInput";
@@ -15,9 +15,9 @@ import { CreateWritingAssignmentRequest } from "@/types/writing-assignment-type"
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
 import AlignLeftIcon from "../icons/AlignLeftIcon";
 
-const FILTERS: WritingQuestionFilter[] = ["ALL", "TASK_1", "TASK_2"];
 const DEFAULT_PAGE_SIZE = 5;
 const THUMB_SIZE = 64;
+const ALL_QUESTION_TYPES: WritingQuestionType[] = TASK_TYPES.flatMap((task) => [...QUESTION_TYPES_BY_TASK[task]]);
 
 type CreateWritingAssignmentModalProps = {
     isOpen: boolean;
@@ -44,17 +44,29 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
 
     const [errors, setErrors] = useState<Errors>({});
 
-    const [filter, setFilter] = useState<WritingQuestionFilter>("ALL");
+    const [selectedTypes, setSelectedTypes] = useState<WritingQuestionType[]>([]);
     const [page, setPage] = useState<number>(0);
 
-    const { data, isLoading, isError } = useQuery({
-        ...writingQuestionQueries.list({ page, size: DEFAULT_PAGE_SIZE, filter }),
-        enabled: isOpen,
-    });
+    const { data, isLoading, isError } = useQuery(
+        writingQuestionQueries.list({ page, size: DEFAULT_PAGE_SIZE, questionTypes: selectedTypes })
+    );
 
-    const handleFilterChange = (key: WritingQuestionFilter) => {
-        setFilter(key);
+    const updateSelectedTypes = (next: WritingQuestionType[]) => {
+        setSelectedTypes(ALL_QUESTION_TYPES.filter((type) => next.includes(type)));
         setPage(0);
+    };
+
+    const handleTypeToggle = (type: WritingQuestionType, checked: boolean) => {
+        updateSelectedTypes(checked ? [...selectedTypes, type] : selectedTypes.filter((item) => item !== type));
+    };
+
+    const handleTaskToggle = (task: WritingTaskType, checked: boolean) => {
+        const taskTypes = QUESTION_TYPES_BY_TASK[task];
+        updateSelectedTypes(
+            checked
+                ? [...selectedTypes, ...taskTypes]
+                : selectedTypes.filter((type) => !taskTypes.includes(type))
+        );
     };
 
     const { mutate, isPending } = useMutation({
@@ -152,25 +164,53 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
                     {t("writingLabel")}
                 </p>
 
-                <div className="flex flex-wrap gap-2">
-                    {FILTERS.map((key) => {
-                        const isActive = key === filter;
+                <div className="rounded-xl border border-border bg-bg p-4">
+                    <div className="mb-3 flex items-center justify-between">
+                        <p className="text-sm font-semibold text-fg">{t("filterPanel.title")}</p>
 
-                        return (
+                        {selectedTypes.length > 0 && (
                             <button
-                                key={key}
                                 type="button"
-                                onClick={() => handleFilterChange(key)}
-                                className={`inline-flex h-7.5 items-center gap-1.5 rounded-full border px-3.5 text-sm font-semibold transition-colors ${
-                                    isActive
-                                        ? "border-accent bg-accent text-white"
-                                        : "border-border bg-bg text-muted hover:border-muted hover:text-fg"
-                                }`}
+                                onClick={() => updateSelectedTypes([])}
+                                className="cursor-pointer text-sm font-medium text-accent hover:underline"
                             >
-                                {t(`filters.${key}`)}
+                                {t("filterPanel.clear")}
                             </button>
-                        )
-                    })}
+                        )}
+                    </div>
+
+                    <div className="flex flex-col gap-3">
+                        {TASK_TYPES.map((task) => {
+                            const taskTypes = QUESTION_TYPES_BY_TASK[task];
+                            const checkedCount = taskTypes.filter((type) => selectedTypes.includes(type)).length;
+
+                            return (
+                                <div key={task} className="flex items-start gap-3">
+                                    <div className="w-20 flex-none">
+                                        <Checkbox
+                                            checked={checkedCount === taskTypes.length}
+                                            indeterminate={checkedCount > 0 && checkedCount < taskTypes.length}
+                                            onChange={(e) => handleTaskToggle(task, e.target.checked)}
+                                        >
+                                            <span className="text-sm font-semibold text-fg">{TASK_TYPE_LABELS[task]}</span>
+                                        </Checkbox>
+                                    </div>
+
+                                    <div className="flex min-w-0 flex-1 flex-wrap gap-x-4 gap-y-1.5 border-l border-border pl-3">
+                                        {taskTypes.map((type) => (
+                                            <Checkbox
+                                                key={type}
+                                                checked={selectedTypes.includes(type)}
+                                                onChange={(e) => handleTypeToggle(type, e.target.checked)}
+                                            >
+                                                <span className="text-sm text-fg">{QUESTION_TYPE_LABELS[type]}</span>
+                                            </Checkbox>
+                                        ))}
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
                 </div>
 
                 {isError ? (
