@@ -8,11 +8,12 @@ import { useAppMessage } from "@/contexts/message-context";
 import { formatTime } from "@/lib/utils";
 import { UpdateWritingAssignmentRequest, WritingAssignment } from "@/types/writing-assignment-type";
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, TASK_TYPE_COLORS, TASK_TYPE_LABELS } from "@/types/writing-question-type";
 import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 import DateInput from "../form-input/DateInput";
 import TimeInput from "../form-input/TimeInput";
 import TextInput from "../form-input/TextInput";
+import AlignLeftIcon from "../icons/AlignLeftIcon";
 
 const THUMB_SIZE = 64;
 
@@ -102,7 +103,7 @@ export default function UpdateWritingAssignmentModal({ courseId, assignment, isO
             <form onSubmit={handleSubmit} className="flex flex-col gap-3">
                 <div className="flex min-w-0 items-start gap-3 rounded-lg border border-border p-3">
                     <div
-                        className="shrink-0 overflow-hidden rounded-md bg-gray-100"
+                        className="shrink-0"
                         style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
                     >
                         {question.imageUrl ? (
@@ -111,11 +112,11 @@ export default function UpdateWritingAssignmentModal({ courseId, assignment, isO
                                 alt={question.title}
                                 width={THUMB_SIZE}
                                 height={THUMB_SIZE}
-                                style={{ objectFit: "cover" }}
+                                style={{ objectFit: "cover", borderRadius: 10, border: "1px solid var(--color-border)" }}
                             />
                         ) : (
-                            <div className="flex h-full w-full items-center justify-center text-sm text-muted">
-                                —
+                            <div className="flex h-full w-full items-center justify-center rounded-[10px] border border-border bg-surface text-muted">
+                                <AlignLeftIcon width={22} height={22} />
                             </div>
                         )}
                     </div>
@@ -127,10 +128,10 @@ export default function UpdateWritingAssignmentModal({ courseId, assignment, isO
                         </p>
                         <div className="mt-1 flex items-center gap-1.5">
                             <Tag variant="filled" color={TASK_TYPE_COLORS[question.taskType]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
-                                {t(`taskType.${question.taskType}`)}
+                                {TASK_TYPE_LABELS[question.taskType]}
                             </Tag>
-                            <Tag variant="filled" color={DIFFICULTY_COLORS[question.difficulty]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
-                                {t(`difficulty.${question.difficulty}`)}
+                            <Tag variant="filled" style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                {QUESTION_TYPE_LABELS[question.questionType]}
                             </Tag>
                         </div>
                     </div>

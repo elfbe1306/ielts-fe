@@ -8,7 +8,7 @@ import Dragger from "antd/es/upload/Dragger";
 import Button from "../Button";
 import { useAppMessage } from "@/contexts/message-context";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { DIFFICULTIES, TASK_TYPES, UpdateWritingQuestionRequest, WritingDifficulty, WritingQuestion, WritingTaskType } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, QUESTION_TYPES_BY_TASK, TASK_TYPE_LABELS, TASK_TYPES, UpdateWritingQuestionRequest, WritingQuestion, WritingQuestionType, WritingTaskType } from "@/types/writing-question-type";
 import SelectInput, { SelectOption } from "../form-input/SelectInput";
 import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
 import { writingQuestionKeys } from "@/lib/queries/writingQuestionQueries";
@@ -44,31 +44,25 @@ export default function UpdateWritingQuestionModal({ question, isOpen, onClose }
     const [title, setTitle] = useState<string>(question.title);
     const [prompt, setPrompt] = useState<string>(question.prompt);
     const [taskType, setTaskType] = useState<WritingTaskType>(question.taskType);
-    const [difficulty, setDifficulty] = useState<WritingDifficulty>(question.difficulty);
+    const [questionType, setQuestionType] = useState<WritingQuestionType>(question.questionType);
     const [fileList, setFileList] = useState<UploadFile[]>(() => toInitialFileList(question));
 
     const [errors, setErrors] = useState<Errors>({});
-
-    const TASK_TYPE_LABELS: Record<WritingTaskType, string> = {
-        TASK_1: "Task 1",
-        TASK_2: "Task 2",
-    };
 
     const TASK_TYPE_OPTIONS: SelectOption<WritingTaskType>[] = TASK_TYPES.map((value) => ({
         value,
         label: TASK_TYPE_LABELS[value],
     }));
 
-    const difficultyLabels: Record<WritingDifficulty, string> = {
-        EASY: t("difficultyEasy"),
-        MEDIUM: t("difficultyMedium"),
-        HARD: t("difficultyHard"),
-    };
-
-    const difficultyOptions: SelectOption<WritingDifficulty>[] = DIFFICULTIES.map((value) => ({
+    const QUESTION_TYPE_OPTIONS: SelectOption<WritingQuestionType>[] = QUESTION_TYPES_BY_TASK[taskType].map((value) => ({
         value,
-        label: difficultyLabels[value],
+        label: QUESTION_TYPE_LABELS[value],
     }));
+
+    const handleTaskTypeChange = (value: WritingTaskType) => {
+        setTaskType(value);
+        setQuestionType(value === question.taskType ? question.questionType : QUESTION_TYPES_BY_TASK[value][0]);
+    };
 
     const uploadProps: UploadProps = {
         name: "image",
@@ -102,7 +96,7 @@ export default function UpdateWritingQuestionModal({ question, isOpen, onClose }
         if (title !== question.title) payload.title = title;
         if (prompt !== question.prompt) payload.prompt = prompt;
         if (taskType !== question.taskType) payload.taskType = taskType;
-        if (difficulty !== question.difficulty) payload.difficulty = difficulty;
+        if (questionType !== question.questionType) payload.questionType = questionType;
 
         const newImage = fileList[0]?.originFileObj as File | undefined;
         if (newImage) {
@@ -182,14 +176,14 @@ export default function UpdateWritingQuestionModal({ question, isOpen, onClose }
                         label={t("typeLabel")}
                         options={TASK_TYPE_OPTIONS}
                         value={taskType}
-                        onChange={setTaskType}
+                        onChange={handleTaskTypeChange}
                     />
 
                     <SelectInput
-                        label={t("difficultyLabel")}
-                        options={difficultyOptions}
-                        value={difficulty}
-                        onChange={setDifficulty}
+                        label={t("questionTypeLabel")}
+                        options={QUESTION_TYPE_OPTIONS}
+                        value={questionType}
+                        onChange={setQuestionType}
                     />
                 </div>
 

@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Image, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import Button from "../Button";
 import { useAppMessage } from "@/contexts/message-context";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingQuestion, WritingQuestionFilter } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, TASK_TYPE_COLORS, TASK_TYPE_LABELS, WritingQuestion, WritingQuestionFilter } from "@/types/writing-question-type";
 import { writingQuestionQueries } from "@/lib/queries/writingQuestionQueries";
 import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
 import DateInput from "../form-input/DateInput";
@@ -13,6 +13,7 @@ import TimeInput from "../form-input/TimeInput";
 import TextInput from "../form-input/TextInput";
 import { CreateWritingAssignmentRequest } from "@/types/writing-assignment-type";
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
+import AlignLeftIcon from "../icons/AlignLeftIcon";
 
 const FILTERS: WritingQuestionFilter[] = ["ALL", "TASK_1", "TASK_2"];
 const DEFAULT_PAGE_SIZE = 5;
@@ -97,7 +98,7 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
             render: (_: string, record) => (
                 <div className="flex min-w-0 items-center gap-3">
                     <div
-                        className="shrink-0 overflow-hidden rounded-md bg-gray-100"
+                        className="shrink-0"
                         style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
                         onClick={(e) => e.stopPropagation()}
                     >
@@ -107,32 +108,32 @@ export default function CreateWritingAssignmentModal({ isOpen, onClose, courseId
                                 alt={record.title}
                                 width={THUMB_SIZE}
                                 height={THUMB_SIZE}
-                                style={{ objectFit: "cover" }}
+                                style={{ objectFit: "cover", borderRadius: 10, border: "1px solid var(--color-border)" }}
                             />
                         ) : (
-                            <div className="flex h-full w-full items-center justify-center text-sm text-muted">
-                                —
+                            <div className="flex h-full w-full items-center justify-center rounded-[10px] border border-border bg-surface text-muted">
+                                <AlignLeftIcon width={22} height={22} />
                             </div>
                         )}
                     </div>
 
-                    <Tooltip
-                        placement="topLeft"
-                        title={<span className="whitespace-pre-line">{record.prompt}</span>}
-                    >
-                        <div className="flex min-w-0 flex-1 flex-col gap-1">
-                            <p className="truncate text-sm font-medium text-fg">{record.title}</p>
+                    <div className="flex min-w-0 flex-1 flex-col gap-1">
+                        <p className="truncate text-sm font-medium text-fg">{record.title}</p>
+                        <Tooltip
+                            placement="topLeft"
+                            title={<span className="whitespace-pre-line">{record.prompt}</span>}
+                        >
                             <p className="truncate text-sm text-muted">{record.prompt}</p>
-                            <div className="mt-1 flex items-center gap-1.5">
-                                <Tag variant="filled" color={TASK_TYPE_COLORS[record.taskType]} style={{ marginInlineEnd: 0, fontSize: 14}}>
-                                    {t(`taskType.${record.taskType}`)}
-                                </Tag>
-                                <Tag variant="filled" color={DIFFICULTY_COLORS[record.difficulty]} style={{ marginInlineEnd: 0,  fontSize: 14 }}>
-                                    {t(`difficulty.${record.difficulty}`)}
-                                </Tag>
-                            </div>
+                        </Tooltip>
+                        <div className="mt-1 flex items-center gap-1.5">
+                            <Tag variant="filled" color={TASK_TYPE_COLORS[record.taskType]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                {TASK_TYPE_LABELS[record.taskType]}
+                            </Tag>
+                            <Tag variant="filled" style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                {QUESTION_TYPE_LABELS[record.questionType]}
+                            </Tag>
                         </div>
-                    </Tooltip>
+                    </div>
                 </div>
             ),
         },

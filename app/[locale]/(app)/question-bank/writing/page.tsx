@@ -1,6 +1,7 @@
 "use client";
 
 import Button from "@/components/Button";
+import AlignLeftIcon from "@/components/icons/AlignLeftIcon";
 import PencilIcon from "@/components/icons/PencilIcon";
 import PlusIcon from "@/components/icons/PlusIcon";
 import TrashIcon from "@/components/icons/TrashIcon";
@@ -9,7 +10,7 @@ import UpdateWritingQuestionModal from "@/components/modals/UpdateWritingQuestio
 import { useAppMessage } from "@/contexts/message-context";
 import { writingQuestionApi } from "@/lib/api/writingQuestionApi";
 import { writingQuestionKeys, writingQuestionQueries } from "@/lib/queries/writingQuestionQueries";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS, WritingDifficulty, WritingQuestion, WritingQuestionFilter, WritingTaskType } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, TASK_TYPE_COLORS, TASK_TYPE_LABELS, WritingQuestion, WritingQuestionFilter } from "@/types/writing-question-type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { Image, Popconfirm, Table, TableColumnsType, Tag, Tooltip } from "antd";
 import { useTranslations } from "next-intl";
@@ -67,64 +68,49 @@ export default function WritingQuestionBankPage() {
         {
             title: t("columns.question"),
             dataIndex: "title",
-            ellipsis: { showTitle: false },
             render: (_: string, record) => (
-                <Tooltip
-                    placement="topLeft"
-                    title={<span className="whitespace-pre-line">{record.prompt}</span>}
-                >
-                    <div className="min-w-0">
-                        <p className="truncate text-sm font-medium text-fg">{record.title}</p>
-                        <p className="truncate text-sm text-muted">{record.prompt}</p>
+                <div className="flex items-center gap-4 min-w-0">
+                    <div className="flex-none">
+                        {record.imageUrl ? (
+                            <Image
+                                src={record.imageUrl}
+                                alt=""
+                                width={64}
+                                height={64}
+                                style={{ objectFit: "cover", borderRadius: 10, border: "1px solid var(--color-border)" }}
+                            />
+                        ) : (
+                            <div className="flex h-16 w-16 items-center justify-center rounded-[10px] border border-border bg-surface text-muted">
+                                <AlignLeftIcon width={22} height={22} />
+                            </div>
+                        )}
                     </div>
-                </Tooltip>
+
+                    <div className="min-w-0 flex-1">
+                        <p className="truncate text-sm font-semibold text-fg">{record.title}</p>
+                        <Tooltip
+                            placement="topLeft"
+                            title={<span className="whitespace-pre-line">{record.prompt}</span>}
+                        >
+                            <p className="mt-0.5 truncate text-sm text-muted">{record.prompt}</p>
+                        </Tooltip>
+                        <div className="mt-2 flex items-center gap-2">
+                            <Tag color={TASK_TYPE_COLORS[record.taskType]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                {TASK_TYPE_LABELS[record.taskType]}
+                            </Tag>
+                            <Tag style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                {QUESTION_TYPE_LABELS[record.questionType]}
+                            </Tag>
+                        </div>
+                    </div>
+                </div>
             ),
-        },
-        {
-            title: t("columns.taskType"),
-            dataIndex: "taskType",
-            align: "center",
-            width: "10%",
-            render: (taskType: WritingTaskType) => (
-                <Tag color={TASK_TYPE_COLORS[taskType]} style={{ marginInlineEnd: 0 }}>
-                    {t(`taskType.${taskType}`)}
-                </Tag>
-            ),
-        },
-        {
-            title: t("columns.difficulty"),
-            dataIndex: "difficulty",
-            align: "center",
-            width: "10%",
-            render: (difficulty: WritingDifficulty) => (
-                <Tag color={DIFFICULTY_COLORS[difficulty]} style={{ marginInlineEnd: 0 }}>
-                    {t(`difficulty.${difficulty}`)}
-                </Tag>
-            ),
-        },
-        {
-            title: t("columns.image"),
-            dataIndex: "imageUrl",
-            align: "center",
-            width: "15%",
-            render: (imageUrl: string | null) =>
-                imageUrl ? (
-                    <Image
-                        src={imageUrl}
-                        alt=""
-                        width={48}
-                        height={48}
-                        style={{ objectFit: "cover", borderRadius: 6 }}
-                    />
-                ) : (
-                    <span className="text-muted">—</span>
-                ),
         },
         {
             title: t("columns.action"),
             key: "action",
             align: "center",
-            width: "10%",
+            width: 120,
             render: (_, record) => (
                 <div className="flex items-center justify-center gap-2">
                     <Button
@@ -202,21 +188,23 @@ export default function WritingQuestionBankPage() {
             {isError ? (
                 <p className="text-sm text-red-500">{t("loadError")}</p>
             ) : (
-                <Table<WritingQuestion>
-                    rowKey="id"
-                    bordered={true}
-                    columns={columns}
-                    dataSource={data?.content ?? []}
-                    loading={isLoading}
-                    tableLayout="fixed"
-                    pagination={{
-                        current: page + 1,
-                        pageSize: DEFAULT_PAGE_SIZE,
-                        total: data?.totalElements ?? 0,
-                        showSizeChanger: false,
-                        onChange: (p) => setPage(p - 1),
-                    }}
-                />
+                <div className="overflow-hidden rounded-2xl border border-border bg-bg">
+                    <Table<WritingQuestion>
+                        rowKey="id"
+                        columns={columns}
+                        dataSource={data?.content ?? []}
+                        loading={isLoading}
+                        tableLayout="fixed"
+                        pagination={{
+                            current: page + 1,
+                            pageSize: DEFAULT_PAGE_SIZE,
+                            total: data?.totalElements ?? 0,
+                            showSizeChanger: false,
+                            onChange: (p) => setPage(p - 1),
+                            style: { paddingInline: 16 },
+                        }}
+                    />
+                </div>
             )}
 
             {isCreateModalOpen && (

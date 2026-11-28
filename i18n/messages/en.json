@@ -73,7 +73,12 @@
             "writing": "Writing"
         },
         "title": "Writing",
-        "subtitle": "Pick a prompt to write. AI grades it on 4 criteria as soon as you submit."
+        "subtitle": "Pick a prompt to write. AI grades it on 4 criteria as soon as you submit.",
+        "filters": {
+            "ALL": "All",
+            "TASK_1": "Task 1",
+            "TASK_2": "Task 2"
+        }
     },
     "reading": {
         "breadcrumbs": {
@@ -207,15 +212,6 @@
                 "title": "Writing assignments",
                 "addButton": "Add assignment",
                 "empty": "No assignments this week yet",
-                "taskType": {
-                    "TASK_1": "Task 1",
-                    "TASK_2": "Task 2"
-                },
-                "difficulty": {
-                    "EASY": "Easy",
-                    "MEDIUM": "Medium",
-                    "HARD": "Hard"
-                },
                 "showMore": "Show more", 
                 "showLess": "Show less",
                 "noteLabel": "Note",
@@ -329,15 +325,6 @@
             "dueTimeLabel": "Due time",
             "descriptionLabel": "Description (Optional)",
             "descriptionPlaceholder": "Add any extra notes for students about this assignment...",
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Easy",
-                "MEDIUM": "Medium",
-                "HARD": "Hard"
-            },
             "filters": {
                 "ALL": "All",
                 "TASK_1": "Task 1",
@@ -360,15 +347,6 @@
             "dueTimeLabel": "Due time",
             "descriptionLabel": "Description (Optional)",
             "descriptionPlaceholder": "Add notes for students about this assignment...",
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Easy",
-                "MEDIUM": "Medium",
-                "HARD": "Hard"
-            },
             "submit": "Update",
             "errors": {
                 "dueDateRequired": "Please select a due date.",
@@ -450,52 +428,40 @@
         }
     },
     "writingQuestionBank": {
-        "title": "Writing Question Bank",
-        "subtitle": "List of Writing test questions used for courses.",
-        "createButton": "Create Writing Question",
+        "title": "Writing question bank",
+        "subtitle": "Writing prompts used across your courses.",
+        "createButton": "Create writing prompt",
         "columns": {
-            "question": "Question",
-            "taskType": "Task type",
-            "difficulty": "Difficulty",
+            "question": "Prompt",
+            "taskType": "Task",
+            "questionType": "Question type",
             "image": "Image",
-            "action": "Action"
-        },
-        "taskType": {
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
-        },
-        "difficulty": {
-            "EASY": "Easy",
-            "MEDIUM": "Medium",
-            "HARD": "Hard"
+            "action": "Actions"
         },
         "filters": {
             "ALL": "All",
             "TASK_1": "Task 1",
             "TASK_2": "Task 2"
         },
-        "loadError": "Failed to load writing questions.",
+        "loadError": "Could not load the prompt list.",
         "deletePopconfirm": {
-            "title": "Delete question",
-            "subtitle": "Are you sure you want to delete this question?",
+            "title": "Delete prompt",
+            "subtitle": "Are you sure you want to delete this prompt?",
             "okText": "Delete",
             "cancelText": "Cancel"
         },
-        "deleteSuccess": "Question deleted successfully",
+        "deleteSuccess": "Prompt deleted",
         "createWritingQuestionModal": {
-            "title": "Create Writing Question",
-            "subtitle": "Fill in the Writing question details.",
+            "title": "Create writing prompt",
+            "subtitle": "Fill in the writing prompt details.",
             "titleLabel": "Title",
             "titlePlaceholder": "e.g. Urban and rural population chart",
             "promptLabel": "Prompt",
             "promptPlaceholder": "Enter the writing prompt...",
-            "typeLabel": "Task type",
-            "difficultyLabel": "Difficulty",
-            "difficultyEasy": "Easy",
-            "difficultyMedium": "Medium",
-            "difficultyHard": "Hard",
+            "typeLabel": "Task",
+            "questionTypeLabel": "Question type",
             "uploadLabel": "Attached image",
-            "uploadText": "Click or drag an image to this area",
+            "uploadText": "Click or drag an image into this area",
             "uploadHint": "PNG, JPG or WEBP, up to {size}MB",
             "crops": {
                 "title": "Crop image",
@@ -503,29 +469,26 @@
                 "cancel": "Cancel",
                 "reset": "Reset"
             },
-            "errorImageType": "Only PNG, JPG or WEBP images are allowed",
+            "errorImageType": "Only PNG, JPG or WEBP images are accepted",
             "errorImageSize": "Image must be smaller than {size}MB",
             "submit": "Create",
             "errors": {
                 "titleRequired": "Please enter a title",
-                "promptRequired": "Please enter a prompt"
+                "promptRequired": "Please enter the prompt"
             },
-            "createSuccess": "Question created successfully"
+            "createSuccess": "Prompt created"
         },
         "updateWritingQuestionModal": {
-            "title": "Update writing question",
-            "subtitle": "Edit the writing question details.",
+            "title": "Update writing prompt",
+            "subtitle": "Edit the writing prompt details.",
             "titleLabel": "Title",
             "titlePlaceholder": "e.g. Urban and rural population chart",
             "promptLabel": "Prompt",
             "promptPlaceholder": "Enter the writing prompt...",
-            "typeLabel": "Task type",
-            "difficultyLabel": "Difficulty",
-            "difficultyEasy": "Easy",
-            "difficultyMedium": "Medium",
-            "difficultyHard": "Hard",
+            "typeLabel": "Task",
+            "questionTypeLabel": "Question type",
             "uploadLabel": "Attached image",
-            "uploadText": "Click or drag an image to this area",
+            "uploadText": "Click or drag an image into this area",
             "uploadHint": "PNG, JPG or WEBP, up to {size}MB",
             "crops": {
                 "title": "Crop image",
@@ -533,14 +496,14 @@
                 "cancel": "Cancel",
                 "reset": "Reset"
             },
-            "errorImageType": "Only PNG, JPG or WEBP images are allowed",
+            "errorImageType": "Only PNG, JPG or WEBP images are accepted",
             "errorImageSize": "Image must be smaller than {size}MB",
             "submit": "Update",
             "errors": {
                 "titleRequired": "Please enter a title",
-                "promptRequired": "Please enter a prompt"
+                "promptRequired": "Please enter the prompt"
             },
-            "updateSuccess":"Question updated successfully"
+            "updateSuccess": "Prompt updated"
         }
     },
     "writingWorkspace": {
@@ -609,15 +572,6 @@
             }
         },
         "writingQuestionPanel": {
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Easy",
-                "MEDIUM": "Medium",
-                "HARD": "Hard"
-            },
             "titleLabel": "Question",
             "noteLabel": "Note",
             "noNote": "None"

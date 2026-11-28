@@ -8,7 +8,7 @@ import { useAppMessage } from "@/contexts/message-context";
 import Dragger from "antd/es/upload/Dragger";
 import Button from "../Button";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { CreateWritingQuestionRequest, DIFFICULTIES, TASK_TYPES, WritingDifficulty, WritingTaskType } from "@/types/writing-question-type";
+import { CreateWritingQuestionRequest, QUESTION_TYPE_LABELS, QUESTION_TYPES_BY_TASK, TASK_TYPE_LABELS, TASK_TYPES, WritingQuestionType, WritingTaskType } from "@/types/writing-question-type";
 import SelectInput, { SelectOption } from "../form-input/SelectInput";
 import TextInput from "../form-input/TextInput";
 import FileUploadIcon from "../icons/FileUploadIcon";
@@ -38,31 +38,25 @@ export default function CreateWritingQuestionModal({ isOpen, onClose } : CreateW
     const [title, setTitle] = useState<string>("");
     const [prompt, setPrompt] = useState<string>("");
     const [taskType, setTaskType] = useState<WritingTaskType>("TASK_1");
-    const [difficulty, setDifficulty] = useState<WritingDifficulty>("MEDIUM");
+    const [questionType, setQuestionType] = useState<WritingQuestionType>(QUESTION_TYPES_BY_TASK.TASK_1[0]);
     const [fileList, setFileList] = useState<UploadFile[]>([]);
 
     const [errors, setErrors] = useState<Errors>({});
-
-    const TASK_TYPE_LABELS: Record<WritingTaskType, string> = {
-        TASK_1: "Task 1",
-        TASK_2: "Task 2",
-    };
 
     const TASK_TYPE_OPTIONS: SelectOption<WritingTaskType>[] = TASK_TYPES.map((value) => ({
         value,
         label: TASK_TYPE_LABELS[value],
     }));
 
-    const difficultyLabels: Record<WritingDifficulty, string> = {
-        EASY: t("difficultyEasy"),
-        MEDIUM: t("difficultyMedium"),
-        HARD: t("difficultyHard"),
-    };
-
-    const difficultyOptions: SelectOption<WritingDifficulty>[] = DIFFICULTIES.map((value) => ({
+    const QUESTION_TYPE_OPTIONS: SelectOption<WritingQuestionType>[] = QUESTION_TYPES_BY_TASK[taskType].map((value) => ({
         value,
-        label: difficultyLabels[value],
+        label: QUESTION_TYPE_LABELS[value],
     }));
+
+    const handleTaskTypeChange = (value: WritingTaskType) => {
+        setTaskType(value);
+        setQuestionType(QUESTION_TYPES_BY_TASK[value][0]);
+    };
 
     const uploadProps: UploadProps = {
         name: "image",
@@ -117,7 +111,7 @@ export default function CreateWritingQuestionModal({ isOpen, onClose } : CreateW
             title,
             prompt,
             taskType,
-            difficulty,
+            questionType,
             image: fileList[0]?.originFileObj as File | undefined,
         });
     }
@@ -160,14 +154,14 @@ export default function CreateWritingQuestionModal({ isOpen, onClose } : CreateW
                         label={t("typeLabel")}
                         options={TASK_TYPE_OPTIONS}
                         value={taskType}
-                        onChange={setTaskType}
+                        onChange={handleTaskTypeChange}
                     />
 
                     <SelectInput
-                        label={t("difficultyLabel")}
-                        options={difficultyOptions}
-                        value={difficulty}
-                        onChange={setDifficulty}
+                        label={t("questionTypeLabel")}
+                        options={QUESTION_TYPE_OPTIONS}
+                        value={questionType}
+                        onChange={setQuestionType}
                     />
                 </div>
 

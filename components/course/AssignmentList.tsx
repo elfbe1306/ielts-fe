@@ -7,7 +7,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppMessage } from "@/contexts/message-context";
 import { WritingAssignment } from "@/types/writing-assignment-type";
 import { writingAssignmentApi } from "@/lib/api/writingAssignmentApi";
-import { DIFFICULTY_COLORS, TASK_TYPE_COLORS } from "@/types/writing-question-type";
+import { QUESTION_TYPE_LABELS, TASK_TYPE_COLORS, TASK_TYPE_LABELS } from "@/types/writing-question-type";
 import FileEditIcon from "../icons/FileEditIcon";
 import PencilIcon from "../icons/PencilIcon";
 import { ROUTES } from "@/lib/route";
@@ -15,6 +15,7 @@ import TrashIcon from "../icons/TrashIcon";
 import { useRouter } from "@/i18n/navigation";
 import UpdateWritingAssignmentModal from "../modals/UpdateWritingAssignmentModal";
 import { weekSectionKeys } from "@/lib/queries/weekSectionQueries";
+import AlignLeftIcon from "../icons/AlignLeftIcon";
 
 const THUMB_SIZE = 64;
 
@@ -58,7 +59,7 @@ export default function AssignmentList({ courseId, writingAssignments } : Assign
                     return (
                         <div className="flex min-w-0 items-start gap-3">
                             <div
-                                className="shrink-0 overflow-hidden rounded-md bg-gray-100"
+                                className="shrink-0"
                                 style={{ width: THUMB_SIZE, height: THUMB_SIZE }}
                             >
                                 {question.imageUrl ? (
@@ -67,32 +68,30 @@ export default function AssignmentList({ courseId, writingAssignments } : Assign
                                         alt={question.title}
                                         width={THUMB_SIZE}
                                         height={THUMB_SIZE}
-                                        style={{ objectFit: "cover" }}
+                                        style={{ objectFit: "cover", borderRadius: 10, border: "1px solid var(--color-border)" }}
                                     />
                                 ) : (
-                                    <div className="flex h-full w-full items-center justify-center text-sm text-muted">
-                                        —
+                                    <div className="flex h-full w-full items-center justify-center rounded-[10px] border border-border bg-surface text-muted">
+                                        <AlignLeftIcon width={22} height={22} />
                                     </div>
                                 )}
                             </div>
 
                             <div className="flex min-w-0 flex-1 flex-col gap-1">
+                                <p className="truncate text-sm font-medium text-fg">{question.title}</p>
                                 <Tooltip
                                     placement="topLeft"
                                     title={<span className="whitespace-pre-line">{question.prompt}</span>}
                                 >
-                                    <div className="flex min-w-0 flex-col gap-1">
-                                        <p className="truncate text-sm font-medium text-fg">{question.title}</p>
-                                        <p className="truncate text-sm text-muted">{question.prompt}</p>
-                                    </div>
+                                    <p className="truncate text-sm text-muted">{question.prompt}</p>
                                 </Tooltip>
 
                                 <div className="mt-1 flex items-center gap-1.5">
                                     <Tag variant="filled" color={TASK_TYPE_COLORS[question.taskType]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
-                                        {t(`taskType.${question.taskType}`)}
+                                        {TASK_TYPE_LABELS[question.taskType]}
                                     </Tag>
-                                    <Tag variant="filled" color={DIFFICULTY_COLORS[question.difficulty]} style={{ marginInlineEnd: 0, fontSize: 14 }}>
-                                        {t(`difficulty.${question.difficulty}`)}
+                                    <Tag variant="filled" style={{ marginInlineEnd: 0, fontSize: 14 }}>
+                                        {QUESTION_TYPE_LABELS[question.questionType]}
                                     </Tag>
                                 </div>
 

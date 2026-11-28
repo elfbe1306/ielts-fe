@@ -21,7 +21,7 @@ export const writingQuestionApi = {
         formData.append("title", payload.title);
         formData.append("prompt", payload.prompt);
         formData.append("taskType", payload.taskType);
-        formData.append("difficulty", payload.difficulty);
+        formData.append("questionType", payload.questionType);
 
         if (payload.image) formData.append("image", payload.image);
 
@@ -35,7 +35,7 @@ export const writingQuestionApi = {
         if (payload.title !== undefined) formData.append("title", payload.title);
         if (payload.prompt !== undefined) formData.append("prompt", payload.prompt);
         if (payload.taskType !== undefined) formData.append("taskType", payload.taskType);
-        if (payload.difficulty !== undefined) formData.append("difficulty", payload.difficulty);
+        if (payload.questionType !== undefined) formData.append("questionType", payload.questionType);
         if (payload.image) formData.append("image", payload.image);
         if (payload.removeImage) formData.append("removeImage", "true");
 

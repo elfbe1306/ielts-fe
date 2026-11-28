@@ -73,7 +73,12 @@
             "writing": "Writing"
         },
         "title": "Writing",
-        "subtitle": "Chọn một đề để viết. AI chấm theo 4 tiêu chí ngay khi bạn nộp."
+        "subtitle": "Chọn một đề để viết. AI chấm theo 4 tiêu chí ngay khi bạn nộp.",
+        "filters": {
+            "ALL": "Tất cả",
+            "TASK_1": "Task 1",
+            "TASK_2": "Task 2"
+        }
     },
     "reading": {
         "breadcrumbs": {
@@ -207,15 +212,6 @@
                 "title": "Bài tập Writing",
                 "addButton": "Thêm bài tập",
                 "empty": "Chưa có bài tập nào trong tuần này",
-                "taskType": {
-                    "TASK_1": "Task 1",
-                    "TASK_2": "Task 2"
-                },
-                "difficulty": {
-                    "EASY": "Dễ",
-                    "MEDIUM": "Trung bình",
-                    "HARD": "Khó"
-                },
                 "showMore": "Xem thêm",
                 "showLess": "Thu gọn",
                 "noteLabel": "Ghi chú",
@@ -329,15 +325,6 @@
             "dueTimeLabel": "Giờ nộp",
             "descriptionLabel": "Mô tả (Tuỳ chọn)",
             "descriptionPlaceholder": "Ghi chú thêm cho học viên về phần bài tập này...",
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Dễ",
-                "MEDIUM": "Trung bình",
-                "HARD": "Khó"
-            },
             "filters": {
                 "ALL": "Tất cả",
                 "TASK_1": "Task 1",
@@ -360,15 +347,6 @@
             "dueTimeLabel": "Giờ nộp",
             "descriptionLabel": "Mô tả (Tuỳ chọn)",
             "descriptionPlaceholder": "Ghi chú thêm cho học viên về phần bài tập này...",
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Dễ",
-                "MEDIUM": "Trung bình",
-                "HARD": "Khó"
-            },
             "submit": "Cập nhật",
             "errors": {
                 "dueDateRequired": "Vui lòng chọn hạn nộp.",
@@ -455,19 +433,10 @@
         "createButton": "Tạo đề writing",
         "columns": {
             "question": "Đề bài",
-            "taskType": "Dạng bài",
-            "difficulty": "Độ khó",
+            "taskType": "Task",
+            "questionType": "Dạng bài",
             "image": "Hình ảnh",
             "action": "Thao tác"
-        },
-        "taskType": {
-            "TASK_1": "Task 1",
-            "TASK_2": "Task 2"
-        },
-        "difficulty": {
-            "EASY": "Dễ",
-            "MEDIUM": "Trung bình",
-            "HARD": "Khó"
         },
         "filters": {
             "ALL": "Tất cả",
@@ -489,11 +458,8 @@
             "titlePlaceholder": "Ví dụ: Biểu đồ dân số thành thị và nông thôn",
             "promptLabel": "Đề bài",
             "promptPlaceholder": "Nhập nội dung đề bài writing...",
-            "typeLabel": "Dạng bài",
-            "difficultyLabel": "Độ khó",
-            "difficultyEasy": "Dễ",
-            "difficultyMedium": "Trung bình",
-            "difficultyHard": "Khó",
+            "typeLabel": "Task",
+            "questionTypeLabel": "Dạng bài",
             "uploadLabel": "Hình ảnh đính kèm",
             "uploadText": "Nhấp hoặc kéo thả hình ảnh vào khu vực này",
             "uploadHint": "PNG, JPG hoặc WEBP, tối đa {size}MB",
@@ -519,11 +485,8 @@
             "titlePlaceholder": "Ví dụ: Biểu đồ dân số thành thị và nông thôn",
             "promptLabel": "Đề bài",
             "promptPlaceholder": "Nhập nội dung đề bài writing...",
-            "typeLabel": "Dạng bài",
-            "difficultyLabel": "Độ khó",
-            "difficultyEasy": "Dễ",
-            "difficultyMedium": "Trung bình",
-            "difficultyHard": "Khó",
+            "typeLabel": "Task",
+            "questionTypeLabel": "Dạng bài",
             "uploadLabel": "Hình ảnh đính kèm",
             "uploadText": "Nhấp hoặc kéo thả hình ảnh vào khu vực này",
             "uploadHint": "PNG, JPG hoặc WEBP, tối đa {size}MB",
@@ -540,7 +503,7 @@
                 "titleRequired": "Vui lòng nhập tiêu đề",
                 "promptRequired": "Vui lòng nhập đề bài"
             },
-            "updateSuccess":"Cập nhật đề thành công"
+            "updateSuccess": "Cập nhật đề thành công"
         }
     },
     "writingWorkspace": {
@@ -609,15 +572,6 @@
             }
         },
         "writingQuestionPanel": {
-            "taskType": {
-                "TASK_1": "Task 1",
-                "TASK_2": "Task 2"
-            },
-            "difficulty": {
-                "EASY": "Dễ",
-                "MEDIUM": "Trung bình",
-                "HARD": "Khó"
-            },
             "titleLabel": "Đề bài",
             "noteLabel": "Ghi chú",
             "noNote": "Không"
